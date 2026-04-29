@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zcash Japan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #F4B728;
+    --gold-dark: #C8931A;
+    --gold-glow: rgba(244,183,40,0.15);
+    --bg: #080B14;
+    --bg2: #0E1220;
+    --bg3: #151B2E;
+    --border: rgba(244,183,40,0.2);
+    --border2: rgba(255,255,255,0.07);
+    --text: #F0EDE6;
+    --muted: #8A8FA8;
+    --teal: #1DBEAC;
+    --twitter: #1DA1F2;
+    --youtube: #FF0000;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
+
+  /* ── Header ── */
+  header { background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+  .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+  .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #080B14; }
+  .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.5px; }
+  .logo-text span { color: var(--gold); }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  nav { display: flex; gap: 4px; }
+  .nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+  .nav-btn:hover { color: var(--text); background: var(--bg3); }
+  .nav-btn.active { color: var(--gold); background: var(--gold-glow); }
+  .social-links { display: flex; gap: 6px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border2); }
+  .social-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; border: 1px solid var(--border2); }
+  .social-icon:hover { transform: translateY(-1px); border-color: var(--border); }
+  .social-icon svg { width: 15px; height: 15px; }
+  .social-icon.tw { color: var(--twitter); }
+  .social-icon.tw:hover { background: rgba(29,161,242,0.1); }
+  .social-icon.yt { color: var(--youtube); }
+  .social-icon.yt:hover { background: rgba(255,0,0,0.1); }
+
+  /* ── Pages ── */
+  .page { display: none; }
+  .page.active { display: block; }
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  /* ── Hero ── */
+  .hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 36px 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+  .hero::before { content: 'ZEC'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 96px; font-weight: 700; color: rgba(244,183,40,0.06); letter-spacing: -4px; user-select: none; }
+  .hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+  .hero h1 span { color: var(--gold); }
+  .hero p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 500px; }
+
+  /* ── Buttons ── */
+  .btn-primary { background: var(--gold); color: #080B14; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+  .btn-primary:hover { background: #ffc93d; transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 10px 18px; border-radius: 8px; transition: all 0.2s; }
+  .btn-secondary:hover { border-color: var(--border); }
+
+  /* ── Section header ── */
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .section-title { font-size: 18px; font-weight: 600; }
+
+  /* ── Blog grid ── */
+  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+  .blog-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+  .blog-card:hover { border-color: var(--border); transform: translateY(-2px); }
+  .blog-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s; }
+  .blog-card:hover::after { opacity: 1; }
+  .card-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .card-title { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
+  .card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+
+  /* ── Editor modal ── */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 760px; margin: auto; padding: 32px; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+  .modal-title { font-size: 18px; font-weight: 600; }
+  .close-btn { background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); cursor: pointer; width: 32px; height: 32px; border-radius: 8px; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .close-btn:hover { color: var(--text); border-color: var(--border); }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+  .field input, .field select, .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 16px; color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; transition: border-color 0.2s; outline: none; resize: vertical; }
+  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+  .field textarea { min-height: 200px; line-height: 1.8; }
+  .field select option { background: var(--bg3); }
+  .ai-toolbar { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+  .ai-toolbar-title { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  .ai-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ai-chip { background: var(--bg2); border: 1px solid var(--border2); color: var(--muted); font-size: 12px; font-family: 'Noto Sans JP', sans-serif; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+  .ai-chip:hover { color: var(--gold); border-color: var(--border); }
+  .ai-status { font-size: 12px; color: var(--teal); margin-top: 8px; display: none; align-items: center; gap: 6px; }
+  .ai-status.visible { display: flex; }
+  .spinner { width: 12px; height: 12px; border: 2px solid var(--teal); border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+
+  /* ── Article detail ── */
+  #article-view { display: none; }
+  .back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; font-size: 13px; font-family: 'Noto Sans JP', sans-serif; padding: 8px 14px; border-radius: 8px; margin-bottom: 32px; transition: all 0.2s; }
+  .back-btn:hover { color: var(--text); border-color: var(--border); }
+  .article-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
+  .article-title { font-size: 30px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+  .article-meta { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+  .article-body { font-size: 15px; line-height: 2; color: var(--text); white-space: pre-wrap; font-family: 'Noto Sans JP', sans-serif; border-top: 1px solid var(--border2); padding-top: 32px; }
+
+  /* ── Empty state ── */
+  .empty-state { text-align: center; padding: 80px 40px; color: var(--muted); }
+  .empty-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--bg3); border: 1px solid var(--border2); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .empty-state p { font-size: 13px; line-height: 1.7; }
+
+  /* ── Buy page ── */
+  .buy-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 36px; }
+  .buy-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+  .buy-hero h2 span { color: var(--gold); }
+  .buy-hero p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 560px; }
+  .zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+  .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
+  .price-label { font-size: 12px; color: var(--muted); }
+  .exchanges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .exchange-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+  .exchange-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .exchange-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .exchange-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+  .exchange-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; padding: 3px 8px; border-radius: 6px; }
+  .badge-reg { background: rgba(29,190,172,0.12); color: var(--teal); border: 1px solid rgba(29,190,172,0.3); }
+  .badge-spot { background: rgba(244,183,40,0.1); color: var(--gold); border: 1px solid var(--border); }
+  .badge-fiat { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--border2); }
+  .exchange-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+  .exchange-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+  .exchange-pairs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .pair-tag { background: var(--bg3); border: 1px solid var(--border2); font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 10px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
+  .exchange-link { display: flex; align-items: center; justify-content: space-between; color: var(--gold); font-size: 13px; font-weight: 600; }
+  .exchange-link svg { width: 14px; height: 14px; }
+  .notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .notice-box strong { color: var(--gold); }
+
+  /* ── About page ── */
+  .about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+  .about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
+  .about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+  .about-hero h2 span { color: var(--gold); }
+  .about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
+  .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+  .about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
+  .about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+  .about-card-icon svg { width: 18px; height: 18px; color: var(--gold); }
+  .about-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+  .about-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .sns-section { margin-top: 8px; }
+  .sns-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+  .sns-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .sns-card { border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: all 0.2s; border: 1px solid var(--border2); }
+  .sns-card:hover { transform: translateY(-2px); }
+  .sns-card.twitter { background: rgba(29,161,242,0.06); border-color: rgba(29,161,242,0.2); }
+  .sns-card.twitter:hover { border-color: rgba(29,161,242,0.5); background: rgba(29,161,242,0.1); }
+  .sns-card.youtube { background: rgba(255,0,0,0.06); border-color: rgba(255,0,0,0.2); }
+  .sns-card.youtube:hover { border-color: rgba(255,0,0,0.5); background: rgba(255,0,0,0.1); }
+  .sns-logo { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .sns-logo svg { width: 24px; height: 24px; }
+  .sns-card.twitter .sns-logo { background: rgba(29,161,242,0.15); color: var(--twitter); }
+  .sns-card.youtube .sns-logo { background: rgba(255,0,0,0.15); color: var(--youtube); }
+  .sns-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+  .sns-info p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+  .sns-arrow { margin-left: auto; color: var(--muted); flex-shrink: 0; }
+  .sns-arrow svg { width: 16px; height: 16px; }
+
+  /* ── Footer ── */
+  footer { border-top: 1px solid var(--border2); margin-top: 40px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .footer-text { font-size: 12px; color: var(--muted); }
+  .footer-social { display: flex; gap: 8px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero h1 { font-size: 20px; }
+    .hero::before { display: none; }
+    main { padding: 24px 16px 60px; }
+    .social-links { display: none; }
+    .nav-btn { padding: 8px 10px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="showPage('blog', this)">
+      <div class="logo-icon">Z</div>
+      <span class="logo-text">Zcash <span>Japan</span></span>
+    </a>
+    <div class="header-right">
+      <nav>
+        <button class="nav-btn active" onclick="showPage('blog', this)">ブログ</button>
+        <button class="nav-btn" onclick="showPage('buy', this)">購入</button>
+        <button class="nav-btn" onclick="showPage('about', this)">About</button>
+      </nav>
+      <div class="social-links">
+        <!-- ★ Twitter/XのURLをここに入れてください -->
+        <a class="social-icon tw" href="https://twitter.com/zcashjapan" target="_blank" title="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <!-- ★ YouTubeのURLをここに入れてください -->
+        <a class="social-icon yt" href="https://www.youtube.com/@zcashjapan" target="_blank" title="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ━━━ Blog Page ━━━ -->
+<div id="page-blog" class="page active">
+  <main>
+    <div class="hero" id="blog-hero">
+      <h1>Zcash <span>コミュニティ</span> ブログ</h1>
+      <p>プライバシーコイン最前線。Zcashの最新情報、技術解説、マーケット考察をコミュニティと共有しましょう。</p>
+    </div>
+
+    <div id="blog-list-view">
+      <div class="section-header">
+        <span class="section-title">記事一覧</span>
+        <button class="btn-primary" onclick="openEditor()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          記事を書く
+        </button>
+      </div>
+      <div class="blog-grid" id="blog-grid">
+        <div class="empty-state" id="empty-state">
+          <div class="empty-icon">✍️</div>
+          <h3>まだ記事がありません</h3>
+          <p>「記事を書く」ボタンから<br>最初の投稿を作成しましょう。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 記事詳細（バグ修正：初期は非表示） -->
+    <div id="article-view">
+      <button class="back-btn" onclick="backToList()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        記事一覧へ戻る
+      </button>
+      <div id="article-tag" class="article-tag"></div>
+      <h1 class="article-title" id="article-title"></h1>
+      <p class="article-meta" id="article-meta"></p>
+      <div class="article-body" id="article-body"></div>
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ Buy Page ━━━ -->
+<div id="page-buy" class="page">
+  <main>
+    <div class="buy-hero">
+      <h2>ZEC（<span>Zcash</span>）を購入する</h2>
+      <p>日本で利用可能な仮想通貨取引所からZcashを購入できます。各取引所は金融庁（FSA）に登録された信頼できるサービスです。本人確認（KYC）後にお取引いただけます。</p>
+      <div class="zec-ticker">
+        <div>
+          <div class="zec-price" id="zec-price">読み込み中…</div>
+          <div class="price-label">ZEC / JPY（参考価格）</div>
+        </div>
+      </div>
+    </div>
+    <div class="section-header">
+      <span class="section-title">対応取引所一覧</span>
+    </div>
+    <div class="exchanges-grid">
+      <a class="exchange-card" href="https://bitbank.cc/" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a2b4a; color:#4b9fff;">BB</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">bitbank</div>
+        <div class="exchange-desc">国内最大級の取引量を誇る取引所。ZECの取扱いがあり、JPY直取引が可能です。板取引形式でスプレッドが低い。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span><span class="pair-tag">ZEC/BTC</span></div>
+        <div class="exchange-link">bitbank.cc で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://coincheck.com/" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#002d5b; color:#00b4ff;">CC</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">Coincheck</div>
+        <div class="exchange-desc">初心者向けシンプルUIで人気。ZECをJPYで簡単に購入でき、アプリも使いやすいのが特徴です。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
+        <div class="exchange-link">coincheck.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://coin.z.com/jp/" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a1a2e; color:#f4b728;">GM</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">GMOコイン</div>
+        <div class="exchange-desc">GMOグループ運営の信頼性の高い取引所。積立購入機能が充実しており、長期保有に適しています。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
+        <div class="exchange-link">coin.z.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://bitflyer.com/ja-jp/" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#0d1b3e; color:#6699ff;">BF</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">bitFlyer</div>
+        <div class="exchange-desc">国内老舗の大手取引所。セキュリティが高く、法人口座にも対応。ZECの取扱い状況は公式サイトでご確認ください。</div>
+        <div class="exchange-pairs"><span class="pair-tag">要確認</span></div>
+        <div class="exchange-link">bitflyer.com を確認<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://www.binance.com/ja" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a1500; color:#f0b90b;">BN</div>
+          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+        </div>
+        <div class="exchange-name">Binance</div>
+        <div class="exchange-desc">世界最大の仮想通貨取引所。ZECの豊富なペアと流動性を誇ります。日本居住者の利用制限にご注意ください。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/USDT</span><span class="pair-tag">ZEC/BTC</span><span class="pair-tag">ZEC/ETH</span></div>
+        <div class="exchange-link">binance.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://kraken.com/" target="_blank">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a0528; color:#9b59ff;">KR</div>
+          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+        </div>
+        <div class="exchange-name">Kraken</div>
+        <div class="exchange-desc">セキュリティで定評のある米国系取引所。Zcashの取り扱いが古く、流動性も十分です。USD/EUR建て取引が主。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/USD</span><span class="pair-tag">ZEC/EUR</span><span class="pair-tag">ZEC/BTC</span></div>
+        <div class="exchange-link">kraken.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+    </div>
+    <div class="notice-box">
+      <strong>⚠ リスク注意事項</strong><br>
+      仮想通貨への投資は価格変動リスクを伴います。投資は自己責任でお願いします。海外取引所の利用は日本の規制に準拠しているか事前にご確認ください。掲載情報は参考目的であり、投資助言ではありません。
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ About Page ━━━ -->
+<div id="page-about" class="page">
+  <main>
+    <div class="about-hero">
+      <h2>Zcash Japan <span>について</span></h2>
+      <p>Zcash Japanは、ゼロ知識証明技術を基盤とするプライバシーコイン「Zcash（ZEC）」の日本語情報を発信するコミュニティサイトです。技術解説から購入ガイド、最新ニュースまで、日本のZcashユーザーに向けて分かりやすい情報をお届けします。</p>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>情報発信</h3>
+        <p>Zcashの最新動向、技術アップデート、マーケット情報を日本語でいち早くお届けします。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>コミュニティ</h3>
+        <p>プライバシーと金融の自由を信じる仲間たちが集まる、オープンなコミュニティを目指しています。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3>プライバシー重視</h3>
+        <p>zk-SNARKs技術により実現する金融プライバシーの重要性を広め、普及を支援します。</p>
+      </div>
+    </div>
+
+    <div class="sns-section">
+      <h3>SNSでフォローする</h3>
+      <div class="sns-cards">
+        <!-- ★ Twitter/XのURLをここに入れてください -->
+        <a class="sns-card twitter" href="https://twitter.com/zcashjapan" target="_blank">
+          <div class="sns-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="sns-info">
+            <h4>X (Twitter)</h4>
+            <p>最新情報をリアルタイムで発信。Zcash関連ニュースや価格動向も。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+        <!-- ★ YouTubeのURLをここに入れてください -->
+        <a class="sns-card youtube" href="https://www.youtube.com/@zcashjapan" target="_blank">
+          <div class="sns-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <div class="sns-info">
+            <h4>YouTube</h4>
+            <p>Zcashの使い方、技術解説、マーケット分析を動画でわかりやすく解説。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ Editor Modal ━━━ -->
+<div class="modal-overlay" id="editor-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">新しい記事を作成</span>
+      <button class="close-btn" onclick="closeEditor()">×</button>
+    </div>
+    <div class="field">
+      <label>タイトル</label>
+      <input type="text" id="post-title" placeholder="記事のタイトルを入力してください">
+    </div>
+    <div class="field">
+      <label>カテゴリ</label>
+      <select id="post-category">
+        <option value="ニュース">ニュース</option>
+        <option value="技術解説">技術解説</option>
+        <option value="マーケット">マーケット</option>
+        <option value="プライバシー">プライバシー</option>
+        <option value="コミュニティ">コミュニティ</option>
+        <option value="初心者ガイド">初心者ガイド</option>
+      </select>
+    </div>
+    <div class="ai-toolbar">
+      <div class="ai-toolbar-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+        AI執筆アシスタント
+      </div>
+      <div class="ai-chips">
+        <button class="ai-chip" onclick="generateContent('タイトルに基づいて記事の導入部分を書いてください')">導入文を生成</button>
+        <button class="ai-chip" onclick="generateContent('タイトルに基づいてZcashに関する詳細な記事を日本語で書いてください')">全文を生成</button>
+        <button class="ai-chip" onclick="generateContent('この内容を改善・加筆してください')">内容を改善</button>
+        <button class="ai-chip" onclick="generateContent('読みやすく要約してください')">要約する</button>
+        <button class="ai-chip" onclick="generateContent('zcashの技術的な観点から内容を補足してください')">技術補足を追加</button>
+      </div>
+      <div class="ai-status" id="ai-status">
+        <div class="spinner"></div>
+        <span id="ai-status-text">AIが生成中…</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>本文</label>
+      <textarea id="post-body" placeholder="ここに本文を書くか、上のAIアシスタントで生成してください…"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-secondary" onclick="closeEditor()">キャンセル</button>
+      <button class="btn-primary" onclick="publishPost()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        公開する
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-text">© 2026 Zcash Japan. コミュニティ運営サイト。非公式。</span>
+    <div class="footer-social">
+      <a class="social-icon tw" href="https://twitter.com/zcashjapan" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="social-icon yt" href="https://www.youtube.com/@zcashjapan" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const posts = [];
+
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el && el.classList && el.classList.contains('nav-btn')) el.classList.add('active');
+}
+
+function openEditor() {
+  document.getElementById('editor-modal').classList.add('open');
+  document.getElementById('post-title').value = '';
+  document.getElementById('post-body').value = '';
+}
+function closeEditor() { document.getElementById('editor-modal').classList.remove('open'); }
+
+function formatDate(d) {
+  return new Intl.DateTimeFormat('ja-JP', { year:'numeric', month:'long', day:'numeric' }).format(d);
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderPosts() {
+  const grid = document.getElementById('blog-grid');
+  if (posts.length === 0) {
+    grid.innerHTML = '';
+    grid.appendChild(document.getElementById('empty-state'));
+    return;
+  }
+  grid.innerHTML = posts.map((p, i) => `
+    <div class="blog-card" onclick="viewPost(${i})">
+      <span class="card-tag">${escHtml(p.category)}</span>
+      <div class="card-title">${escHtml(p.title)}</div>
+      <div class="card-excerpt">${escHtml(p.body)}</div>
+      <div class="card-meta"><span>${formatDate(p.date)}</span><span>Zcash Japan</span></div>
+    </div>
+  `).join('');
+}
+
+function viewPost(i) {
+  const p = posts[i];
+  document.getElementById('blog-list-view').style.display = 'none';
+  document.getElementById('blog-hero').style.display = 'none';
+  const av = document.getElementById('article-view');
+  av.style.display = 'block';
+  document.getElementById('article-tag').textContent = p.category;
+  document.getElementById('article-title').textContent = p.title;
+  document.getElementById('article-meta').textContent = formatDate(p.date) + ' · Zcash Japan';
+  document.getElementById('article-body').textContent = p.body;
+}
+
+function backToList() {
+  document.getElementById('article-view').style.display = 'none';
+  document.getElementById('blog-list-view').style.display = 'block';
+  document.getElementById('blog-hero').style.display = '';
+}
+
+function publishPost() {
+  const title = document.getElementById('post-title').value.trim();
+  const body = document.getElementById('post-body').value.trim();
+  if (!title) { alert('タイトルを入力してください'); return; }
+  if (!body) { alert('本文を入力してください'); return; }
+  posts.unshift({ title, category: document.getElementById('post-category').value, body, date: new Date() });
+  closeEditor();
+  renderPosts();
+}
+
+async function generateContent(instruction) {
+  const title = document.getElementById('post-title').value.trim();
+  const currentBody = document.getElementById('post-body').value.trim();
+  const category = document.getElementById('post-category').value;
+  const status = document.getElementById('ai-status');
+  const statusText = document.getElementById('ai-status-text');
+  status.classList.add('visible');
+  document.querySelectorAll('.ai-chip').forEach(c => c.disabled = true);
+  const prompt = `あなたはZcashの専門家です。以下の情報をもとに指示に従ってください。\nタイトル: ${title || '（未設定）'}\nカテゴリ: ${category}\n現在の本文:\n${currentBody || '（まだありません）'}\n\n指示: ${instruction}\n\n日本語で、Zcashコミュニティ向けブログ記事として自然な文体で書いてください。技術的な英語用語（zk-SNARKs、Sapling、Orchard等）はそのまま使用可能です。マークダウンは使わず、プレーンテキストで出力してください。`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 1000, messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b => b.type === 'text')?.text || '';
+    if (text) {
+      const ta = document.getElementById('post-body');
+      ta.value = (instruction.includes('全文') || instruction.includes('導入')) ? text : (ta.value ? ta.value + '\n\n' : '') + text;
+    }
+  } catch(e) {
+    statusText.textContent = 'エラーが発生しました';
+  } finally {
+    status.classList.remove('visible');
+    document.querySelectorAll('.ai-chip').forEach(c => c.disabled = false);
+  }
+}
+
+async function fetchPrice() {
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=jpy');
+    const d = await r.json();
+    const p = d?.zcash?.jpy;
+    if (p) document.getElementById('zec-price').textContent = '¥' + p.toLocaleString('ja-JP');
+  } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
+}
+fetchPrice();
+
+posts.push({
+  title: 'Zcashとは？ゼロ知識証明で実現するプライバシーコインの仕組み',
+  category: '初心者ガイド',
+  body: `Zcash（ZEC）は、完全なプライバシーを実現する暗号通貨です。2016年にElectric Coin Company（ECC）によってローンチされ、zk-SNARKsと呼ばれるゼロ知識証明技術を採用しています。\n\nzk-SNARKsとは「Zero-Knowledge Succinct Non-Interactive Argument of Knowledge」の略で、情報の内容を明かすことなく、その情報の正当性を証明できる暗号技術です。Zcashではこの技術を使い、送受信者のアドレスや送金額を公開せずにトランザクションの有効性を検証できます。\n\nZcashには2種類のアドレスがあります。「t-address（透過アドレス）」はビットコインと同様に公開されており、「z-address（シールドアドレス）」は完全に暗号化されています。シールドアドレス間のトランザクションは、ブロックチェーン上から送受信者情報や金額が完全に隠蔽されます。\n\n2022年には「Zcash Shielded Assets（ZSA）」の開発も進められ、エコシステムはさらに拡張しています。プライバシーを重視する方にとって、Zcashは現在最も技術的に成熟したプライバシーコインの一つといえるでしょう。`,
+  date: new Date(Date.now() - 86400000 * 2)
+});
+renderPosts();
+</script>
+</body>
+</html>
