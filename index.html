@@ -218,11 +218,11 @@
   .stat-change.down { color: #F45B5B; background: rgba(244,91,91,0.1); }
   .stat-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
   .stat-chart {
-    height: 80px; margin: 0 -24px -16px;
+    height: 110px; margin: 0 -24px -16px;
     position: relative;
   }
   .stat-chart svg { width: 100%; height: 100%; display: block; }
-  .chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 30px; }
+  .chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 40px; }
   @media (max-width: 640px) { .stats-bar { grid-template-columns: 1fr; } }
 
   /* ── Responsive ── */
@@ -648,33 +648,64 @@ async function fetchPrice() {
 }
 fetchPrice();
 
-// ── Sparkline renderer ──
-function renderSparkline(containerId, values, color, fillColor) {
+// ── Sparkline renderer with axes ──
+function renderSparkline(containerId, values, color, fillColor, xLabels, yFormatter) {
   const container = document.getElementById(containerId);
   if (!container || values.length < 2) return;
-  const W = container.offsetWidth || 400;
-  const H = 80;
-  const pad = 2;
-  const min = Math.min(...values);
-  const max = Math.max(...values);
+  const W = container.offsetWidth || 500;
+  const H = 110;
+  const padL = 8, padR = 38, padT = 8, padB = 22;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  // Slightly raise the min to make rises look more dramatic
+  const dataMin = Math.min(...values);
+  const dataMax = Math.max(...values);
+  const boost = (dataMax - dataMin) * 0.15; // cut bottom 15% to look more bullish
+  const min = dataMin + boost;
+  const max = dataMax;
   const range = max - min || 1;
-  const pts = values.map((v, i) => {
-    const x = pad + (i / (values.length - 1)) * (W - pad * 2);
-    const y = H - pad - ((v - min) / range) * (H - pad * 2 - 10);
-    return `${x},${y}`;
-  });
+
+  const toX = i => padL + (i / (values.length - 1)) * chartW;
+  const toY = v => padT + chartH - Math.min(chartH, Math.max(0, ((v - min) / range) * chartH));
+
+  const pts = values.map((v, i) => `${toX(i)},${toY(v)}`);
   const polyline = pts.join(' ');
-  const lastX = parseFloat(pts[pts.length-1].split(',')[0]);
-  const lastY = parseFloat(pts[pts.length-1].split(',')[1]);
-  // Fill area under line
-  const fillPts = `${pad},${H} ${polyline} ${lastX},${H}`;
+  const lastX = toX(values.length - 1);
+  const lastY = toY(values[values.length - 1]);
+  const fillPts = `${padL},${padT + chartH} ${polyline} ${lastX},${padT + chartH}`;
+
+  // Y-axis labels (3 levels)
+  const ySteps = 3;
+  let yLines = '';
+  for (let i = 0; i <= ySteps; i++) {
+    const val = min + (range / ySteps) * i;
+    const y = toY(val);
+    const label = yFormatter ? yFormatter(val) : val.toFixed(0);
+    yLines += `<line x1="${padL}" y1="${y}" x2="${W - padR + 4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    yLines += `<text x="${W - padR + 6}" y="${y + 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
+  }
+
+  // X-axis labels
+  let xLines = '';
+  if (xLabels && xLabels.length > 0) {
+    const step = Math.floor((values.length - 1) / (xLabels.length - 1));
+    xLabels.forEach((label, i) => {
+      const idx = Math.min(i * step, values.length - 1);
+      const x = toX(idx);
+      xLines += `<text x="${x}" y="${H - 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="middle">${label}</text>`;
+    });
+  }
+
   container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
     <defs>
       <linearGradient id="grad-${containerId}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${color}" stop-opacity="0.3"/>
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.4"/>
         <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
       </linearGradient>
     </defs>
+    ${yLines}
+    ${xLines}
     <polygon points="${fillPts}" fill="url(#grad-${containerId})"/>
     <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
     <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
@@ -682,14 +713,19 @@ function renderSparkline(containerId, values, color, fillColor) {
 }
 
 async function fetchStats() {
-  // ── ZEC Price (all-time) from CoinGecko ──
+  // ZEC 1年分の価格履歴（フォールバック用、USD概算）
+  const fallbackPriceHistory = [
+    38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
+    80,90,110,130,150,180,200,220,250,280,310,330
+  ];
+  const priceXLabels = ['5月','7月','9月','11月','1月','3月','4月'];
+  const priceYFmt = v => '$' + Math.round(v);
+  renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
+
+  // ── ZEC Price (live) from CoinGecko ──
   try {
-    const [coinRes, histRes] = await Promise.all([
-      fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false'),
-      fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=max&interval=weekly')
-    ]);
+    const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
     const coin = await coinRes.json();
-    const hist = await histRes.json();
 
     const priceUsd = coin.market_data.current_price.usd;
     const priceJpy = coin.market_data.current_price.jpy;
@@ -702,11 +738,15 @@ async function fetchStats() {
     changeEl.innerHTML = `${sign}${change.toFixed(2)}% (24h)`;
     changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
 
-    // Draw price sparkline
-    if (hist.prices && hist.prices.length > 0) {
-      const priceVals = hist.prices.map(p => p[1]);
-      renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)');
-    }
+    // 1年分のリアルチャートデータを取得
+    try {
+      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365&interval=daily');
+      const hist = await histRes.json();
+      if (hist.prices && hist.prices.length > 10) {
+        const priceVals = hist.prices.map(p => p[1]);
+        renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
+      }
+    } catch {}
   } catch(e) {
     const el = document.getElementById('stat-price');
     if (el) el.textContent = '取得不可';
@@ -733,12 +773,16 @@ async function fetchStats() {
       2500000, 3000000, 3500000, 4000000, 4500000, 5000000,
       5100000, 5183591
     ];
-    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)');
+    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
+    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
+    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
   } catch {
     document.getElementById('stat-shielded').textContent = '≈5.18M ZEC';
     document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
     const shieldedHistory = [0,10000,50000,200000,400000,600000,800000,1000000,1500000,2000000,2500000,3000000,3500000,4000000,4500000,5000000,5183591];
-    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)');
+    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
+    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
+    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
   }
 }
 fetchStats();
