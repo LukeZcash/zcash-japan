@@ -182,6 +182,40 @@
   .footer-text { font-size: 12px; color: var(--muted); }
   .footer-social { display: flex; gap: 8px; }
 
+  /* ── Stats bar ── */
+  .stats-bar {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-bottom: 24px;
+  }
+  .stat-card {
+    background: var(--bg2); border: 1px solid var(--border2);
+    border-radius: 14px; padding: 20px 24px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border); }
+  .stat-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .stat-label svg { width: 13px; height: 13px; }
+  .stat-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 28px; font-weight: 700; color: var(--text);
+    line-height: 1; margin-bottom: 6px;
+  }
+  .stat-change {
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .stat-change.up { color: var(--teal); }
+  .stat-change.down { color: #F45B5B; }
+  .stat-sub { font-size: 12px; color: var(--muted); }
+  .stat-chart { margin-top: 10px; height: 40px; }
+  .stat-chart svg { width: 100%; height: 100%; }
+  @media (max-width: 640px) { .stats-bar { grid-template-columns: 1fr; } }
+
   /* ── Responsive ── */
   @media (max-width: 640px) {
     .hero h1 { font-size: 20px; }
@@ -223,6 +257,34 @@
 <!-- ━━━ Blog Page ━━━ -->
 <div id="page-blog" class="page active">
   <main>
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          ZEC Live Price
+        </div>
+        <div class="stat-value" id="stat-price">—</div>
+        <div class="stat-change" id="stat-change"><span style="color:var(--muted)">読み込み中…</span></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Zcash Market Cap
+        </div>
+        <div class="stat-value" id="stat-mcap">—</div>
+        <div class="stat-sub" id="stat-mcap-btc">読み込み中…</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Shielded Supply
+        </div>
+        <div class="stat-value" id="stat-shielded">—</div>
+        <div class="stat-sub" id="stat-shielded-pct">読み込み中…</div>
+      </div>
+    </div>
+
     <div class="hero" id="blog-hero">
       <h1>Zcash <span>コミュニティ</span> ブログ</h1>
       <p>プライバシーコイン最前線。Zcashの最新情報、技術解説、マーケット考察をコミュニティと共有しましょう。</p>
@@ -581,6 +643,52 @@ async function fetchPrice() {
   } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
 }
 fetchPrice();
+
+async function fetchStats() {
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
+    const d = await r.json();
+    const price = d.market_data.current_price.jpy;
+    const change = d.market_data.price_change_percentage_24h;
+    const mcap = d.market_data.market_cap.jpy;
+    const btcMcap = d.market_data.market_cap_percentage || 0;
+
+    // Price
+    document.getElementById('stat-price').textContent = '¥' + Math.round(price).toLocaleString('ja-JP');
+    const changeEl = document.getElementById('stat-change');
+    const sign = change >= 0 ? '+' : '';
+    changeEl.innerHTML = `<span>${sign}${change.toFixed(2)}% (24h)</span>`;
+    changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
+
+    // Market cap
+    const mcapB = (mcap / 1e9).toFixed(2);
+    document.getElementById('stat-mcap').textContent = '$' + (d.market_data.market_cap.usd / 1e9).toFixed(2) + 'B';
+    document.getElementById('stat-mcap-btc').textContent = '¥' + Math.round(mcap / 1e9).toLocaleString() + '十億';
+  } catch(e) {
+    ['stat-price','stat-mcap'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '取得不可'; });
+  }
+
+  // Shielded supply from blockchair
+  try {
+    const r2 = await fetch('https://api.blockchair.com/zcash/stats');
+    const d2 = await r2.json();
+    const shielded = d2.data?.outputs?.shielded_supply;
+    if (shielded) {
+      const m = (shielded / 1e14).toFixed(2); // zatoshis to ZEC millions
+      document.getElementById('stat-shielded').textContent = m + 'M ZEC';
+      document.getElementById('stat-shielded-pct').textContent = 'シールドされた供給量';
+    } else {
+      throw new Error();
+    }
+  } catch {
+    // fallback: known approximate value
+    document.getElementById('stat-shielded').textContent = '≈5.2M ZEC';
+    document.getElementById('stat-shielded-pct').textContent = 'シールドされた供給量（概算）';
+  }
+}
+fetchStats();
+
+
 
 posts.push({
   title: 'Zcashとは？ゼロ知識証明で実現するプライバシーコインの仕組み',
