@@ -654,7 +654,8 @@ async function fetchStats() {
     const btcMcap = d.market_data.market_cap_percentage || 0;
 
     // Price
-    document.getElementById('stat-price').textContent = '¥' + Math.round(price).toLocaleString('ja-JP');
+    const priceUsd = d.market_data.current_price.usd;
+    document.getElementById('stat-price').innerHTML = '$' + priceUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + '<br><span style="font-size:16px;color:var(--muted)">（¥' + Math.round(price).toLocaleString('ja-JP') + '）</span>';
     const changeEl = document.getElementById('stat-change');
     const sign = change >= 0 ? '+' : '';
     changeEl.innerHTML = `<span>${sign}${change.toFixed(2)}% (24h)</span>`;
