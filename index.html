@@ -664,7 +664,7 @@ async function fetchStats() {
     // Market cap
     const mcapB = (mcap / 1e9).toFixed(2);
     document.getElementById('stat-mcap').textContent = '$' + (d.market_data.market_cap.usd / 1e9).toFixed(2) + 'B';
-    document.getElementById('stat-mcap-btc').textContent = '¥' + Math.round(mcap / 1e9).toLocaleString() + '十億';
+    document.getElementById('stat-mcap-btc').textContent = '¥' + Math.round(mcap / 1e9).toLocaleString() + '億';
   } catch(e) {
     ['stat-price','stat-mcap'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = '取得不可'; });
   }
