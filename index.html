@@ -654,7 +654,7 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
   if (!container || values.length < 2) return;
   const W = container.offsetWidth || 500;
   const H = 110;
-  const padL = 8, padR = 38, padT = 8, padB = 22;
+  const padL = 12, padR = 40, padT = 8, padB = 22;
   const chartW = W - padL - padR;
   const chartH = H - padT - padB;
 
@@ -686,14 +686,15 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
     yLines += `<text x="${W - padR + 6}" y="${y + 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
   }
 
-  // X-axis labels
+  // X-axis labels (first=start, last=end, others=middle to avoid clipping)
   let xLines = '';
   if (xLabels && xLabels.length > 0) {
-    const step = Math.floor((values.length - 1) / (xLabels.length - 1));
+    const step = (values.length - 1) / (xLabels.length - 1);
     xLabels.forEach((label, i) => {
-      const idx = Math.min(i * step, values.length - 1);
+      const idx = Math.min(Math.round(i * step), values.length - 1);
       const x = toX(idx);
-      xLines += `<text x="${x}" y="${H - 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="middle">${label}</text>`;
+      const anchor = i === 0 ? 'start' : i === xLabels.length - 1 ? 'end' : 'middle';
+      xLines += `<text x="${x}" y="${H - 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="${anchor}">${label}</text>`;
     });
   }
 
