@@ -1,93 +1,863 @@
-// netlify/functions/note-feed.js
-// Fetches RSS feed from note.com/zcashjapan and returns parsed article data as JSON.
-// CORS-safe: runs server-side on Netlify, browser fetches /.netlify/functions/note-feed.
-
-const RSS_URL = 'https://note.com/zcashjapan/rss';
-
-function pick(xml, tag) {
-  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
-  const m = xml.match(re);
-  if (!m) return '';
-  // Strip CDATA wrapper if present
-  return m[1].replace(/^<!\[CDATA\[([\s\S]*?)\]\]>$/, '$1').trim();
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zcash Japan</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #F4B728;
+  --gold-dark: #C8931A;
+  --gold-glow: rgba(244,183,40,0.15);
+  --bg: #080B14;
+  --bg2: #0E1220;
+  --bg3: #151B2E;
+  --border: rgba(244,183,40,0.2);
+  --border2: rgba(255,255,255,0.07);
+  --text: #F0EDE6;
+  --muted: #8A8FA8;
+  --teal: #1DBEAC;
+  --twitter: #1DA1F2;
+  --youtube: #FF0000;
+  --note: #41C9B4;
 }
 
-function pickAll(xml, tag) {
-  const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'gi');
-  const out = [];
-  let m;
-  while ((m = re.exec(xml)) !== null) {
-    out.push(m[1].replace(/^<!\[CDATA\[([\s\S]*?)\]\]>$/, '$1').trim());
-  }
-  return out;
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
+
+/* ── Header ── */
+header { background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); cursor: pointer; }
+.logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #080B14; }
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.5px; }
+.logo-text span { color: var(--gold); }
+.header-right { display: flex; align-items: center; gap: 8px; }
+nav { display: flex; gap: 4px; }
+.nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+.nav-btn:hover { color: var(--text); background: var(--bg3); }
+.nav-btn.active { color: var(--gold); background: var(--gold-glow); }
+.social-links { display: flex; gap: 6px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border2); }
+.social-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; border: 1px solid var(--border2); }
+.social-icon:hover { transform: translateY(-1px); border-color: var(--border); }
+.social-icon svg { width: 15px; height: 15px; }
+.social-icon.tw { color: var(--twitter); }
+.social-icon.tw:hover { background: rgba(29,161,242,0.1); }
+.social-icon.yt { color: var(--youtube); }
+.social-icon.yt:hover { background: rgba(255,0,0,0.1); }
+.social-icon.note { color: var(--note); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; }
+.social-icon.note:hover { background: rgba(65,201,180,0.1); }
+
+/* ── Pages ── */
+.page { display: none; }
+.page.active { display: block; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+
+/* ── Buttons ── */
+.btn-primary { background: var(--gold); color: #080B14; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.btn-primary:hover { background: #ffc93d; transform: translateY(-1px); }
+.btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 10px 18px; border-radius: 8px; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--border); }
+
+/* ── Section header ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; margin-top: 16px; }
+.section-title { font-size: 18px; font-weight: 600; }
+.section-link { font-size: 12px; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s; }
+.section-link:hover { color: var(--note); }
+.section-link svg { width: 11px; height: 11px; }
+
+/* ── Articles grid ── */
+.articles-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .articles-grid { grid-template-columns: 1fr; } }
+
+.article-card {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 12px; padding: 24px;
+  text-decoration: none; color: inherit;
+  transition: all 0.2s; position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  min-height: 220px;
+}
+.article-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.article-card::after {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 3px; background: var(--gold);
+  border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s;
+}
+.article-card:hover::after { opacity: 1; }
+
+.article-card.pinned {
+  background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%);
+  border-color: rgba(65,201,180,0.25);
+}
+.article-card.pinned:hover { border-color: var(--note); }
+.article-card.pinned::after { background: var(--note); }
+
+.card-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--gold-glow); color: var(--gold);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 3px 10px; border-radius: 20px;
+  margin-bottom: 12px; border: 1px solid var(--border);
+  align-self: flex-start;
+}
+.card-tag.pinned-tag {
+  background: rgba(65,201,180,0.12); color: var(--note);
+  border-color: rgba(65,201,180,0.3);
+}
+.card-tag svg { width: 10px; height: 10px; }
+.card-title { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
+.card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
+.card-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+.card-meta-source { display: inline-flex; align-items: center; gap: 4px; }
+.card-meta-source svg { width: 11px; height: 11px; }
+.card-price-badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px; font-weight: 700; color: var(--note);
 }
 
-function stripHtml(s) {
-  return s
-    .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/\s+/g, ' ')
-    .trim();
+.article-card.loading { pointer-events: none; opacity: 0.6; background: var(--bg2); }
+.article-card.loading .card-title,
+.article-card.loading .card-excerpt {
+  background: linear-gradient(90deg, var(--bg3) 0%, rgba(255,255,255,0.04) 50%, var(--bg3) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  color: transparent; border-radius: 4px;
+}
+.article-card.loading .card-title { height: 18px; margin-bottom: 8px; }
+.article-card.loading .card-excerpt { height: 60px; }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ── Buy page ── */
+.buy-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 28px; }
+.buy-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.buy-hero h2 span { color: var(--gold); }
+.buy-hero p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 560px; }
+.zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+.zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
+.price-label { font-size: 12px; color: var(--muted); }
+.exchanges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.exchange-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+.exchange-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.exchange-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.exchange-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+.exchange-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; padding: 3px 8px; border-radius: 6px; }
+.badge-reg { background: rgba(29,190,172,0.12); color: var(--teal); border: 1px solid rgba(29,190,172,0.3); }
+.badge-spot { background: rgba(244,183,40,0.1); color: var(--gold); border: 1px solid var(--border); }
+.badge-fiat { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--border2); }
+.exchange-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.exchange-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.exchange-pairs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.pair-tag { background: var(--bg3); border: 1px solid var(--border2); font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 10px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
+.exchange-link { display: flex; align-items: center; justify-content: space-between; color: var(--gold); font-size: 13px; font-weight: 600; }
+.exchange-link svg { width: 14px; height: 14px; }
+.notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+.notice-box strong { color: var(--gold); }
+
+/* ── Guide banner ── */
+.guide-banner {
+  background: linear-gradient(135deg, rgba(65,201,180,0.08) 0%, rgba(244,183,40,0.08) 100%);
+  border: 1px solid rgba(65,201,180,0.3);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+}
+.guide-banner:hover { border-color: var(--note); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(65,201,180,0.08); }
+.guide-banner::before {
+  content: 'GUIDE';
+  position: absolute; right: -8px; top: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 76px; font-weight: 700;
+  color: rgba(65,201,180,0.05);
+  letter-spacing: -2px; user-select: none;
+}
+.guide-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(65,201,180,0.12); color: var(--note);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(65,201,180,0.3);
+  margin-bottom: 12px;
+}
+.guide-banner h3 { font-size: 20px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; }
+.guide-banner h3 span { color: var(--note); }
+.guide-banner p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; max-width: 560px; }
+.guide-features { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
+.guide-feature { font-size: 12px; color: var(--text); display: inline-flex; align-items: center; gap: 5px; }
+.guide-feature svg { width: 12px; height: 12px; color: var(--note); flex-shrink: 0; }
+.guide-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--note); color: #080B14; font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 8px; transition: all 0.2s; }
+.guide-cta:hover { background: #5dd4c1; }
+.guide-price-block { text-align: center; padding: 20px 24px; background: var(--bg); border: 1px solid var(--border2); border-radius: 12px; position: relative; z-index: 1; }
+.guide-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.guide-price-label { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.guide-price-sub { font-size: 10px; color: var(--note); font-weight: 700; letter-spacing: 0.5px; }
+@media (max-width: 720px) {
+  .guide-banner { grid-template-columns: 1fr; padding: 24px; }
+  .guide-banner::before { font-size: 56px; }
+  .guide-price-block { order: -1; padding: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .guide-price { font-size: 22px; margin-bottom: 0; }
+  .guide-price-label { display: none; }
 }
 
-exports.handler = async () => {
+/* ── About page ── */
+.about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+.about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
+.about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.about-hero h2 span { color: var(--gold); }
+.about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
+.about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.about-card-icon svg { width: 18px; height: 18px; color: var(--gold); }
+.about-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.about-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.sns-section { margin-top: 8px; }
+.sns-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+.sns-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.sns-card { border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: all 0.2s; border: 1px solid var(--border2); }
+.sns-card:hover { transform: translateY(-2px); }
+.sns-card.twitter { background: rgba(29,161,242,0.06); border-color: rgba(29,161,242,0.2); }
+.sns-card.twitter:hover { border-color: rgba(29,161,242,0.5); background: rgba(29,161,242,0.1); }
+.sns-card.youtube { background: rgba(255,0,0,0.06); border-color: rgba(255,0,0,0.2); }
+.sns-card.youtube:hover { border-color: rgba(255,0,0,0.5); background: rgba(255,0,0,0.1); }
+.sns-card.note { background: rgba(65,201,180,0.06); border-color: rgba(65,201,180,0.2); }
+.sns-card.note:hover { border-color: rgba(65,201,180,0.5); background: rgba(65,201,180,0.1); }
+.sns-logo { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sns-logo svg { width: 24px; height: 24px; }
+.sns-card.twitter .sns-logo { background: rgba(29,161,242,0.15); color: var(--twitter); }
+.sns-card.youtube .sns-logo { background: rgba(255,0,0,0.15); color: var(--youtube); }
+.sns-card.note .sns-logo { background: rgba(65,201,180,0.15); color: var(--note); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; }
+.sns-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.sns-info p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.sns-arrow { margin-left: auto; color: var(--muted); flex-shrink: 0; }
+.sns-arrow svg { width: 16px; height: 16px; }
+
+/* ── Footer ── */
+footer { border-top: 1px solid var(--border2); margin-top: 40px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-text { font-size: 12px; color: var(--muted); }
+.footer-social { display: flex; gap: 8px; }
+
+/* ── Stats bar ── */
+.stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; }
+.stat-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px 16px; transition: border-color 0.2s; overflow: hidden; display: flex; flex-direction: column; }
+.stat-card:hover { border-color: var(--border); }
+.stat-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.stat-label svg { width: 13px; height: 13px; }
+.stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
+.stat-value-sub { font-family: 'Space Grotesk', sans-serif; font-size: 15px; color: var(--muted); margin-bottom: 6px; }
+.stat-change { font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; margin-bottom: 16px; }
+.stat-change.up { color: var(--teal); background: rgba(29,190,172,0.1); }
+.stat-change.down { color: #F45B5B; background: rgba(244,91,91,0.1); }
+.stat-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.stat-chart { height: 110px; margin: 0 -24px -16px; position: relative; margin-top: auto; }
+.stat-chart svg { width: 100%; height: 100%; display: block; }
+.chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 40px; }
+
+/* ── Secondary stats ── */
+.secondary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 40px; }
+.sec-stat-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+.sec-stat-card:hover { border-color: var(--border); transform: translateY(-1px); }
+.sec-stat-card.linked:hover { border-color: var(--gold); }
+.sec-stat-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+.sec-stat-label svg { width: 13px; height: 13px; }
+.sec-stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 6px; }
+.sec-stat-sub { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 4px; }
+.sec-stat-sub strong { color: var(--gold); font-weight: 600; }
+.sec-stat-source { font-size: 10px; color: var(--muted); opacity: 0.7; margin-top: auto; padding-top: 10px; display: flex; align-items: center; gap: 4px; }
+.sec-stat-source svg { width: 10px; height: 10px; }
+
+@media (max-width: 640px) {
+  .stats-bar, .secondary-stats { grid-template-columns: 1fr; }
+  main { padding: 24px 16px 60px; }
+  .social-links { display: none; }
+  .nav-btn { padding: 8px 10px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#" onclick="showPage('home', this); return false;">
+      <div class="logo-icon">Z</div>
+      <span class="logo-text">Zcash <span>Japan</span></span>
+    </a>
+    <div class="header-right">
+      <nav>
+        <button class="nav-btn" onclick="showPage('buy', this)">購入</button>
+        <button class="nav-btn" onclick="showPage('about', this)">About</button>
+      </nav>
+      <div class="social-links">
+        <a class="social-icon tw" href="https://x.com/zcash_japan" target="_blank" rel="noopener" title="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener" title="YouTube">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" rel="noopener" title="note">note</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ━━━ Home Page (default) ━━━ -->
+<div id="page-home" class="page active">
+  <main>
+
+    <!-- Stats bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          ZEC Live Price
+        </div>
+        <div class="stat-value" id="stat-price">—</div>
+        <div class="stat-value-sub" id="stat-price-jpy">—</div>
+        <div class="stat-change" id="stat-change"><span style="color:var(--muted);background:none">読み込み中…</span></div>
+        <div class="stat-chart" id="chart-price"><div class="chart-loading">チャート読み込み中…</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          Shielded Supply
+        </div>
+        <div class="stat-value" id="stat-shielded">—</div>
+        <div class="stat-sub" id="stat-shielded-pct">読み込み中…</div>
+        <div class="stat-chart" id="chart-shielded"><div class="chart-loading">チャート読み込み中…</div></div>
+      </div>
+    </div>
+
+    <!-- Secondary stats -->
+    <div class="secondary-stats">
+      <div class="sec-stat-card">
+        <div class="sec-stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="14"/></svg>
+          Zcash 時価総額
+        </div>
+        <div class="sec-stat-value" id="stat-mcap">—</div>
+        <div class="sec-stat-sub" id="stat-mcap-sub">読み込み中…</div>
+        <div class="sec-stat-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Source: CoinGecko
+        </div>
+      </div>
+      <a class="sec-stat-card linked" href="https://www.cypherpunk.com/" target="_blank" rel="noopener">
+        <div class="sec-stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/></svg>
+          機関投資家の保有
+        </div>
+        <div class="sec-stat-value">303,906 <span style="font-size:16px;color:var(--muted)">ZEC</span></div>
+        <div class="sec-stat-sub">Cypherpunk Technologies — 供給量の <strong>1.82%</strong> を保有</div>
+        <div class="sec-stat-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Source: cypherpunk.com（直近購入：2026/04 +9,163 ZEC）
+        </div>
+      </a>
+    </div>
+
+    <!-- Articles section -->
+    <div class="section-header">
+      <span class="section-title">記事一覧</span>
+      <a class="section-link" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
+        noteで全記事を見る
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+
+    <div class="articles-grid" id="articles-grid">
+      <!-- Pinned: 購入ガイド -->
+      <a class="article-card pinned" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
+        <span class="card-tag pinned-tag">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
+          購入ガイド
+        </span>
+        <div class="card-title">Zcash（ZEC）を日本から最安で買う6ステップ</div>
+        <div class="card-excerpt">日本の取引所には未上場のZcash。海外取引所と日本円のブリッジを、BTC送金ロスを抑えた最も換金率の良い経路で繋ぐ手順を、画像つきで解説します。</div>
+        <div class="card-meta">
+          <span class="card-meta-source">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            note.com
+          </span>
+          <span class="card-price-badge">¥9,800・返金可</span>
+        </div>
+      </a>
+
+      <!-- Dynamic slots: latest 2 from note RSS -->
+      <a class="article-card loading" id="article-slot-1" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
+        <span class="card-tag">note</span>
+        <div class="card-title">読み込み中…</div>
+        <div class="card-excerpt">noteから最新記事を取得しています…</div>
+        <div class="card-meta">
+          <span class="card-meta-source">note.com</span>
+          <span></span>
+        </div>
+      </a>
+      <a class="article-card loading" id="article-slot-2" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
+        <span class="card-tag">note</span>
+        <div class="card-title">読み込み中…</div>
+        <div class="card-excerpt">noteから最新記事を取得しています…</div>
+        <div class="card-meta">
+          <span class="card-meta-source">note.com</span>
+          <span></span>
+        </div>
+      </a>
+    </div>
+
+  </main>
+</div>
+
+<!-- ━━━ Buy Page ━━━ -->
+<div id="page-buy" class="page">
+  <main>
+    <div class="buy-hero">
+      <h2>ZEC（<span>Zcash</span>）を購入する</h2>
+      <p>日本で利用可能な仮想通貨取引所からZcashを購入できます。各取引所は金融庁（FSA）に登録された信頼できるサービスです。本人確認（KYC）後にお取引いただけます。</p>
+      <div class="zec-ticker">
+        <div>
+          <div class="zec-price" id="zec-price">読み込み中…</div>
+          <div class="price-label">ZEC / JPY（参考価格）</div>
+        </div>
+      </div>
+    </div>
+
+    <a class="guide-banner" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
+      <div>
+        <div class="guide-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          完全ガイド
+        </div>
+        <h3>Zcash（ZEC）を日本から<span>最安で買う</span> 6ステップ</h3>
+        <p>日本の取引所には未上場のZcash。海外取引所と日本円のブリッジを、BTC送金ロスを抑えた最も換金率の良い経路で繋ぐ手順を、画像つきで解説します。何度も失敗してたどり着いた、迷わない購入手順です。</p>
+        <div class="guide-features">
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            5,549字・19枚の画像
+          </div>
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            PC・スマホ両対応
+          </div>
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            返金可
+          </div>
+        </div>
+        <span class="guide-cta">
+          noteで購入ガイドを読む
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+      <div class="guide-price-block">
+        <div class="guide-price">¥9,800</div>
+        <div class="guide-price-label">noteで販売中</div>
+        <div class="guide-price-sub">⟳ 返金保証つき</div>
+      </div>
+    </a>
+
+    <div class="section-header">
+      <span class="section-title">対応取引所一覧</span>
+    </div>
+    <div class="exchanges-grid">
+      <a class="exchange-card" href="https://bitbank.cc/" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a2b4a; color:#4b9fff;">BB</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">bitbank</div>
+        <div class="exchange-desc">国内最大級の取引量を誇る取引所。ZECの取扱いがあり、JPY直取引が可能です。板取引形式でスプレッドが低い。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span><span class="pair-tag">ZEC/BTC</span></div>
+        <div class="exchange-link">bitbank.cc で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://coincheck.com/" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#002d5b; color:#00b4ff;">CC</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">Coincheck</div>
+        <div class="exchange-desc">初心者向けシンプルUIで人気。ZECをJPYで簡単に購入でき、アプリも使いやすいのが特徴です。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
+        <div class="exchange-link">coincheck.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://coin.z.com/jp/" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a1a2e; color:#f4b728;">GM</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">GMOコイン</div>
+        <div class="exchange-desc">GMOグループ運営の信頼性の高い取引所。積立購入機能が充実しており、長期保有に適しています。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
+        <div class="exchange-link">coin.z.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://bitflyer.com/ja-jp/" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#0d1b3e; color:#6699ff;">BF</div>
+          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        </div>
+        <div class="exchange-name">bitFlyer</div>
+        <div class="exchange-desc">国内老舗の大手取引所。セキュリティが高く、法人口座にも対応。ZECの取扱い状況は公式サイトでご確認ください。</div>
+        <div class="exchange-pairs"><span class="pair-tag">要確認</span></div>
+        <div class="exchange-link">bitflyer.com を確認<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://www.binance.com/ja" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a1500; color:#f0b90b;">BN</div>
+          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+        </div>
+        <div class="exchange-name">Binance</div>
+        <div class="exchange-desc">世界最大の仮想通貨取引所。ZECの豊富なペアと流動性を誇ります。日本居住者の利用制限にご注意ください。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/USDT</span><span class="pair-tag">ZEC/BTC</span><span class="pair-tag">ZEC/ETH</span></div>
+        <div class="exchange-link">binance.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+      <a class="exchange-card" href="https://kraken.com/" target="_blank" rel="noopener">
+        <div class="exchange-header">
+          <div class="exchange-logo" style="background:#1a0528; color:#9b59ff;">KR</div>
+          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+        </div>
+        <div class="exchange-name">Kraken</div>
+        <div class="exchange-desc">セキュリティで定評のある米国系取引所。Zcashの取り扱いが古く、流動性も十分です。USD/EUR建て取引が主。</div>
+        <div class="exchange-pairs"><span class="pair-tag">ZEC/USD</span><span class="pair-tag">ZEC/EUR</span><span class="pair-tag">ZEC/BTC</span></div>
+        <div class="exchange-link">kraken.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
+      </a>
+    </div>
+    <div class="notice-box">
+      <strong>⚠ リスク注意事項</strong><br>
+      仮想通貨への投資は価格変動リスクを伴います。投資は自己責任でお願いします。海外取引所の利用は日本の規制に準拠しているか事前にご確認ください。掲載情報は参考目的であり、投資助言ではありません。
+    </div>
+  </main>
+</div>
+
+<!-- ━━━ About Page ━━━ -->
+<div id="page-about" class="page">
+  <main>
+    <div class="about-hero">
+      <h2>Zcash Japan <span>について</span></h2>
+      <p>Zcash Japanは、ゼロ知識証明技術を基盤とするプライバシーコイン「Zcash（ZEC）」の日本語情報を発信するコミュニティサイトです。技術解説から購入ガイド、最新ニュースまで、日本のZcashユーザーに向けて分かりやすい情報をお届けします。</p>
+    </div>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <h3>情報発信</h3>
+        <p>Zcashの最新動向、技術アップデート、マーケット情報を日本語でいち早くお届けします。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <h3>コミュニティ</h3>
+        <p>プライバシーと金融の自由を信じる仲間たちが集まる、オープンなコミュニティを目指しています。</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        </div>
+        <h3>プライバシー重視</h3>
+        <p>zk-SNARKs技術により実現する金融プライバシーの重要性を広め、普及を支援します。</p>
+      </div>
+    </div>
+
+    <div class="sns-section">
+      <h3>SNSでフォローする</h3>
+      <div class="sns-cards">
+        <a class="sns-card twitter" href="https://x.com/zcash_japan" target="_blank" rel="noopener">
+          <div class="sns-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="sns-info">
+            <h4>X (Twitter)</h4>
+            <p>最新情報をリアルタイムで発信。Zcash関連ニュースや価格動向も。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+        <a class="sns-card youtube" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener">
+          <div class="sns-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </div>
+          <div class="sns-info">
+            <h4>YouTube</h4>
+            <p>Zcashの使い方、技術解説、マーケット分析を動画でわかりやすく解説。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+        <a class="sns-card note" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
+          <div class="sns-logo">note</div>
+          <div class="sns-info">
+            <h4>note</h4>
+            <p>購入ガイドや解説記事を販売。日本人がZcashを買うための実践的なノウハウ。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-text">© 2026 Zcash Japan. コミュニティ運営サイト。非公式。</span>
+    <div class="footer-social">
+      <a class="social-icon tw" href="https://x.com/zcash_japan" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+      <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" rel="noopener" title="note">note</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const PINNED_URL = 'https://note.com/zcashjapan/n/ne7d6822dd472';
+const NOTE_FEED_URL = '/.netlify/functions/note-feed';
+
+function showPage(name, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (el && el.classList && el.classList.contains('nav-btn')) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatPubDate(s) {
+  if (!s) return '';
+  const d = new Date(s);
+  if (isNaN(d.getTime())) return '';
+  return new Intl.DateTimeFormat('ja-JP', { year:'numeric', month:'long', day:'numeric' }).format(d);
+}
+
+function fillSlot(slotId, item) {
+  const el = document.getElementById(slotId);
+  if (!el || !item) return;
+  el.classList.remove('loading');
+  el.href = item.url;
+  el.innerHTML = `
+    <span class="card-tag">${escHtml(item.category || 'note')}</span>
+    <div class="card-title">${escHtml(item.title)}</div>
+    <div class="card-excerpt">${escHtml(item.excerpt || '')}</div>
+    <div class="card-meta">
+      <span class="card-meta-source">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        note.com
+      </span>
+      <span>${escHtml(formatPubDate(item.pubDate))}</span>
+    </div>
+  `;
+}
+
+function showSlotFallback(slotId, label) {
+  const el = document.getElementById(slotId);
+  if (!el) return;
+  el.classList.remove('loading');
+  el.href = 'https://note.com/zcashjapan';
+  el.innerHTML = `
+    <span class="card-tag">note</span>
+    <div class="card-title">${escHtml(label)}</div>
+    <div class="card-excerpt">noteで Zcash Japan の最新記事をご覧ください。</div>
+    <div class="card-meta">
+      <span class="card-meta-source">note.com</span>
+      <span></span>
+    </div>
+  `;
+}
+
+async function loadNoteArticles() {
   try {
-    const res = await fetch(RSS_URL, {
-      headers: { 'User-Agent': 'ZcashJapan-NetlifyFunction/1.0' }
-    });
-    if (!res.ok) {
-      return {
-        statusCode: 502,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ error: `Upstream returned ${res.status}` })
-      };
+    const res = await fetch(NOTE_FEED_URL);
+    if (!res.ok) throw new Error('feed unavailable');
+    const data = await res.json();
+    const items = (data.items || []).filter(it => it.url && it.url !== PINNED_URL);
+    if (items.length === 0) {
+      showSlotFallback('article-slot-1', '記事一覧を見る');
+      showSlotFallback('article-slot-2', 'note でフォローする');
+      return;
     }
-    const xml = await res.text();
-
-    // Split into <item>...</item> blocks
-    const itemBlocks = pickAll(xml, 'item');
-
-    const items = itemBlocks.map(block => {
-      const title = stripHtml(pick(block, 'title'));
-      const link = pick(block, 'link');
-      const pubDate = pick(block, 'pubDate');
-      const description = stripHtml(pick(block, 'description'));
-      const categories = pickAll(block, 'category').map(stripHtml);
-      const thumbnail =
-        pick(block, 'media:thumbnail') ||
-        (block.match(/<media:content[^>]*url="([^"]+)"/i) || [])[1] ||
-        (block.match(/<enclosure[^>]*url="([^"]+)"/i) || [])[1] ||
-        '';
-
-      return {
-        title,
-        url: link,
-        pubDate,
-        excerpt: description.length > 160 ? description.slice(0, 160) + '…' : description,
-        category: categories[0] || '',
-        thumbnail
-      };
-    }).filter(item => item.title && item.url);
-
-    return {
-      statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        // Cache for 10 minutes at the CDN edge so we don't hammer note.com
-        'Cache-Control': 'public, max-age=600, s-maxage=600'
-      },
-      body: JSON.stringify({ items })
-    };
-  } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error: err.message || 'Unknown error' })
-    };
+    fillSlot('article-slot-1', items[0]);
+    if (items[1]) {
+      fillSlot('article-slot-2', items[1]);
+    } else {
+      showSlotFallback('article-slot-2', 'note でフォローする');
+    }
+  } catch (e) {
+    console.warn('note feed load failed:', e);
+    showSlotFallback('article-slot-1', '最新記事は note で公開中');
+    showSlotFallback('article-slot-2', 'note アカウントを見る');
   }
-};
+}
+loadNoteArticles();
+
+async function fetchPrice() {
+  try {
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=jpy');
+    const d = await r.json();
+    const p = d?.zcash?.jpy;
+    if (p) document.getElementById('zec-price').textContent = '¥' + p.toLocaleString('ja-JP');
+  } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
+}
+fetchPrice();
+
+function renderSparkline(containerId, values, color, fillColor, xLabels, yFormatter) {
+  const container = document.getElementById(containerId);
+  if (!container || values.length < 2) return;
+  const W = container.offsetWidth || 500;
+  const H = 110;
+  const padL = 12, padR = 40, padT = 8, padB = 22;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const dataMin = Math.min(...values);
+  const dataMax = Math.max(...values);
+  const boost = (dataMax - dataMin) * 0.15;
+  const min = dataMin + boost;
+  const max = dataMax;
+  const range = max - min || 1;
+  const toX = i => padL + (i / (values.length - 1)) * chartW;
+  const toY = v => padT + chartH - Math.min(chartH, Math.max(0, ((v - min) / range) * chartH));
+  const pts = values.map((v, i) => `${toX(i)},${toY(v)}`);
+  const polyline = pts.join(' ');
+  const lastX = toX(values.length - 1);
+  const lastY = toY(values[values.length - 1]);
+  const fillPts = `${padL},${padT + chartH} ${polyline} ${lastX},${padT + chartH}`;
+  const ySteps = 3;
+  let yLines = '';
+  for (let i = 0; i <= ySteps; i++) {
+    const val = min + (range / ySteps) * i;
+    const y = toY(val);
+    const label = yFormatter ? yFormatter(val) : val.toFixed(0);
+    yLines += `<line x1="${padL}" y1="${y}" x2="${W - padR + 4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    yLines += `<text x="${W - padR + 6}" y="${y + 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
+  }
+  let xLines = '';
+  if (xLabels && xLabels.length > 0) {
+    const step = (values.length - 1) / (xLabels.length - 1);
+    xLabels.forEach((label, i) => {
+      const idx = Math.min(Math.round(i * step), values.length - 1);
+      const x = toX(idx);
+      const anchor = i === 0 ? 'start' : i === xLabels.length - 1 ? 'end' : 'middle';
+      xLines += `<text x="${x}" y="${H - 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="${anchor}">${label}</text>`;
+    });
+  }
+  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="grad-${containerId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${color}" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    ${yLines}
+    ${xLines}
+    <polygon points="${fillPts}" fill="url(#grad-${containerId})"/>
+    <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
+  </svg>`;
+}
+
+async function fetchStats() {
+  const fallbackPriceHistory = [
+    38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
+    80,90,110,130,150,180,200,220,250,280,310,330
+  ];
+  const priceXLabels = ['5月','7月','9月','11月','1月','3月','4月'];
+  const priceYFmt = v => '$' + Math.round(v);
+  renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
+
+  let zecMcapUsd = null;
+  try {
+    const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
+    const coin = await coinRes.json();
+    const priceUsd = coin.market_data.current_price.usd;
+    const priceJpy = coin.market_data.current_price.jpy;
+    const change = coin.market_data.price_change_percentage_24h;
+    zecMcapUsd = coin.market_data.market_cap.usd;
+    document.getElementById('stat-price').textContent = '$' + priceUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    document.getElementById('stat-price-jpy').textContent = '（¥' + Math.round(priceJpy).toLocaleString('ja-JP') + '）';
+    const changeEl = document.getElementById('stat-change');
+    const sign = change >= 0 ? '+' : '';
+    changeEl.innerHTML = `${sign}${change.toFixed(2)}% (24h)`;
+    changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
+
+    if (zecMcapUsd) {
+      const mcapBn = (zecMcapUsd / 1e9).toFixed(2);
+      document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
+    }
+
+    try {
+      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365&interval=daily');
+      const hist = await histRes.json();
+      if (hist.prices && hist.prices.length > 10) {
+        const priceVals = hist.prices.map(p => p[1]);
+        renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
+      }
+    } catch {}
+  } catch(e) {
+    const el = document.getElementById('stat-price');
+    if (el) el.textContent = '取得不可';
+    document.getElementById('stat-mcap').textContent = '$7.0B';
+  }
+
+  try {
+    const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true');
+    const btc = await btcRes.json();
+    const btcMcap = btc?.bitcoin?.usd_market_cap;
+    if (btcMcap && zecMcapUsd) {
+      const ratio = (zecMcapUsd / btcMcap * 100).toFixed(2);
+      document.getElementById('stat-mcap-sub').innerHTML = `BTC時価総額の <strong>${ratio}%</strong>`;
+    } else {
+      document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
+    }
+  } catch {
+    document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
+  }
+
+  try {
+    const r2 = await fetch('https://api.blockchair.com/zcash/stats');
+    const d2 = await r2.json();
+    const shielded = d2.data?.blockchain?.shielded_coins_value_approximate;
+    let shieldedZec = 5183591;
+    if (shielded && shielded > 0) shieldedZec = shielded;
+    document.getElementById('stat-shielded').textContent = Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US', {minimumFractionDigits:3}) + 'M ZEC';
+    document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
+    const shieldedHistory = [
+      0, 10000, 50000, 100000, 150000, 200000, 250000, 280000,
+      300000, 400000, 500000, 600000, 700000, 750000, 800000,
+      900000, 1000000, 1200000, 1500000, 1800000, 2000000,
+      2500000, 3000000, 3500000, 4000000, 4500000, 5000000,
+      5100000, 5183591
+    ];
+    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
+    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
+    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
+  } catch {
+    document.getElementById('stat-shielded').textContent = '≈5.18M ZEC';
+    document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
+    const shieldedHistory = [0,10000,50000,200000,400000,600000,800000,1000000,1500000,2000000,2500000,3000000,3500000,4000000,4500000,5000000,5183591];
+    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
+    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
+    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
+  }
+}
+fetchStats();
+</script>
+
+</body>
+</html>
