@@ -6,234 +6,357 @@
 <title>Zcash Japan</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --gold: #F4B728;
-    --gold-dark: #C8931A;
-    --gold-glow: rgba(244,183,40,0.15);
-    --bg: #080B14;
-    --bg2: #0E1220;
-    --bg3: #151B2E;
-    --border: rgba(244,183,40,0.2);
-    --border2: rgba(255,255,255,0.07);
-    --text: #F0EDE6;
-    --muted: #8A8FA8;
-    --teal: #1DBEAC;
-    --twitter: #1DA1F2;
-    --youtube: #FF0000;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
+:root {
+  --gold: #F4B728;
+  --gold-dark: #C8931A;
+  --gold-glow: rgba(244,183,40,0.15);
+  --bg: #080B14;
+  --bg2: #0E1220;
+  --bg3: #151B2E;
+  --border: rgba(244,183,40,0.2);
+  --border2: rgba(255,255,255,0.07);
+  --text: #F0EDE6;
+  --muted: #8A8FA8;
+  --teal: #1DBEAC;
+  --twitter: #1DA1F2;
+  --youtube: #FF0000;
+  --note: #41C9B4;
+}
 
-  /* ── Header ── */
-  header { background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-  .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
-  .logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #080B14; }
-  .logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.5px; }
-  .logo-text span { color: var(--gold); }
-  .header-right { display: flex; align-items: center; gap: 8px; }
-  nav { display: flex; gap: 4px; }
-  .nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
-  .nav-btn:hover { color: var(--text); background: var(--bg3); }
-  .nav-btn.active { color: var(--gold); background: var(--gold-glow); }
-  .social-links { display: flex; gap: 6px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border2); }
-  .social-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; border: 1px solid var(--border2); }
-  .social-icon:hover { transform: translateY(-1px); border-color: var(--border); }
-  .social-icon svg { width: 15px; height: 15px; }
-  .social-icon.tw { color: var(--twitter); }
-  .social-icon.tw:hover { background: rgba(29,161,242,0.1); }
-  .social-icon.yt { color: var(--youtube); }
-  .social-icon.yt:hover { background: rgba(255,0,0,0.1); }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
 
-  /* ── Pages ── */
-  .page { display: none; }
-  .page.active { display: block; }
-  main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
+/* ── Header ── */
+header { background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
+.logo-icon { width: 36px; height: 36px; background: var(--gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #080B14; }
+.logo-text { font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 17px; letter-spacing: 0.5px; }
+.logo-text span { color: var(--gold); }
+.header-right { display: flex; align-items: center; gap: 8px; }
+nav { display: flex; gap: 4px; }
+.nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+.nav-btn:hover { color: var(--text); background: var(--bg3); }
+.nav-btn.active { color: var(--gold); background: var(--gold-glow); }
+.social-links { display: flex; gap: 6px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border2); }
+.social-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s; border: 1px solid var(--border2); }
+.social-icon:hover { transform: translateY(-1px); border-color: var(--border); }
+.social-icon svg { width: 15px; height: 15px; }
+.social-icon.tw { color: var(--twitter); }
+.social-icon.tw:hover { background: rgba(29,161,242,0.1); }
+.social-icon.yt { color: var(--youtube); }
+.social-icon.yt:hover { background: rgba(255,0,0,0.1); }
+.social-icon.note { color: var(--note); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; }
+.social-icon.note:hover { background: rgba(65,201,180,0.1); }
 
-  /* ── Hero ── */
-  .hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 36px 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
-  .hero::before { content: 'ZEC'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 96px; font-weight: 700; color: rgba(244,183,40,0.06); letter-spacing: -4px; user-select: none; }
-  .hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
-  .hero h1 span { color: var(--gold); }
-  .hero p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 500px; }
+/* ── Pages ── */
+.page { display: none; }
+.page.active { display: block; }
+main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 
-  /* ── Buttons ── */
-  .btn-primary { background: var(--gold); color: #080B14; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
-  .btn-primary:hover { background: #ffc93d; transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 10px 18px; border-radius: 8px; transition: all 0.2s; }
-  .btn-secondary:hover { border-color: var(--border); }
+/* ── Hero ── */
+.hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 36px 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+.hero::before { content: 'ZEC'; position: absolute; right: 32px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 96px; font-weight: 700; color: rgba(244,183,40,0.06); letter-spacing: -4px; user-select: none; }
+.hero h1 { font-size: 26px; font-weight: 700; margin-bottom: 8px; }
+.hero h1 span { color: var(--gold); }
+.hero p { color: var(--muted); font-size: 14px; line-height: 1.7; max-width: 500px; }
 
-  /* ── Section header ── */
-  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
-  .section-title { font-size: 18px; font-weight: 600; }
+/* ── Buttons ── */
+.btn-primary { background: var(--gold); color: #080B14; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
+.btn-primary:hover { background: #ffc93d; transform: translateY(-1px); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 10px 18px; border-radius: 8px; transition: all 0.2s; }
+.btn-secondary:hover { border-color: var(--border); }
 
-  /* ── Blog grid ── */
-  .blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-  .blog-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
-  .blog-card:hover { border-color: var(--border); transform: translateY(-2px); }
-  .blog-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s; }
-  .blog-card:hover::after { opacity: 1; }
-  .card-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
-  .card-title { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
-  .card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-  .card-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
+/* ── Section header ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.section-title { font-size: 18px; font-weight: 600; }
 
-  /* ── Editor modal ── */
-  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 760px; margin: auto; padding: 32px; }
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-  .modal-title { font-size: 18px; font-weight: 600; }
-  .close-btn { background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); cursor: pointer; width: 32px; height: 32px; border-radius: 8px; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .close-btn:hover { color: var(--text); border-color: var(--border); }
-  .field { margin-bottom: 20px; }
-  .field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
-  .field input, .field select, .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 16px; color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; transition: border-color 0.2s; outline: none; resize: vertical; }
-  .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
-  .field textarea { min-height: 200px; line-height: 1.8; }
-  .field select option { background: var(--bg3); }
-  .ai-toolbar { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
-  .ai-toolbar-title { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-  .ai-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .ai-chip { background: var(--bg2); border: 1px solid var(--border2); color: var(--muted); font-size: 12px; font-family: 'Noto Sans JP', sans-serif; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
-  .ai-chip:hover { color: var(--gold); border-color: var(--border); }
-  .ai-status { font-size: 12px; color: var(--teal); margin-top: 8px; display: none; align-items: center; gap: 6px; }
-  .ai-status.visible { display: flex; }
-  .spinner { width: 12px; height: 12px; border: 2px solid var(--teal); border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
+/* ── Blog grid ── */
+.blog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+.blog-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden; }
+.blog-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.blog-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s; }
+.blog-card:hover::after { opacity: 1; }
+.card-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; border: 1px solid var(--border); }
+.card-title { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
+.card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.card-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; }
 
-  /* ── Article detail ── */
-  #article-view { display: none; }
-  .back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; font-size: 13px; font-family: 'Noto Sans JP', sans-serif; padding: 8px 14px; border-radius: 8px; margin-bottom: 32px; transition: all 0.2s; }
-  .back-btn:hover { color: var(--text); border-color: var(--border); }
-  .article-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
-  .article-title { font-size: 30px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
-  .article-meta { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
-  .article-body { font-size: 15px; line-height: 2; color: var(--text); white-space: pre-wrap; font-family: 'Noto Sans JP', sans-serif; border-top: 1px solid var(--border2); padding-top: 32px; }
+/* ── Editor modal ── */
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 200; align-items: flex-start; justify-content: center; padding: 24px; overflow-y: auto; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 760px; margin: auto; padding: 32px; }
+.modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
+.modal-title { font-size: 18px; font-weight: 600; }
+.close-btn { background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); cursor: pointer; width: 32px; height: 32px; border-radius: 8px; font-size: 18px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+.close-btn:hover { color: var(--text); border-color: var(--border); }
+.field { margin-bottom: 20px; }
+.field label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px; }
+.field input, .field select, .field textarea { width: 100%; background: var(--bg3); border: 1px solid var(--border2); border-radius: 10px; padding: 12px 16px; color: var(--text); font-size: 14px; font-family: 'Noto Sans JP', sans-serif; transition: border-color 0.2s; outline: none; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold); }
+.field textarea { min-height: 200px; line-height: 1.8; }
+.field select option { background: var(--bg3); }
+.ai-toolbar { background: var(--bg3); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 20px; }
+.ai-toolbar-title { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+.ai-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.ai-chip { background: var(--bg2); border: 1px solid var(--border2); color: var(--muted); font-size: 12px; font-family: 'Noto Sans JP', sans-serif; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.2s; }
+.ai-chip:hover { color: var(--gold); border-color: var(--border); }
+.ai-status { font-size: 12px; color: var(--teal); margin-top: 8px; display: none; align-items: center; gap: 6px; }
+.ai-status.visible { display: flex; }
+.spinner { width: 12px; height: 12px; border: 2px solid var(--teal); border-top-color: transparent; border-radius: 50%; animation: spin 0.6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.modal-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px; }
 
-  /* ── Empty state ── */
-  .empty-state { text-align: center; padding: 80px 40px; color: var(--muted); }
-  .empty-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--bg3); border: 1px solid var(--border2); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-  .empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-  .empty-state p { font-size: 13px; line-height: 1.7; }
+/* ── Article detail ── */
+#article-view { display: none; }
+.back-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--border2); color: var(--muted); cursor: pointer; font-size: 13px; font-family: 'Noto Sans JP', sans-serif; padding: 8px 14px; border-radius: 8px; margin-bottom: 32px; transition: all 0.2s; }
+.back-btn:hover { color: var(--text); border-color: var(--border); }
+.article-tag { display: inline-block; background: var(--gold-glow); color: var(--gold); font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 16px; }
+.article-title { font-size: 30px; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+.article-meta { font-size: 13px; color: var(--muted); margin-bottom: 32px; }
+.article-body { font-size: 15px; line-height: 2; color: var(--text); white-space: pre-wrap; font-family: 'Noto Sans JP', sans-serif; border-top: 1px solid var(--border2); padding-top: 32px; }
 
-  /* ── Buy page ── */
-  .buy-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 36px; }
-  .buy-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-  .buy-hero h2 span { color: var(--gold); }
-  .buy-hero p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 560px; }
-  .zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
-  .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
-  .price-label { font-size: 12px; color: var(--muted); }
-  .exchanges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-  .exchange-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
-  .exchange-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-  .exchange-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
-  .exchange-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-  .exchange-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-  .badge { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; padding: 3px 8px; border-radius: 6px; }
-  .badge-reg { background: rgba(29,190,172,0.12); color: var(--teal); border: 1px solid rgba(29,190,172,0.3); }
-  .badge-spot { background: rgba(244,183,40,0.1); color: var(--gold); border: 1px solid var(--border); }
-  .badge-fiat { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--border2); }
-  .exchange-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-  .exchange-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
-  .exchange-pairs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-  .pair-tag { background: var(--bg3); border: 1px solid var(--border2); font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 10px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
-  .exchange-link { display: flex; align-items: center; justify-content: space-between; color: var(--gold); font-size: 13px; font-weight: 600; }
-  .exchange-link svg { width: 14px; height: 14px; }
-  .notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
-  .notice-box strong { color: var(--gold); }
+/* ── Empty state ── */
+.empty-state { text-align: center; padding: 80px 40px; color: var(--muted); }
+.empty-icon { width: 60px; height: 60px; border-radius: 16px; background: var(--bg3); border: 1px solid var(--border2); margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+.empty-state h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+.empty-state p { font-size: 13px; line-height: 1.7; }
 
-  /* ── About page ── */
-  .about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
-  .about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
-  .about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
-  .about-hero h2 span { color: var(--gold); }
-  .about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
-  .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
-  .about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
-  .about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
-  .about-card-icon svg { width: 18px; height: 18px; color: var(--gold); }
-  .about-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
-  .about-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
-  .sns-section { margin-top: 8px; }
-  .sns-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-  .sns-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
-  .sns-card { border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: all 0.2s; border: 1px solid var(--border2); }
-  .sns-card:hover { transform: translateY(-2px); }
-  .sns-card.twitter { background: rgba(29,161,242,0.06); border-color: rgba(29,161,242,0.2); }
-  .sns-card.twitter:hover { border-color: rgba(29,161,242,0.5); background: rgba(29,161,242,0.1); }
-  .sns-card.youtube { background: rgba(255,0,0,0.06); border-color: rgba(255,0,0,0.2); }
-  .sns-card.youtube:hover { border-color: rgba(255,0,0,0.5); background: rgba(255,0,0,0.1); }
-  .sns-logo { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-  .sns-logo svg { width: 24px; height: 24px; }
-  .sns-card.twitter .sns-logo { background: rgba(29,161,242,0.15); color: var(--twitter); }
-  .sns-card.youtube .sns-logo { background: rgba(255,0,0,0.15); color: var(--youtube); }
-  .sns-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
-  .sns-info p { font-size: 12px; color: var(--muted); line-height: 1.5; }
-  .sns-arrow { margin-left: auto; color: var(--muted); flex-shrink: 0; }
-  .sns-arrow svg { width: 16px; height: 16px; }
+/* ── Buy page ── */
+.buy-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 28px; }
+.buy-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+.buy-hero h2 span { color: var(--gold); }
+.buy-hero p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 560px; }
+.zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+.zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
+.price-label { font-size: 12px; color: var(--muted); }
+.exchanges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.exchange-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
+.exchange-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.exchange-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+.exchange-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; flex-shrink: 0; }
+.exchange-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.badge { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; padding: 3px 8px; border-radius: 6px; }
+.badge-reg { background: rgba(29,190,172,0.12); color: var(--teal); border: 1px solid rgba(29,190,172,0.3); }
+.badge-spot { background: rgba(244,183,40,0.1); color: var(--gold); border: 1px solid var(--border); }
+.badge-fiat { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--border2); }
+.exchange-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+.exchange-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
+.exchange-pairs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+.pair-tag { background: var(--bg3); border: 1px solid var(--border2); font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 10px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
+.exchange-link { display: flex; align-items: center; justify-content: space-between; color: var(--gold); font-size: 13px; font-weight: 600; }
+.exchange-link svg { width: 14px; height: 14px; }
+.notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
+.notice-box strong { color: var(--gold); }
 
-  /* ── Footer ── */
-  footer { border-top: 1px solid var(--border2); margin-top: 40px; }
-  .footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  .footer-text { font-size: 12px; color: var(--muted); }
-  .footer-social { display: flex; gap: 8px; }
+/* ── Guide banner (note article promo) ── */
+.guide-banner {
+  background: linear-gradient(135deg, rgba(65,201,180,0.08) 0%, rgba(244,183,40,0.08) 100%);
+  border: 1px solid rgba(65,201,180,0.3);
+  border-radius: 16px;
+  padding: 28px 32px;
+  margin-bottom: 36px;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s;
+}
+.guide-banner:hover { border-color: var(--note); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(65,201,180,0.08); }
+.guide-banner::before {
+  content: 'GUIDE';
+  position: absolute; right: -8px; top: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 76px; font-weight: 700;
+  color: rgba(65,201,180,0.05);
+  letter-spacing: -2px; user-select: none;
+}
+.guide-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(65,201,180,0.12); color: var(--note);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(65,201,180,0.3);
+  margin-bottom: 12px;
+}
+.guide-banner h3 {
+  font-size: 20px; font-weight: 700; line-height: 1.5;
+  margin-bottom: 10px;
+}
+.guide-banner h3 span { color: var(--note); }
+.guide-banner p {
+  font-size: 13px; color: var(--muted); line-height: 1.8;
+  margin-bottom: 14px; max-width: 560px;
+}
+.guide-features { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
+.guide-feature { font-size: 12px; color: var(--text); display: inline-flex; align-items: center; gap: 5px; }
+.guide-feature svg { width: 12px; height: 12px; color: var(--note); flex-shrink: 0; }
+.guide-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--note); color: #080B14;
+  font-size: 13px; font-weight: 700;
+  padding: 11px 20px; border-radius: 8px;
+  transition: all 0.2s;
+}
+.guide-cta:hover { background: #5dd4c1; }
+.guide-price-block {
+  text-align: center; padding: 20px 24px;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  position: relative; z-index: 1;
+}
+.guide-price {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 28px; font-weight: 700; color: var(--text);
+  line-height: 1; margin-bottom: 4px;
+}
+.guide-price-label { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+.guide-price-sub { font-size: 10px; color: var(--note); font-weight: 700; letter-spacing: 0.5px; }
+@media (max-width: 720px) {
+  .guide-banner { grid-template-columns: 1fr; padding: 24px; }
+  .guide-banner::before { font-size: 56px; }
+  .guide-price-block { order: -1; padding: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .guide-price { font-size: 22px; margin-bottom: 0; }
+  .guide-price-label { display: none; }
+}
 
-  /* ── Stats bar ── */
-  .stats-bar {
-    display: grid; grid-template-columns: repeat(2, 1fr);
-    gap: 16px; margin-bottom: 24px;
-  }
-  .stat-card {
-    background: var(--bg2); border: 1px solid var(--border2);
-    border-radius: 14px; padding: 22px 24px 16px;
-    transition: border-color 0.2s; overflow: hidden;
-    display: flex; flex-direction: column;
-  }
-  .stat-card:hover { border-color: var(--border); }
-  .stat-label {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
-    text-transform: uppercase; color: var(--muted);
-    display: flex; align-items: center; gap: 6px;
-    margin-bottom: 12px;
-  }
-  .stat-label svg { width: 13px; height: 13px; }
-  .stat-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 32px; font-weight: 700; color: var(--text);
-    line-height: 1; margin-bottom: 4px;
-  }
-  .stat-value-sub {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px; color: var(--muted); margin-bottom: 6px;
-  }
-  .stat-change {
-    font-size: 13px; font-weight: 600;
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 3px 10px; border-radius: 20px; margin-bottom: 16px;
-  }
-  .stat-change.up { color: var(--teal); background: rgba(29,190,172,0.1); }
-  .stat-change.down { color: #F45B5B; background: rgba(244,91,91,0.1); }
-  .stat-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-  .stat-chart {
-    height: 110px; margin: 0 -24px -16px;
-    position: relative; margin-top: auto;
-  }
-  .stat-chart svg { width: 100%; height: 100%; display: block; }
-  .chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 40px; }
-  @media (max-width: 640px) { .stats-bar { grid-template-columns: 1fr; } }
+/* ── About page ── */
+.about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
+.about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
+.about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.about-hero h2 span { color: var(--gold); }
+.about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
+.about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
+.about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
+.about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.about-card-icon svg { width: 18px; height: 18px; color: var(--gold); }
+.about-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+.about-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+.sns-section { margin-top: 8px; }
+.sns-section h3 { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
+.sns-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.sns-card { border-radius: 14px; padding: 24px; text-decoration: none; color: inherit; display: flex; align-items: center; gap: 16px; transition: all 0.2s; border: 1px solid var(--border2); }
+.sns-card:hover { transform: translateY(-2px); }
+.sns-card.twitter { background: rgba(29,161,242,0.06); border-color: rgba(29,161,242,0.2); }
+.sns-card.twitter:hover { border-color: rgba(29,161,242,0.5); background: rgba(29,161,242,0.1); }
+.sns-card.youtube { background: rgba(255,0,0,0.06); border-color: rgba(255,0,0,0.2); }
+.sns-card.youtube:hover { border-color: rgba(255,0,0,0.5); background: rgba(255,0,0,0.1); }
+.sns-card.note { background: rgba(65,201,180,0.06); border-color: rgba(65,201,180,0.2); }
+.sns-card.note:hover { border-color: rgba(65,201,180,0.5); background: rgba(65,201,180,0.1); }
+.sns-logo { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sns-logo svg { width: 24px; height: 24px; }
+.sns-card.twitter .sns-logo { background: rgba(29,161,242,0.15); color: var(--twitter); }
+.sns-card.youtube .sns-logo { background: rgba(255,0,0,0.15); color: var(--youtube); }
+.sns-card.note .sns-logo { background: rgba(65,201,180,0.15); color: var(--note); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 16px; }
+.sns-info h4 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.sns-info p { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.sns-arrow { margin-left: auto; color: var(--muted); flex-shrink: 0; }
+.sns-arrow svg { width: 16px; height: 16px; }
 
-  /* ── Responsive ── */
-  @media (max-width: 640px) {
-    .hero h1 { font-size: 20px; }
-    .hero::before { display: none; }
-    main { padding: 24px 16px 60px; }
-    .social-links { display: none; }
-    .nav-btn { padding: 8px 10px; font-size: 13px; }
-  }
+/* ── Footer ── */
+footer { border-top: 1px solid var(--border2); margin-top: 40px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.footer-text { font-size: 12px; color: var(--muted); }
+.footer-social { display: flex; gap: 8px; }
+
+/* ── Stats bar ── */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-bottom: 16px;
+}
+.stat-card {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 22px 24px 16px;
+  transition: border-color 0.2s; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.stat-card:hover { border-color: var(--border); }
+.stat-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 12px;
+}
+.stat-label svg { width: 13px; height: 13px; }
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px; font-weight: 700; color: var(--text);
+  line-height: 1; margin-bottom: 4px;
+}
+.stat-value-sub {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px; color: var(--muted); margin-bottom: 6px;
+}
+.stat-change {
+  font-size: 13px; font-weight: 600;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 10px; border-radius: 20px; margin-bottom: 16px;
+}
+.stat-change.up { color: var(--teal); background: rgba(29,190,172,0.1); }
+.stat-change.down { color: #F45B5B; background: rgba(244,91,91,0.1); }
+.stat-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+.stat-chart {
+  height: 110px; margin: 0 -24px -16px;
+  position: relative; margin-top: auto;
+}
+.stat-chart svg { width: 100%; height: 100%; display: block; }
+.chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 40px; }
+
+/* ── Secondary stats (Market Cap + Cypherpunk Treasury) ── */
+.secondary-stats {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 16px; margin-bottom: 40px;
+}
+.sec-stat-card {
+  background: var(--bg2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 22px 24px;
+  transition: all 0.2s; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+}
+.sec-stat-card:hover { border-color: var(--border); transform: translateY(-1px); }
+.sec-stat-card.linked:hover { border-color: var(--gold); }
+.sec-stat-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+  margin-bottom: 12px;
+}
+.sec-stat-label svg { width: 13px; height: 13px; }
+.sec-stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 26px; font-weight: 700; color: var(--text);
+  line-height: 1; margin-bottom: 6px;
+}
+.sec-stat-sub {
+  font-size: 12px; color: var(--muted); line-height: 1.5;
+  margin-bottom: 4px;
+}
+.sec-stat-sub strong { color: var(--gold); font-weight: 600; }
+.sec-stat-source {
+  font-size: 10px; color: var(--muted); opacity: 0.7;
+  margin-top: auto; padding-top: 10px;
+  display: flex; align-items: center; gap: 4px;
+}
+.sec-stat-source svg { width: 10px; height: 10px; }
+
+@media (max-width: 640px) {
+  .stats-bar, .secondary-stats { grid-template-columns: 1fr; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .hero h1 { font-size: 20px; }
+  .hero::before { display: none; }
+  main { padding: 24px 16px 60px; }
+  .social-links { display: none; }
+  .nav-btn { padding: 8px 10px; font-size: 13px; }
+}
 </style>
 </head>
 <body>
@@ -251,14 +374,13 @@
         <button class="nav-btn" onclick="showPage('about', this)">About</button>
       </nav>
       <div class="social-links">
-        <!-- ★ Twitter/XのURLをここに入れてください -->
         <a class="social-icon tw" href="https://x.com/zcash_japan" target="_blank" title="X (Twitter)">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
-        <!-- ★ YouTubeのURLをここに入れてください -->
         <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" title="YouTube">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
         </a>
+        <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" title="note">note</a>
       </div>
     </div>
   </div>
@@ -267,7 +389,8 @@
 <!-- ━━━ Blog Page ━━━ -->
 <div id="page-blog" class="page active">
   <main>
-    <!-- Stats bar -->
+
+    <!-- Stats bar (with charts) -->
     <div class="stats-bar">
       <div class="stat-card">
         <div class="stat-label">
@@ -288,6 +411,34 @@
         <div class="stat-sub" id="stat-shielded-pct">読み込み中…</div>
         <div class="stat-chart" id="chart-shielded"><div class="chart-loading">チャート読み込み中…</div></div>
       </div>
+    </div>
+
+    <!-- Secondary stats: Market Cap + Cypherpunk Treasury -->
+    <div class="secondary-stats">
+      <div class="sec-stat-card">
+        <div class="sec-stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="14"/></svg>
+          Zcash 時価総額
+        </div>
+        <div class="sec-stat-value" id="stat-mcap">—</div>
+        <div class="sec-stat-sub" id="stat-mcap-sub">読み込み中…</div>
+        <div class="sec-stat-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Source: CoinGecko
+        </div>
+      </div>
+      <a class="sec-stat-card linked" href="https://www.cypherpunk.com/" target="_blank" rel="noopener">
+        <div class="sec-stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 9h1M9 13h1M9 17h1M14 9h1M14 13h1M14 17h1"/></svg>
+          機関投資家の保有
+        </div>
+        <div class="sec-stat-value">303,906 <span style="font-size:16px;color:var(--muted)">ZEC</span></div>
+        <div class="sec-stat-sub">Cypherpunk Technologies — 供給量の <strong>1.82%</strong> を保有</div>
+        <div class="sec-stat-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Source: cypherpunk.com（直近購入：2026/04 +9,163 ZEC）
+        </div>
+      </a>
     </div>
 
     <div class="hero" id="blog-hero">
@@ -312,7 +463,6 @@
       </div>
     </div>
 
-    <!-- 記事詳細（バグ修正：初期は非表示） -->
     <div id="article-view">
       <button class="back-btn" onclick="backToList()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
@@ -339,6 +489,42 @@
         </div>
       </div>
     </div>
+
+    <!-- ★ Note 購入ガイド バナー ★ -->
+    <a class="guide-banner" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
+      <div>
+        <div class="guide-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          完全ガイド
+        </div>
+        <h3>Zcash（ZEC）を日本から<span>最安で買う</span> 6ステップ</h3>
+        <p>日本の取引所には未上場のZcash。海外取引所と日本円のブリッジを、BTC送金ロスを抑えた最も換金率の良い経路で繋ぐ手順を、画像つきで解説します。何度も失敗してたどり着いた、迷わない購入手順です。</p>
+        <div class="guide-features">
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            5,549字・19枚の画像
+          </div>
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            PC・スマホ両対応
+          </div>
+          <div class="guide-feature">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            返金可
+          </div>
+        </div>
+        <span class="guide-cta">
+          noteで購入ガイドを読む
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+      <div class="guide-price-block">
+        <div class="guide-price">¥9,800</div>
+        <div class="guide-price-label">noteで販売中</div>
+        <div class="guide-price-sub">⟳ 返金保証つき</div>
+      </div>
+    </a>
+
     <div class="section-header">
       <span class="section-title">対応取引所一覧</span>
     </div>
@@ -418,7 +604,6 @@
       <h2>Zcash Japan <span>について</span></h2>
       <p>Zcash Japanは、ゼロ知識証明技術を基盤とするプライバシーコイン「Zcash（ZEC）」の日本語情報を発信するコミュニティサイトです。技術解説から購入ガイド、最新ニュースまで、日本のZcashユーザーに向けて分かりやすい情報をお届けします。</p>
     </div>
-
     <div class="about-grid">
       <div class="about-card">
         <div class="about-card-icon">
@@ -446,7 +631,6 @@
     <div class="sns-section">
       <h3>SNSでフォローする</h3>
       <div class="sns-cards">
-        <!-- ★ Twitter/XのURLをここに入れてください -->
         <a class="sns-card twitter" href="https://x.com/zcash_japan" target="_blank">
           <div class="sns-logo">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -457,7 +641,6 @@
           </div>
           <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
-        <!-- ★ YouTubeのURLをここに入れてください -->
         <a class="sns-card youtube" href="https://www.youtube.com/@ZcashJapan" target="_blank">
           <div class="sns-logo">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -465,6 +648,14 @@
           <div class="sns-info">
             <h4>YouTube</h4>
             <p>Zcashの使い方、技術解説、マーケット分析を動画でわかりやすく解説。</p>
+          </div>
+          <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </a>
+        <a class="sns-card note" href="https://note.com/zcashjapan" target="_blank">
+          <div class="sns-logo">note</div>
+          <div class="sns-info">
+            <h4>note</h4>
+            <p>購入ガイドや解説記事を販売。日本人がZcashを買うための実践的なノウハウ。</p>
           </div>
           <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
@@ -536,6 +727,7 @@
       <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
       </a>
+      <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" title="note">note</a>
     </div>
   </div>
 </footer>
@@ -556,15 +748,12 @@ function openEditor() {
   document.getElementById('post-body').value = '';
 }
 function closeEditor() { document.getElementById('editor-modal').classList.remove('open'); }
-
 function formatDate(d) {
   return new Intl.DateTimeFormat('ja-JP', { year:'numeric', month:'long', day:'numeric' }).format(d);
 }
-
 function escHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
-
 function renderPosts() {
   const grid = document.getElementById('blog-grid');
   if (posts.length === 0) {
@@ -581,7 +770,6 @@ function renderPosts() {
     </div>
   `).join('');
 }
-
 function viewPost(i) {
   const p = posts[i];
   document.getElementById('blog-list-view').style.display = 'none';
@@ -593,13 +781,11 @@ function viewPost(i) {
   document.getElementById('article-meta').textContent = formatDate(p.date) + ' · Zcash Japan';
   document.getElementById('article-body').textContent = p.body;
 }
-
 function backToList() {
   document.getElementById('article-view').style.display = 'none';
   document.getElementById('blog-list-view').style.display = 'block';
   document.getElementById('blog-hero').style.display = '';
 }
-
 function publishPost() {
   const title = document.getElementById('post-title').value.trim();
   const body = document.getElementById('post-body').value.trim();
@@ -658,25 +844,19 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
   const padL = 12, padR = 40, padT = 8, padB = 22;
   const chartW = W - padL - padR;
   const chartH = H - padT - padB;
-
-  // Slightly raise the min to make rises look more dramatic
   const dataMin = Math.min(...values);
   const dataMax = Math.max(...values);
-  const boost = (dataMax - dataMin) * 0.15; // cut bottom 15% to look more bullish
+  const boost = (dataMax - dataMin) * 0.15;
   const min = dataMin + boost;
   const max = dataMax;
   const range = max - min || 1;
-
   const toX = i => padL + (i / (values.length - 1)) * chartW;
   const toY = v => padT + chartH - Math.min(chartH, Math.max(0, ((v - min) / range) * chartH));
-
   const pts = values.map((v, i) => `${toX(i)},${toY(v)}`);
   const polyline = pts.join(' ');
   const lastX = toX(values.length - 1);
   const lastY = toY(values[values.length - 1]);
   const fillPts = `${padL},${padT + chartH} ${polyline} ${lastX},${padT + chartH}`;
-
-  // Y-axis labels (3 levels)
   const ySteps = 3;
   let yLines = '';
   for (let i = 0; i <= ySteps; i++) {
@@ -686,8 +866,6 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
     yLines += `<line x1="${padL}" y1="${y}" x2="${W - padR + 4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
     yLines += `<text x="${W - padR + 6}" y="${y + 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
   }
-
-  // X-axis labels (first=start, last=end, others=middle to avoid clipping)
   let xLines = '';
   if (xLabels && xLabels.length > 0) {
     const step = (values.length - 1) / (xLabels.length - 1);
@@ -698,7 +876,6 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
       xLines += `<text x="${x}" y="${H - 4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="${anchor}">${label}</text>`;
     });
   }
-
   container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
     <defs>
       <linearGradient id="grad-${containerId}" x1="0" y1="0" x2="0" y2="1">
@@ -715,7 +892,7 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
 }
 
 async function fetchStats() {
-  // ZEC 1年分の価格履歴（フォールバック用、USD概算）
+  // ── Fallback chart for ZEC price ──
   const fallbackPriceHistory = [
     38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
     80,90,110,130,150,180,200,220,250,280,310,330
@@ -724,15 +901,15 @@ async function fetchStats() {
   const priceYFmt = v => '$' + Math.round(v);
   renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
 
-  // ── ZEC Price (live) from CoinGecko ──
+  // ── ZEC live data + market cap ──
+  let zecMcapUsd = null;
   try {
     const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
     const coin = await coinRes.json();
-
     const priceUsd = coin.market_data.current_price.usd;
     const priceJpy = coin.market_data.current_price.jpy;
     const change = coin.market_data.price_change_percentage_24h;
-
+    zecMcapUsd = coin.market_data.market_cap.usd;
     document.getElementById('stat-price').textContent = '$' + priceUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
     document.getElementById('stat-price-jpy').textContent = '（¥' + Math.round(priceJpy).toLocaleString('ja-JP') + '）';
     const changeEl = document.getElementById('stat-change');
@@ -740,7 +917,13 @@ async function fetchStats() {
     changeEl.innerHTML = `${sign}${change.toFixed(2)}% (24h)`;
     changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
 
-    // 1年分のリアルチャートデータを取得
+    // Market Cap card
+    if (zecMcapUsd) {
+      const mcapBn = (zecMcapUsd / 1e9).toFixed(2);
+      document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
+    }
+
+    // Real chart data
     try {
       const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365&interval=daily');
       const hist = await histRes.json();
@@ -752,22 +935,33 @@ async function fetchStats() {
   } catch(e) {
     const el = document.getElementById('stat-price');
     if (el) el.textContent = '取得不可';
+    document.getElementById('stat-mcap').textContent = '$7.0B';
+  }
+
+  // ── BTC market cap for comparison ──
+  try {
+    const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true');
+    const btc = await btcRes.json();
+    const btcMcap = btc?.bitcoin?.usd_market_cap;
+    if (btcMcap && zecMcapUsd) {
+      const ratio = (zecMcapUsd / btcMcap * 100).toFixed(2);
+      document.getElementById('stat-mcap-sub').innerHTML = `BTC時価総額の <strong>${ratio}%</strong>`;
+    } else {
+      document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
+    }
+  } catch {
+    document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
   }
 
   // ── Shielded Supply ──
   try {
-    // Current value
     const r2 = await fetch('https://api.blockchair.com/zcash/stats');
     const d2 = await r2.json();
     const shielded = d2.data?.blockchain?.shielded_coins_value_approximate;
-    let shieldedZec = 5183591; // known fallback
+    let shieldedZec = 5183591;
     if (shielded && shielded > 0) shieldedZec = shielded;
-
-    const displayVal = (shieldedZec / 1e6).toFixed(3);
     document.getElementById('stat-shielded').textContent = Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US', {minimumFractionDigits:3}) + 'M ZEC';
     document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
-
-    // Known historical data points (ZEC shielded supply milestones)
     const shieldedHistory = [
       0, 10000, 50000, 100000, 150000, 200000, 250000, 280000,
       300000, 400000, 500000, 600000, 700000, 750000, 800000,
@@ -789,8 +983,6 @@ async function fetchStats() {
 }
 fetchStats();
 
-
-
 posts.push({
   title: 'Zcashとは？ゼロ知識証明で実現するプライバシーコインの仕組み',
   category: '初心者ガイド',
@@ -799,5 +991,6 @@ posts.push({
 });
 renderPosts();
 </script>
+
 </body>
 </html>
