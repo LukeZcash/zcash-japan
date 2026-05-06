@@ -93,12 +93,31 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // API route: /api/note-feed
-    if (url.pathname === '/api/note-feed' && request.method === 'GET') {
-      return handleNoteFeed();
+    // API routes
+    if (url.pathname.startsWith('/api/')) {
+      if (url.pathname === '/api/note-feed' && request.method === 'GET') {
+        return handleNoteFeed();
+      }
+      // Unknown API endpoint
+      return new Response(
+        JSON.stringify({ error: 'Not found' }),
+        { status: 404, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
-    // Everything else: serve static assets (index.html, CSS, etc.)
-    return env.ASSETS.fetch(request);
+    // Try to serve a static asset (index.html, CSS, images, etc.)
+    const assetResponse = await env.ASSETS.fetch(request);
+
+    // SPA fallback: if a "page-like" URL (e.g. /buy, /about) returned 404,
+    // serve index.html instead so the client-side router can handle it.
+    if (assetResponse.status === 404) {
+      const hasFileExtension = /\.[a-z0-9]+$/i.test(url.pathname);
+      if (!hasFileExtension) {
+        const indexUrl = new URL('/', request.url);
+        return env.ASSETS.fetch(new Request(indexUrl, request));
+      }
+    }
+
+    return assetResponse;
   }
 };
