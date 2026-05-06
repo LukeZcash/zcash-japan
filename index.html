@@ -211,6 +211,102 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
   .guide-price-label { display: none; }
 }
 
+/* ── Merchandise section (Coming Soon) ── */
+.merch-section-tag {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  background: linear-gradient(90deg, var(--note), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.merch-intro {
+  font-size: 13px; color: var(--muted); line-height: 1.8;
+  margin-top: -8px; margin-bottom: 28px; max-width: 580px;
+}
+.merch-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px; margin-bottom: 32px;
+}
+@media (max-width: 900px) { .merch-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .merch-grid { grid-template-columns: 1fr; } }
+
+.merch-card {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: all 0.25s;
+  position: relative;
+}
+.merch-card:hover {
+  border-color: var(--border);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(244,183,40,0.06);
+}
+
+.merch-image {
+  background: linear-gradient(135deg, rgba(244,183,40,0.04) 0%, rgba(65,201,180,0.03) 100%);
+  height: 180px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  border-bottom: 1px solid var(--border2);
+  overflow: hidden;
+}
+.merch-image svg {
+  width: 100px; height: 100px;
+  color: var(--gold);
+  opacity: 0.85;
+  transition: transform 0.3s;
+}
+.merch-card:hover .merch-image svg { transform: scale(1.05); }
+.merch-logo-tag {
+  position: absolute; top: 12px; right: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--gold);
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700; font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 3px 9px; border-radius: 6px;
+}
+.merch-logo-tag.merch-logo-large {
+  font-size: 32px; padding: 6px 14px;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg2);
+}
+
+.merch-info {
+  padding: 20px 22px 22px;
+  display: flex; flex-direction: column;
+  gap: 6px;
+}
+.merch-name { font-size: 16px; font-weight: 700; color: var(--text); }
+.merch-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
+.merch-badge {
+  align-self: flex-start;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 4px 12px; border-radius: 20px;
+  background: rgba(65,201,180,0.12);
+  color: var(--note);
+  border: 1px solid rgba(65,201,180,0.3);
+}
+
+.merch-notice {
+  font-size: 12px; color: var(--muted);
+  text-align: center;
+  padding: 16px;
+  margin-top: 8px;
+}
+.merch-notice a {
+  color: var(--gold);
+  text-decoration: none;
+  font-weight: 600;
+}
+.merch-notice a:hover { text-decoration: underline; }
+
 /* ── About page ── */
 .about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
 .about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
@@ -424,7 +520,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   <main>
     <div class="buy-hero">
       <h2>ZEC（<span>Zcash</span>）を購入する</h2>
-      <p>日本で利用可能な仮想通貨取引所からZcashを購入できます。各取引所は金融庁（FSA）に登録された信頼できるサービスです。本人確認（KYC）後にお取引いただけます。</p>
+      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所と日本円を繋ぐ最も換金率の良い経路を、note の完全ガイドで画像つきで解説しています。</p>
       <div class="zec-ticker">
         <div>
           <div class="zec-price" id="zec-price">読み込み中…</div>
@@ -463,73 +559,61 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </a>
 
     <div class="section-header">
-      <span class="section-title">対応取引所一覧</span>
+      <span class="section-title">Zcash オリジナルグッズ</span>
+      <span class="merch-section-tag">Coming Soon ✨</span>
     </div>
-    <div class="exchanges-grid">
-      <a class="exchange-card" href="https://bitbank.cc/" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#1a2b4a; color:#4b9fff;">BB</div>
-          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+    <p class="merch-intro">プライバシーを愛するすべての人へ。Zcash ロゴ入りのオリジナルアイテム、近日販売開始予定です。</p>
+
+    <div class="merch-grid">
+      <div class="merch-card">
+        <div class="merch-image merch-image-cap">
+          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M22 75 Q22 38 60 38 Q98 38 98 75 Z" fill="rgba(244,183,40,0.08)"/>
+            <path d="M22 75 Q14 75 14 82 Q14 86 20 86 L100 86 Q108 86 108 80 Q108 75 100 75"/>
+            <path d="M60 38 L60 60"/>
+            <circle cx="60" cy="50" r="3" fill="currentColor"/>
+          </svg>
+          <div class="merch-logo-tag">ZEC</div>
         </div>
-        <div class="exchange-name">bitbank</div>
-        <div class="exchange-desc">国内最大級の取引量を誇る取引所。ZECの取扱いがあり、JPY直取引が可能です。板取引形式でスプレッドが低い。</div>
-        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span><span class="pair-tag">ZEC/BTC</span></div>
-        <div class="exchange-link">bitbank.cc で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a class="exchange-card" href="https://coincheck.com/" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#002d5b; color:#00b4ff;">CC</div>
-          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        <div class="merch-info">
+          <div class="merch-name">キャップ</div>
+          <div class="merch-desc">毎日かぶれる、シンプルなロゴ刺繍デザイン</div>
+          <span class="merch-badge">Coming Soon</span>
         </div>
-        <div class="exchange-name">Coincheck</div>
-        <div class="exchange-desc">初心者向けシンプルUIで人気。ZECをJPYで簡単に購入でき、アプリも使いやすいのが特徴です。</div>
-        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
-        <div class="exchange-link">coincheck.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a class="exchange-card" href="https://coin.z.com/jp/" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#1a1a2e; color:#f4b728;">GM</div>
-          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+      </div>
+
+      <div class="merch-card">
+        <div class="merch-image merch-image-shirt">
+          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M40 25 L25 38 L32 55 L42 50 L42 95 L78 95 L78 50 L88 55 L95 38 L80 25 L70 25 Q70 35 60 35 Q50 35 50 25 Z" fill="rgba(244,183,40,0.08)"/>
+          </svg>
+          <div class="merch-logo-tag">ZEC</div>
         </div>
-        <div class="exchange-name">GMOコイン</div>
-        <div class="exchange-desc">GMOグループ運営の信頼性の高い取引所。積立購入機能が充実しており、長期保有に適しています。</div>
-        <div class="exchange-pairs"><span class="pair-tag">ZEC/JPY</span></div>
-        <div class="exchange-link">coin.z.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a class="exchange-card" href="https://bitflyer.com/ja-jp/" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#0d1b3e; color:#6699ff;">BF</div>
-          <div class="exchange-badges"><span class="badge badge-reg">FSA登録済</span><span class="badge badge-spot">現物</span></div>
+        <div class="merch-info">
+          <div class="merch-name">Tシャツ</div>
+          <div class="merch-desc">高品質コットン、Zcash ロゴをミニマルに</div>
+          <span class="merch-badge">Coming Soon</span>
         </div>
-        <div class="exchange-name">bitFlyer</div>
-        <div class="exchange-desc">国内老舗の大手取引所。セキュリティが高く、法人口座にも対応。ZECの取扱い状況は公式サイトでご確認ください。</div>
-        <div class="exchange-pairs"><span class="pair-tag">要確認</span></div>
-        <div class="exchange-link">bitflyer.com を確認<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a class="exchange-card" href="https://www.binance.com/ja" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#1a1500; color:#f0b90b;">BN</div>
-          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+      </div>
+
+      <div class="merch-card">
+        <div class="merch-image merch-image-sticker">
+          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
+            <rect x="22" y="22" width="76" height="76" rx="10" fill="rgba(244,183,40,0.08)"/>
+            <path d="M98 22 L98 38 L82 22 Z" fill="rgba(244,183,40,0.18)"/>
+          </svg>
+          <div class="merch-logo-tag merch-logo-large">Z</div>
         </div>
-        <div class="exchange-name">Binance</div>
-        <div class="exchange-desc">世界最大の仮想通貨取引所。ZECの豊富なペアと流動性を誇ります。日本居住者の利用制限にご注意ください。</div>
-        <div class="exchange-pairs"><span class="pair-tag">ZEC/USDT</span><span class="pair-tag">ZEC/BTC</span><span class="pair-tag">ZEC/ETH</span></div>
-        <div class="exchange-link">binance.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
-      <a class="exchange-card" href="https://kraken.com/" target="_blank" rel="noopener">
-        <div class="exchange-header">
-          <div class="exchange-logo" style="background:#1a0528; color:#9b59ff;">KR</div>
-          <div class="exchange-badges"><span class="badge badge-spot">現物</span><span class="badge badge-fiat">海外</span></div>
+        <div class="merch-info">
+          <div class="merch-name">ステッカー</div>
+          <div class="merch-desc">PCやノートに貼れる、防水ビニール仕上げ</div>
+          <span class="merch-badge">Coming Soon</span>
         </div>
-        <div class="exchange-name">Kraken</div>
-        <div class="exchange-desc">セキュリティで定評のある米国系取引所。Zcashの取り扱いが古く、流動性も十分です。USD/EUR建て取引が主。</div>
-        <div class="exchange-pairs"><span class="pair-tag">ZEC/USD</span><span class="pair-tag">ZEC/EUR</span><span class="pair-tag">ZEC/BTC</span></div>
-        <div class="exchange-link">kraken.com で購入<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>
-      </a>
+      </div>
     </div>
-    <div class="notice-box">
-      <strong>⚠ リスク注意事項</strong><br>
-      仮想通貨への投資は価格変動リスクを伴います。投資は自己責任でお願いします。海外取引所の利用は日本の規制に準拠しているか事前にご確認ください。掲載情報は参考目的であり、投資助言ではありません。
+
+    <div class="merch-notice">
+      販売開始のお知らせは <a href="https://x.com/zcash_japan" target="_blank" rel="noopener">X</a> および <a href="https://note.com/zcashjapan" target="_blank" rel="noopener">note</a> で告知します。
     </div>
   </main>
 </div>
