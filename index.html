@@ -291,17 +291,17 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 
 <header>
   <div class="header-inner">
-    <a class="logo" href="#" onclick="showPage('home', this); return false;">
+    <a class="logo" href="/" onclick="navigateTo('home'); return false;">
       <div class="logo-icon">Z</div>
       <span class="logo-text">Zcash <span>Japan</span></span>
     </a>
     <div class="header-right">
       <nav>
-        <button class="nav-btn" onclick="showPage('buy', this)">購入</button>
-        <button class="nav-btn" onclick="showPage('about', this)">About</button>
+        <button class="nav-btn" data-page="buy" onclick="navigateTo('buy')">購入</button>
+        <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
       </nav>
       <div class="social-links">
-        <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener" title="X (Twitter)">
+        <a class="social-icon tw" href="https://x.com/zcash_japan" target="_blank" rel="noopener" title="X (Twitter)">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         </a>
         <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener" title="YouTube">
@@ -568,7 +568,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     <div class="sns-section">
       <h3>SNSでフォローする</h3>
       <div class="sns-cards">
-        <a class="sns-card twitter" href="https://x.com/zcashjp" target="_blank" rel="noopener">
+        <a class="sns-card twitter" href="https://x.com/zcash_japan" target="_blank" rel="noopener">
           <div class="sns-logo">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
           </div>
@@ -605,7 +605,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   <div class="footer-inner">
     <span class="footer-text">© 2026 Zcash Japan. コミュニティ運営サイト。非公式。</span>
     <div class="footer-social">
-      <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener">
+      <a class="social-icon tw" href="https://x.com/zcash_japan" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
       <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener">
@@ -620,13 +620,55 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 const PINNED_URL = 'https://note.com/zcashjapan/n/ne7d6822dd472';
 const NOTE_FEED_URL = '/api/note-feed';
 
-function showPage(name, el) {
+// ── URL routing ──
+const PAGE_TITLES = {
+  home: 'Zcash Japan — プライバシーコイン Zcash の日本語情報',
+  buy: 'ZECを購入する | Zcash Japan',
+  about: 'Zcash Japanについて | Zcash Japan'
+};
+
+function pathToPage(path) {
+  if (path === '/buy' || path === '/buy/') return 'buy';
+  if (path === '/about' || path === '/about/') return 'about';
+  return 'home';
+}
+
+function pageToPath(page) {
+  if (page === 'buy') return '/buy';
+  if (page === 'about') return '/about';
+  return '/';
+}
+
+function showPage(name) {
+  // Hide all pages, show the target
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('page-' + name);
+  if (target) target.classList.add('active');
+  // Sync nav button active state via data-page
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (el && el.classList && el.classList.contains('nav-btn')) el.classList.add('active');
+  const activeBtn = document.querySelector('.nav-btn[data-page="' + name + '"]');
+  if (activeBtn) activeBtn.classList.add('active');
+  // Update document title
+  document.title = PAGE_TITLES[name] || PAGE_TITLES.home;
+}
+
+function navigateTo(name) {
+  const newPath = pageToPath(name);
+  if (window.location.pathname !== newPath) {
+    window.history.pushState({ page: name }, '', newPath);
+  }
+  showPage(name);
   window.scrollTo(0, 0);
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => {
+  showPage(pathToPage(window.location.pathname));
+  window.scrollTo(0, 0);
+});
+
+// On initial load, render the page that matches the URL
+showPage(pathToPage(window.location.pathname));
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
