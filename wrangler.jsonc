@@ -1,0 +1,9 @@
+{
+  "name": "zcash-japan",
+  "compatibility_date": "2025-01-01",
+  "main": "_worker.js",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  }
+}
