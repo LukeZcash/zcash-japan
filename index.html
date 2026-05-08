@@ -313,6 +313,93 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
 .about-hero h2 span { color: var(--gold); }
 .about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
+
+/* ── Naval quote card ── */
+.naval-quote {
+  display: block;
+  background: linear-gradient(135deg, var(--bg2) 0%, rgba(244,183,40,0.04) 100%);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 36px 44px 32px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.25s;
+}
+.naval-quote:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(244,183,40,0.06);
+}
+.naval-quote-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 110px; font-weight: 700;
+  color: var(--gold);
+  opacity: 0.18;
+  position: absolute;
+  top: 8px; left: 24px;
+  line-height: 1; user-select: none;
+}
+.naval-quote-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 22px; font-weight: 600;
+  line-height: 1.55; color: var(--text);
+  margin-bottom: 16px;
+  position: relative; z-index: 1;
+  letter-spacing: 0.2px;
+}
+.naval-quote-translation {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.8; margin-bottom: 22px;
+  position: relative; z-index: 1;
+}
+.naval-quote-cite {
+  font-size: 13px; color: var(--muted);
+  display: inline-flex; align-items: center; gap: 8px;
+  position: relative; z-index: 1;
+}
+.naval-quote-cite svg { color: var(--text); opacity: 0.6; }
+.naval-quote-handle { color: var(--gold); font-weight: 500; }
+@media (max-width: 640px) {
+  .naval-quote { padding: 28px 24px 24px; }
+  .naval-quote-mark { font-size: 80px; left: 12px; }
+  .naval-quote-text { font-size: 17px; }
+}
+
+/* ── Founder story ── */
+.founder-story { margin-bottom: 40px; padding: 0 4px; }
+.founder-story-title {
+  font-size: 19px; font-weight: 600;
+  color: var(--text);
+  margin-bottom: 24px;
+  padding-left: 14px;
+  border-left: 3px solid var(--gold);
+  line-height: 1.4;
+}
+.founder-story-body p {
+  font-size: 14px; color: var(--text);
+  line-height: 2.0; margin-bottom: 22px;
+  letter-spacing: 0.02em;
+}
+.founder-story-body p:last-child { margin-bottom: 0; }
+.pull-quote {
+  font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
+  font-size: 18px; font-weight: 500;
+  color: var(--gold);
+  background: rgba(244,183,40,0.04);
+  border-left: 3px solid var(--gold);
+  padding: 18px 24px;
+  margin: 28px 0;
+  border-radius: 0 8px 8px 0;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+@media (max-width: 640px) {
+  .pull-quote { font-size: 16px; padding: 16px 20px; }
+}
+
 .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
 .about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
 .about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
@@ -625,27 +712,31 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h2>Zcash Japan <span>について</span></h2>
       <p>Zcash Japanは、ゼロ知識証明技術を基盤とするプライバシーコイン「Zcash（ZEC）」の日本語情報を発信するコミュニティサイトです。技術解説から購入ガイド、最新ニュースまで、日本のZcashユーザーに向けて分かりやすい情報をお届けします。</p>
     </div>
-    <div class="about-grid">
-      <div class="about-card">
-        <div class="about-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        </div>
-        <h3>情報発信</h3>
-        <p>Zcashの最新動向、技術アップデート、マーケット情報を日本語でいち早くお届けします。</p>
+    <a class="naval-quote" href="https://x.com/naval" target="_blank" rel="noopener">
+      <div class="naval-quote-mark">"</div>
+      <div class="naval-quote-text">
+        Bitcoin is insurance against fiat.<br>
+        ZCash is insurance against Bitcoin.
       </div>
-      <div class="about-card">
-        <div class="about-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
-        </div>
-        <h3>コミュニティ</h3>
-        <p>プライバシーと金融の自由を信じる仲間たちが集まる、オープンなコミュニティを目指しています。</p>
+      <div class="naval-quote-translation">
+        ビットコインは法定通貨への保険。Zcash はビットコインへの保険。
       </div>
-      <div class="about-card">
-        <div class="about-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        </div>
-        <h3>プライバシー重視</h3>
-        <p>zk-SNARKs技術により実現する金融プライバシーの重要性を広め、普及を支援します。</p>
+      <div class="naval-quote-cite">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        Naval Ravikant <span class="naval-quote-handle">@naval</span> · 2025年10月
+      </div>
+    </a>
+
+    <div class="founder-story">
+      <h3 class="founder-story-title">なぜ Zcash Japan を運営しているのか</h3>
+      <div class="founder-story-body">
+        <p>Zcash に興味を持ったきっかけは、自分のビジネス思想の師匠ともいえる Naval の上のツイートでした。「ビットコインのヘッジ？なんだか面白そうだな、あとで調べてみよう」と思い、少し放置していたら、数週間後には100ドル台後半まで上がっていました。そこから少しずつ買い集めています。</p>
+
+        <p>何より惹かれているのは、ビットコインの当初の思想 ── P2P のデジタルキャッシュ ── としての完成度の高さです。取引所から専用ウォレット Zodl に初めて送金したとき、その仕様の完成度に思わず興奮を覚えました。ビットコインと同じ仕様でありながら、そこに強力な機密性を手に入れたコイン。</p>
+
+        <blockquote class="pull-quote">スイスの金庫が自分のポケットの中にあるようなコイン、Zcash。</blockquote>
+
+        <p>いずれ日本でも解禁されることを願って、このサイトを運営しています。</p>
       </div>
     </div>
 
