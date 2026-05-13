@@ -21,6 +21,7 @@
   --twitter: #1DA1F2;
   --youtube: #FF0000;
   --note: #41C9B4;
+  --mexc: #36A2EB;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -141,24 +142,76 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
 .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
 .price-label { font-size: 12px; color: var(--muted); }
-.exchanges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
-.exchange-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: block; }
-.exchange-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-.exchange-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
-.exchange-logo { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 13px; flex-shrink: 0; }
-.exchange-badges { display: flex; gap: 6px; flex-wrap: wrap; }
-.badge { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; padding: 3px 8px; border-radius: 6px; }
-.badge-reg { background: rgba(29,190,172,0.12); color: var(--teal); border: 1px solid rgba(29,190,172,0.3); }
-.badge-spot { background: rgba(244,183,40,0.1); color: var(--gold); border: 1px solid var(--border); }
-.badge-fiat { background: rgba(255,255,255,0.07); color: var(--muted); border: 1px solid var(--border2); }
-.exchange-name { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-.exchange-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; }
-.exchange-pairs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-.pair-tag { background: var(--bg3); border: 1px solid var(--border2); font-size: 11px; font-weight: 600; color: var(--text); padding: 4px 10px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
-.exchange-link { display: flex; align-items: center; justify-content: space-between; color: var(--gold); font-size: 13px; font-weight: 600; }
-.exchange-link svg { width: 14px; height: 14px; }
 .notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
 .notice-box strong { color: var(--gold); }
+
+/* ── MEXC Banner ── */
+.mexc-banner {
+  display: block; text-decoration: none; color: inherit;
+  background: linear-gradient(135deg, #0b1426 0%, #122040 50%, #0d1a30 100%);
+  border: 1px solid rgba(54, 162, 235, 0.3);
+  border-radius: 16px; padding: 28px 32px;
+  margin-bottom: 28px; position: relative; overflow: hidden;
+  transition: all 0.3s ease;
+}
+.mexc-banner:hover {
+  border-color: rgba(54, 162, 235, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(54, 162, 235, 0.12);
+}
+.mexc-banner::before {
+  content: 'MEXC'; position: absolute; right: 28px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 100px; font-weight: 700;
+  color: rgba(54, 162, 235, 0.05);
+  letter-spacing: -3px; user-select: none;
+}
+.mexc-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(54, 162, 235, 0.12); color: var(--mexc);
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 4px 12px; border-radius: 20px;
+  border: 1px solid rgba(54, 162, 235, 0.25);
+  margin-bottom: 12px;
+}
+.mexc-banner h3 {
+  font-size: 20px; font-weight: 700; margin-bottom: 8px;
+  position: relative;
+}
+.mexc-banner h3 span { color: var(--mexc); }
+.mexc-banner > div > p {
+  font-size: 13px; color: var(--muted); line-height: 1.7;
+  max-width: 520px; margin-bottom: 18px; position: relative;
+}
+.mexc-pairs {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 18px; position: relative;
+}
+.mexc-pair-tag {
+  background: rgba(54, 162, 235, 0.08);
+  border: 1px solid rgba(54, 162, 235, 0.2);
+  font-size: 11px; font-weight: 600; color: var(--mexc);
+  padding: 4px 12px; border-radius: 6px;
+  font-family: 'Space Grotesk', monospace;
+}
+.mexc-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--mexc); color: #fff;
+  font-size: 13px; font-weight: 700;
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 11px 20px; border-radius: 8px;
+  position: relative; transition: all 0.2s;
+}
+.mexc-banner:hover .mexc-cta {
+  background: #4DB1F5;
+  box-shadow: 0 4px 20px rgba(54, 162, 235, 0.25);
+}
+.mexc-cta svg { width: 14px; height: 14px; }
+@media (max-width: 640px) {
+  .mexc-banner::before { display: none; }
+  .mexc-banner { padding: 24px 20px; }
+}
 
 /* ── Guide banner ── */
 .guide-banner {
@@ -199,16 +252,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .guide-feature svg { width: 12px; height: 12px; color: var(--note); flex-shrink: 0; }
 .guide-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--note); color: #080B14; font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 8px; transition: all 0.2s; }
 .guide-cta:hover { background: #5dd4c1; }
-.guide-price-block { text-align: center; padding: 20px 24px; background: var(--bg); border: 1px solid var(--border2); border-radius: 12px; position: relative; z-index: 1; }
-.guide-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
-.guide-price-label { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
-.guide-price-sub { font-size: 10px; color: var(--note); font-weight: 700; letter-spacing: 0.5px; }
 @media (max-width: 720px) {
   .guide-banner { grid-template-columns: 1fr; padding: 24px; }
   .guide-banner::before { font-size: 56px; }
-  .guide-price-block { order: -1; padding: 14px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-  .guide-price { font-size: 22px; margin-bottom: 0; }
-  .guide-price-label { display: none; }
 }
 
 /* ── Merchandise section (Coming Soon) ── */
@@ -499,8 +545,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <!-- ━━━ Home Page (default) ━━━ -->
 <div id="page-home" class="page active">
   <main>
-
-    <!-- Stats bar -->
     <div class="stats-bar">
       <div class="stat-card">
         <div class="stat-label">
@@ -523,7 +567,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </div>
     </div>
 
-    <!-- Secondary stats -->
     <div class="secondary-stats">
       <div class="sec-stat-card">
         <div class="sec-stat-label">
@@ -551,7 +594,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </a>
     </div>
 
-    <!-- Articles section -->
     <div class="section-header">
       <span class="section-title">記事一覧</span>
       <a class="section-link" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
@@ -561,7 +603,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </div>
 
     <div class="articles-grid" id="articles-grid">
-      <!-- Pinned: 購入ガイド -->
       <a class="article-card pinned" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
         <span class="card-tag pinned-tag">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1V2H7v2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>
@@ -577,8 +618,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="card-price-badge">noteで読む →</span>
         </div>
       </a>
-
-      <!-- Dynamic slots: latest 2 from note RSS -->
       <a class="article-card loading" id="article-slot-1" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
         <span class="card-tag">note</span>
         <div class="card-title">読み込み中…</div>
@@ -598,7 +637,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </a>
     </div>
-
   </main>
 </div>
 
@@ -607,7 +645,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   <main>
     <div class="buy-hero">
       <h2>ZEC（<span>Zcash</span>）を購入する</h2>
-      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所と日本円を繋ぐ最も換金率の良い経路を、note の完全ガイドで画像つきで解説しています。</p>
+      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所 MEXC で購入するのがおすすめです。</p>
       <div class="zec-ticker">
         <div>
           <div class="zec-price" id="zec-price">読み込み中…</div>
@@ -616,6 +654,28 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </div>
     </div>
 
+    <!-- ── MEXC Banner (NEW) ── -->
+    <a class="mexc-banner" href="https://promote.mexc.com/a/fxKnyGHd" target="_blank" rel="noopener noreferrer">
+      <div>
+        <div class="mexc-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          おすすめ取引所
+        </div>
+        <h3><span>MEXC</span> で ZEC を購入する</h3>
+        <p>日本からZcashを購入するなら、海外取引所MEXCがおすすめ。ZEC/USDT の現物取引に対応しており、手数料が安く流動性も十分です。以下のリンクから口座開設できます。</p>
+        <div class="mexc-pairs">
+          <span class="mexc-pair-tag">ZEC/USDT</span>
+          <span class="mexc-pair-tag">現物取引</span>
+          <span class="mexc-pair-tag">手数料 0%キャンペーン中</span>
+        </div>
+        <span class="mexc-cta">
+          MEXCで口座開設する（無料）
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- ── Note Guide ── -->
     <a class="guide-banner" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
       <div>
         <div class="guide-tag">
@@ -623,7 +683,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           完全ガイド
         </div>
         <h3>Zcash（ZEC）を日本から<span>最安で買う</span> 6ステップ</h3>
-        <p>日本の取引所には未上場のZcash。海外取引所と日本円のブリッジを、BTC送金ロスを抑えた最も換金率の良い経路で繋ぐ手順を、画像つきで解説します。何度も失敗してたどり着いた、迷わない購入手順です。</p>
+        <p>海外取引所での取引がはじめての方へ。日本円からZECを手に入れるまでの手順を、スクリーンショットつきでステップごとに解説しています。何度も失敗してたどり着いた、迷わない購入手順です。</p>
         <div class="guide-features">
           <div class="guide-feature">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -668,7 +728,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="merch-badge">Coming Soon</span>
         </div>
       </div>
-
       <div class="merch-card">
         <div class="merch-image merch-image-shirt">
           <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
@@ -682,7 +741,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="merch-badge">Coming Soon</span>
         </div>
       </div>
-
       <div class="merch-card">
         <div class="merch-image merch-image-sticker">
           <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
@@ -731,11 +789,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h3 class="founder-story-title">なぜ Zcash Japan を運営しているのか</h3>
       <div class="founder-story-body">
         <p>Zcash に興味を持ったきっかけは、自分のビジネス思想の師匠ともいえる Naval の上のツイートでした。「ビットコインのヘッジ？なんだか面白そうだな、あとで調べてみよう」と思い、少し放置していたら、数週間後には100ドル台後半まで上がっていました。そこから少しずつ買い集めています。</p>
-
         <p>何より惹かれているのは、ビットコインの当初の思想 ── P2P のデジタルキャッシュ ── としての完成度の高さです。取引所から専用ウォレット Zodl に初めて送金したとき、その仕様の完成度に思わず興奮を覚えました。ビットコインと同じ仕様でありながら、そこに強力な機密性を手に入れたコイン。</p>
-
         <blockquote class="pull-quote">スイスの金庫が自分のポケットの中にあるようなコイン、Zcash。</blockquote>
-
         <p>いずれ日本でも解禁されることを願って、このサイトを運営しています。</p>
       </div>
     </div>
@@ -795,7 +850,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 const PINNED_URL = 'https://note.com/zcashjapan/n/ne7d6822dd472';
 const NOTE_FEED_URL = '/api/note-feed';
 
-// ── URL routing ──
 const PAGE_TITLES = {
   home: 'Zcash Japan — プライバシーコイン Zcash の日本語情報',
   buy: 'ZECを購入する | Zcash Japan',
@@ -815,15 +869,12 @@ function pageToPath(page) {
 }
 
 function showPage(name) {
-  // Hide all pages, show the target
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   const target = document.getElementById('page-' + name);
   if (target) target.classList.add('active');
-  // Sync nav button active state via data-page
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const activeBtn = document.querySelector('.nav-btn[data-page="' + name + '"]');
   if (activeBtn) activeBtn.classList.add('active');
-  // Update document title
   document.title = PAGE_TITLES[name] || PAGE_TITLES.home;
 }
 
@@ -836,13 +887,11 @@ function navigateTo(name) {
   window.scrollTo(0, 0);
 }
 
-// Handle browser back/forward
 window.addEventListener('popstate', () => {
   showPage(pathToPage(window.location.pathname));
   window.scrollTo(0, 0);
 });
 
-// On initial load, render the page that matches the URL
 showPage(pathToPage(window.location.pathname));
 
 function escHtml(s) {
