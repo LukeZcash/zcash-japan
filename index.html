@@ -202,13 +202,26 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .mexc-cta-link svg { width: 14px; height: 14px; }
 
 .mexc-supplement {
-  margin-top: 20px; padding-top: 18px;
-  border-top: 1px solid rgba(54, 162, 235, 0.15);
-  font-size: 12px; color: var(--muted); line-height: 1.7;
+  margin-top: 24px; padding: 16px 20px 18px;
+  background: linear-gradient(135deg, rgba(65,201,180,0.1) 0%, rgba(65,201,180,0.04) 100%);
+  border: 1px solid rgba(65, 201, 180, 0.35);
+  border-left: 3px solid var(--note);
+  border-radius: 10px;
+  font-size: 13px; color: var(--text); line-height: 1.75;
   position: relative;
 }
-.mexc-supplement a { color: var(--note); text-decoration: none; font-weight: 600; }
-.mexc-supplement a:hover { text-decoration: underline; }
+.mexc-supplement-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700;
+  color: var(--note); letter-spacing: 0.8px;
+  margin-bottom: 8px; text-transform: uppercase;
+}
+.mexc-supplement a {
+  color: var(--note); text-decoration: none; font-weight: 700;
+  border-bottom: 1px solid rgba(65, 201, 180, 0.5);
+  transition: all 0.2s;
+}
+.mexc-supplement a:hover { color: #5dd4c1; border-bottom-color: #5dd4c1; }
 
 @media (max-width: 640px) {
   .mexc-product::before { display: none; }
@@ -276,7 +289,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 }
 @media (max-width: 900px) { .merch-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .merch-grid { grid-template-columns: 1fr; } }
-.merch-grid-single { grid-template-columns: minmax(0, 340px) !important; justify-content: center; }
+.merch-grid-single { grid-template-columns: minmax(0, 340px) !important; justify-content: start; }
 
 .merch-card {
   background: var(--bg2);
@@ -652,7 +665,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
         ZECを購入する
       </div>
-      <h3>海外取引所 <span>MEXC</span> で ZEC を購入</h3>
+      <h3>海外取引所 <span>MEXC</span> で ZEC（Zcash）を購入</h3>
       <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所 <strong>MEXC</strong> がおすすめで、ZEC/USDT の現物取引に対応し、手数料が安く流動性も十分です。</p>
 
       <div class="zec-ticker-inline">
@@ -672,7 +685,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </a>
 
       <div class="mexc-supplement">
-        📘 海外取引所での購入がはじめての方は、<a href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">noteの完全ガイド</a>（5,549字・画像19枚つき）を参考にどうぞ。
+        <div class="mexc-supplement-label">📘 はじめての方へ</div>
+        海外取引所での購入がはじめての方は、<a href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">noteの完全ガイド</a>（5,549字・画像19枚つき）を参考にどうぞ。
       </div>
     </div>
 
