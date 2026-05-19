@@ -133,36 +133,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .article-card.loading .card-excerpt { height: 60px; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 
-/* ── Buy page ── */
-.buy-hero { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 28px; }
-.buy-hero h2 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
-.buy-hero h2 span { color: var(--gold); }
-.buy-hero p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 560px; }
-.zec-ticker { margin-top: 20px; display: flex; align-items: center; gap: 12px; }
+/* ── Buy page (legacy styles kept for reference) ── */
 .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
 .price-label { font-size: 12px; color: var(--muted); }
 .notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
 .notice-box strong { color: var(--gold); }
 
-/* ── MEXC Banner ── */
-.mexc-banner {
-  display: block; text-decoration: none; color: inherit;
+/* ── Unified MEXC Product Card ── */
+.mexc-product {
   background: linear-gradient(135deg, #0b1426 0%, #122040 50%, #0d1a30 100%);
   border: 1px solid rgba(54, 162, 235, 0.3);
-  border-radius: 16px; padding: 28px 32px;
+  border-radius: 16px; padding: 32px 36px 28px;
   margin-bottom: 28px; position: relative; overflow: hidden;
-  transition: all 0.3s ease;
 }
-.mexc-banner:hover {
-  border-color: rgba(54, 162, 235, 0.6);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 40px rgba(54, 162, 235, 0.12);
-}
-.mexc-banner::before {
+.mexc-product::before {
   content: 'MEXC'; position: absolute; right: 28px; top: 50%;
   transform: translateY(-50%);
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 100px; font-weight: 700;
+  font-size: 110px; font-weight: 700;
   color: rgba(54, 162, 235, 0.05);
   letter-spacing: -3px; user-select: none;
 }
@@ -173,16 +161,23 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
   padding: 4px 12px; border-radius: 20px;
   border: 1px solid rgba(54, 162, 235, 0.25);
   margin-bottom: 12px;
-}
-.mexc-banner h3 {
-  font-size: 20px; font-weight: 700; margin-bottom: 8px;
   position: relative;
 }
-.mexc-banner h3 span { color: var(--mexc); }
-.mexc-banner > div > p {
-  font-size: 13px; color: var(--muted); line-height: 1.7;
-  max-width: 520px; margin-bottom: 18px; position: relative;
+.mexc-product h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; position: relative; }
+.mexc-product h3 span { color: var(--mexc); }
+.mexc-product > p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 20px; position: relative; }
+.mexc-product > p strong { color: var(--text); }
+
+.zec-ticker-inline {
+  margin-bottom: 20px; padding: 14px 18px;
+  background: rgba(54, 162, 235, 0.06);
+  border: 1px solid rgba(54, 162, 235, 0.18);
+  border-radius: 10px; display: inline-block;
+  position: relative;
 }
+.zec-ticker-inline .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--mexc); line-height: 1; margin-bottom: 4px; }
+.zec-ticker-inline .price-label { font-size: 11px; color: var(--muted); }
+
 .mexc-pairs {
   display: flex; gap: 8px; flex-wrap: wrap;
   margin-bottom: 18px; position: relative;
@@ -194,66 +189,73 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
   padding: 4px 12px; border-radius: 6px;
   font-family: 'Space Grotesk', monospace;
 }
-.mexc-cta {
+
+.mexc-cta-link {
   display: inline-flex; align-items: center; gap: 8px;
   background: var(--mexc); color: #fff;
   font-size: 13px; font-weight: 700;
-  font-family: 'Noto Sans JP', sans-serif;
+  text-decoration: none;
   padding: 11px 20px; border-radius: 8px;
   position: relative; transition: all 0.2s;
 }
-.mexc-banner:hover .mexc-cta {
-  background: #4DB1F5;
-  box-shadow: 0 4px 20px rgba(54, 162, 235, 0.25);
+.mexc-cta-link:hover { background: #4DB1F5; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(54, 162, 235, 0.25); }
+.mexc-cta-link svg { width: 14px; height: 14px; }
+
+.mexc-supplement {
+  margin-top: 20px; padding-top: 18px;
+  border-top: 1px solid rgba(54, 162, 235, 0.15);
+  font-size: 12px; color: var(--muted); line-height: 1.7;
+  position: relative;
 }
-.mexc-cta svg { width: 14px; height: 14px; }
+.mexc-supplement a { color: var(--note); text-decoration: none; font-weight: 600; }
+.mexc-supplement a:hover { text-decoration: underline; }
+
 @media (max-width: 640px) {
-  .mexc-banner::before { display: none; }
-  .mexc-banner { padding: 24px 20px; }
+  .mexc-product::before { display: none; }
+  .mexc-product { padding: 24px 20px; }
 }
 
-/* ── Guide banner ── */
-.guide-banner {
-  background: linear-gradient(135deg, rgba(65,201,180,0.08) 0%, rgba(244,183,40,0.08) 100%);
+/* ── Price Analysis Note Product ── */
+.analysis-banner {
+  display: block; text-decoration: none; color: inherit;
+  background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%);
   border: 1px solid rgba(65,201,180,0.3);
-  border-radius: 16px;
-  padding: 28px 32px;
-  margin-bottom: 36px;
-  position: relative;
-  overflow: hidden;
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
+  border-radius: 16px; padding: 28px 32px;
+  margin-bottom: 28px; position: relative; overflow: hidden;
+  transition: all 0.3s ease;
 }
-.guide-banner:hover { border-color: var(--note); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(65,201,180,0.08); }
-.guide-banner::before {
-  content: 'GUIDE';
-  position: absolute; right: -8px; top: 12px;
+.analysis-banner:hover { border-color: var(--note); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(65,201,180,0.1); }
+.analysis-banner::before {
+  content: 'ANALYSIS'; position: absolute; right: 20px; top: 50%;
+  transform: translateY(-50%);
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 76px; font-weight: 700;
+  font-size: 70px; font-weight: 700;
   color: rgba(65,201,180,0.05);
   letter-spacing: -2px; user-select: none;
 }
-.guide-tag {
+.analysis-badge {
   display: inline-flex; align-items: center; gap: 6px;
   background: rgba(65,201,180,0.12); color: var(--note);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
   padding: 4px 12px; border-radius: 20px;
   border: 1px solid rgba(65,201,180,0.3);
   margin-bottom: 12px;
 }
-.guide-banner h3 { font-size: 20px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; }
-.guide-banner h3 span { color: var(--note); }
-.guide-banner p { font-size: 13px; color: var(--muted); line-height: 1.8; margin-bottom: 14px; max-width: 560px; }
-.guide-features { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; }
-.guide-feature { font-size: 12px; color: var(--text); display: inline-flex; align-items: center; gap: 5px; }
-.guide-feature svg { width: 12px; height: 12px; color: var(--note); flex-shrink: 0; }
-.guide-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--note); color: #080B14; font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 8px; transition: all 0.2s; }
-.guide-cta:hover { background: #5dd4c1; }
-@media (max-width: 720px) {
-  .guide-banner { grid-template-columns: 1fr; padding: 24px; }
-  .guide-banner::before { font-size: 56px; }
+.analysis-banner h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; position: relative; }
+.analysis-banner h3 span { color: var(--note); }
+.analysis-banner > div > p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 18px; position: relative; }
+.analysis-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--note); color: #080B14;
+  font-size: 13px; font-weight: 700;
+  padding: 11px 20px; border-radius: 8px;
+  position: relative; transition: all 0.2s;
+}
+.analysis-banner:hover .analysis-cta { background: #5dd4c1; }
+.analysis-cta svg { width: 14px; height: 14px; }
+@media (max-width: 640px) {
+  .analysis-banner::before { display: none; }
+  .analysis-banner { padding: 24px 20px; }
 }
 
 /* ── Merchandise section (Coming Soon) ── */
@@ -274,6 +276,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 }
 @media (max-width: 900px) { .merch-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .merch-grid { grid-template-columns: 1fr; } }
+.merch-grid-single { grid-template-columns: minmax(0, 340px) !important; justify-content: center; }
 
 .merch-card {
   background: var(--bg2);
@@ -642,75 +645,61 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <!-- ━━━ Buy Page ━━━ -->
 <div id="page-buy" class="page">
   <main>
-    <div class="buy-hero">
-      <h2>ZEC（<span>Zcash</span>）を購入する</h2>
-      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所 MEXC で購入するのがおすすめです。</p>
-      <div class="zec-ticker">
-        <div>
-          <div class="zec-price" id="zec-price">読み込み中…</div>
-          <div class="price-label">ZEC / JPY（参考価格）</div>
-        </div>
+
+    <!-- ━━ 商品①：MEXC（統合版） ━━ -->
+    <div class="mexc-product">
+      <div class="mexc-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        ZECを購入する
+      </div>
+      <h3>海外取引所 <span>MEXC</span> で ZEC を購入</h3>
+      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所 <strong>MEXC</strong> がおすすめで、ZEC/USDT の現物取引に対応し、手数料が安く流動性も十分です。</p>
+
+      <div class="zec-ticker-inline">
+        <div class="zec-price" id="zec-price">読み込み中…</div>
+        <div class="price-label">ZEC / JPY（参考価格）</div>
+      </div>
+
+      <div class="mexc-pairs">
+        <span class="mexc-pair-tag">ZEC/USDT</span>
+        <span class="mexc-pair-tag">現物取引</span>
+        <span class="mexc-pair-tag">手数料 0%キャンペーン中</span>
+      </div>
+
+      <a class="mexc-cta-link" href="https://promote.mexc.com/a/fxKnyGHd" target="_blank" rel="noopener noreferrer">
+        MEXCで口座開設する（無料）
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+
+      <div class="mexc-supplement">
+        📘 海外取引所での購入がはじめての方は、<a href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">noteの完全ガイド</a>（5,549字・画像19枚つき）を参考にどうぞ。
       </div>
     </div>
 
-    <!-- ── MEXC Banner (NEW) ── -->
-    <a class="mexc-banner" href="https://promote.mexc.com/a/fxKnyGHd" target="_blank" rel="noopener noreferrer">
+    <!-- ━━ 商品②：価格分析note ━━ -->
+    <a class="analysis-banner" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
       <div>
-        <div class="mexc-badge">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
-          おすすめ取引所
+        <div class="analysis-badge">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          価格分析レポート
         </div>
-        <h3><span>MEXC</span> で ZEC を購入する</h3>
-        <p>日本からZcashを購入するなら、海外取引所MEXCがおすすめ。ZEC/USDT の現物取引に対応しており、手数料が安く流動性も十分です。以下のリンクから口座開設できます。</p>
-        <div class="mexc-pairs">
-          <span class="mexc-pair-tag">ZEC/USDT</span>
-          <span class="mexc-pair-tag">現物取引</span>
-          <span class="mexc-pair-tag">手数料 0%キャンペーン中</span>
-        </div>
-        <span class="mexc-cta">
-          MEXCで口座開設する（無料）
+        <h3>Zcash <span>今後の価格分析</span></h3>
+        <p>半減期サイクル、ETFインフラ、機関投資家の動向 ── 複数の視点からZcashの今後の価格トレンドを分析。次の半減期に向けた独自の見立てを note にまとめています。</p>
+        <span class="analysis-cta">
+          noteで分析レポートを読む
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
         </span>
       </div>
     </a>
 
-    <!-- ── Note Guide ── -->
-    <a class="guide-banner" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
-      <div>
-        <div class="guide-tag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
-          完全ガイド
-        </div>
-        <h3>Zcash（ZEC）を日本から<span>最安で買う</span> 6ステップ</h3>
-        <p>海外取引所での取引がはじめての方へ。日本円からZECを手に入れるまでの手順を、スクリーンショットつきでステップごとに解説しています。何度も失敗してたどり着いた、迷わない購入手順です。</p>
-        <div class="guide-features">
-          <div class="guide-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            5,549字・19枚の画像
-          </div>
-          <div class="guide-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            PC・スマホ両対応
-          </div>
-          <div class="guide-feature">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            返金可
-          </div>
-        </div>
-        <span class="guide-cta">
-          noteで購入ガイドを読む
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </span>
-      </div>
-    </a>
-
-    <div class="section-header">
+    <!-- ━━ 商品③：キャップ ━━ -->
+    <div class="section-header" style="margin-top: 40px;">
       <span class="section-title">Zcash オリジナルグッズ</span>
       <span class="merch-section-tag">Coming Soon ✨</span>
     </div>
-    <p class="merch-intro">プライバシーを愛するすべての人へ。Zcash ロゴ入りのオリジナルアイテム、近日販売開始予定です。</p>
+    <p class="merch-intro">プライバシーを愛するすべての人へ。Zcash ロゴ入りのキャップ、近日販売開始予定です。</p>
 
-    <div class="merch-grid">
+    <div class="merch-grid merch-grid-single">
       <div class="merch-card">
         <div class="merch-image merch-image-cap">
           <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
@@ -724,33 +713,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="merch-info">
           <div class="merch-name">キャップ</div>
           <div class="merch-desc">毎日かぶれる、シンプルなロゴ刺繍デザイン</div>
-          <span class="merch-badge">Coming Soon</span>
-        </div>
-      </div>
-      <div class="merch-card">
-        <div class="merch-image merch-image-shirt">
-          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
-            <path d="M40 25 L25 38 L32 55 L42 50 L42 95 L78 95 L78 50 L88 55 L95 38 L80 25 L70 25 Q70 35 60 35 Q50 35 50 25 Z" fill="rgba(244,183,40,0.08)"/>
-          </svg>
-          <div class="merch-logo-tag">ZEC</div>
-        </div>
-        <div class="merch-info">
-          <div class="merch-name">Tシャツ</div>
-          <div class="merch-desc">高品質コットン、Zcash ロゴをミニマルに</div>
-          <span class="merch-badge">Coming Soon</span>
-        </div>
-      </div>
-      <div class="merch-card">
-        <div class="merch-image merch-image-sticker">
-          <svg viewBox="0 0 120 120" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round">
-            <rect x="22" y="22" width="76" height="76" rx="10" fill="rgba(244,183,40,0.08)"/>
-            <path d="M98 22 L98 38 L82 22 Z" fill="rgba(244,183,40,0.18)"/>
-          </svg>
-          <div class="merch-logo-tag merch-logo-large">Z</div>
-        </div>
-        <div class="merch-info">
-          <div class="merch-name">ステッカー</div>
-          <div class="merch-desc">PCやノートに貼れる、防水ビニール仕上げ</div>
           <span class="merch-badge">Coming Soon</span>
         </div>
       </div>
