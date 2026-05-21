@@ -369,11 +369,91 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .merch-notice a:hover { text-decoration: underline; }
 
 /* ── About page ── */
-.about-hero { background: linear-gradient(135deg, var(--bg3) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 40px; margin-bottom: 40px; position: relative; overflow: hidden; }
-.about-hero::before { content: '私たちについて'; position: absolute; right: -20px; bottom: -10px; font-size: 64px; font-weight: 700; color: rgba(244,183,40,0.04); white-space: nowrap; user-select: none; }
-.about-hero h2 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
-.about-hero h2 span { color: var(--gold); }
-.about-hero p { color: var(--muted); font-size: 14px; line-height: 1.9; max-width: 620px; }
+
+/* ── About manifesto (thesis-driven hero) ── */
+.about-manifesto {
+  position: relative;
+  padding: 72px 56px 64px;
+  margin-bottom: 56px;
+  background:
+    radial-gradient(circle at 18% 25%, rgba(244,183,40,0.07) 0%, transparent 55%),
+    radial-gradient(circle at 82% 75%, rgba(29,190,172,0.04) 0%, transparent 55%),
+    linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.about-manifesto::before {
+  content: 'P2P';
+  position: absolute;
+  right: -20px; top: -30px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 240px; font-weight: 700;
+  color: rgba(244,183,40,0.035);
+  letter-spacing: -10px; line-height: 1;
+  user-select: none;
+}
+.manifesto-tag {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-glow);
+  border: 1px solid var(--border);
+  padding: 7px 16px; border-radius: 20px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.manifesto-tag .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 10px var(--gold);
+  animation: pulse-glow 2.4s ease-in-out infinite;
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+.manifesto-headline {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 46px; font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin-bottom: 36px;
+  max-width: 720px;
+  position: relative;
+}
+.manifesto-headline em {
+  color: var(--gold);
+  font-style: normal;
+}
+.manifesto-lede {
+  font-size: 16px;
+  line-height: 2.05;
+  color: var(--muted);
+  max-width: 640px;
+  position: relative;
+  letter-spacing: 0.015em;
+}
+.manifesto-lede strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.manifesto-lede em {
+  color: var(--gold);
+  font-style: normal;
+  font-weight: 500;
+  font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
+}
+@media (max-width: 640px) {
+  .about-manifesto { padding: 48px 28px 44px; margin-bottom: 40px; }
+  .about-manifesto::before { font-size: 150px; top: -10px; right: -10px; }
+  .manifesto-headline { font-size: 28px; line-height: 1.5; margin-bottom: 28px; }
+  .manifesto-lede { font-size: 14.5px; line-height: 1.95; }
+  .manifesto-tag { margin-bottom: 24px; }
+}
 
 /* ── Naval quote card ── */
 .naval-quote {
@@ -429,36 +509,56 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
   .naval-quote-text { font-size: 17px; }
 }
 
-/* ── Founder story ── */
-.founder-story { margin-bottom: 40px; padding: 0 4px; }
+/* ── Founder story (refined for readability) ── */
+.founder-story {
+  max-width: 720px;
+  margin: 0 auto 56px;
+  padding: 0 4px;
+}
 .founder-story-title {
-  font-size: 19px; font-weight: 600;
+  font-size: 22px; font-weight: 700;
   color: var(--text);
-  margin-bottom: 24px;
-  padding-left: 14px;
-  border-left: 3px solid var(--gold);
+  margin-bottom: 32px;
+  padding: 0 0 18px;
+  border-left: none;
+  position: relative;
   line-height: 1.4;
 }
+.founder-story-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 48px; height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+}
 .founder-story-body p {
-  font-size: 14px; color: var(--text);
-  line-height: 2.0; margin-bottom: 22px;
-  letter-spacing: 0.02em;
+  font-size: 15.5px; color: var(--text);
+  line-height: 2.05; margin-bottom: 26px;
+  letter-spacing: 0.025em;
 }
 .founder-story-body p:last-child { margin-bottom: 0; }
+.founder-story-body p strong {
+  color: var(--gold);
+  font-weight: 600;
+}
 .pull-quote {
   font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-  font-size: 18px; font-weight: 500;
+  font-size: 20px; font-weight: 500;
   color: var(--gold);
   background: rgba(244,183,40,0.04);
   border-left: 3px solid var(--gold);
-  padding: 18px 24px;
-  margin: 28px 0;
+  padding: 24px 28px;
+  margin: 36px 0;
   border-radius: 0 8px 8px 0;
   line-height: 1.7;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.015em;
+  position: relative;
 }
 @media (max-width: 640px) {
-  .pull-quote { font-size: 16px; padding: 16px 20px; }
+  .pull-quote { font-size: 17px; padding: 20px 22px; }
+  .founder-story-body p { font-size: 14.5px; line-height: 1.95; margin-bottom: 22px; }
+  .founder-story-title { font-size: 19px; margin-bottom: 24px; }
 }
 
 .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
@@ -812,9 +912,18 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <!-- ━━━ About Page ━━━ -->
 <div id="page-about" class="page">
   <main>
-    <div class="about-hero">
-      <h2>Zcash Japan <span>について</span></h2>
-      <p>Zcash Japanは、ゼロ知識証明技術を基盤とするプライバシーコイン「Zcash（ZEC）」の日本語情報を発信するコミュニティサイトです。技術解説から購入ガイド、最新ニュースまで、日本のZcashユーザーに向けて分かりやすい情報をお届けします。</p>
+    <div class="about-manifesto">
+      <div class="manifesto-tag">
+        <span class="dot"></span>
+        About — Encrypted P2P Cash
+      </div>
+      <h1 class="manifesto-headline">
+        ビットコインの夢のつづきを、<br>
+        <em>Zcash</em> で。
+      </h1>
+      <p class="manifesto-lede">
+        2008年、サトシ・ナカモトが描いた <em>「A Peer-to-Peer Electronic Cash System」</em> ── 暗号化された個人間電子現金。透明な台帳のビットコインは、その夢の半分を実現した。残りの半分 ── 取引のプライバシー ── を埋めるのが、<strong>Zcash</strong> です。
+      </p>
     </div>
     <a class="naval-quote" href="https://x.com/naval" target="_blank" rel="noopener">
       <div class="naval-quote-mark">"</div>
@@ -835,7 +944,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h3 class="founder-story-title">なぜ Zcash Japan を運営しているのか</h3>
       <div class="founder-story-body">
         <p>Zcash に興味を持ったきっかけは、自分のビジネス思想の師匠ともいえる Naval の上のツイートでした。「ビットコインのヘッジ？なんだか面白そうだな、あとで調べてみよう」と思い、少し放置していたら、数週間後には100ドル台後半まで上がっていました。そこから少しずつ買い集めています。</p>
-        <p>何より惹かれているのは、ビットコインの当初の思想 ── P2P のデジタルキャッシュ ── としての完成度の高さです。取引所から専用ウォレット Zodl に初めて送金したとき、その仕様の完成度に思わず興奮を覚えました。ビットコインと同じ仕様でありながら、そこに強力な機密性を手に入れたコイン。</p>
+        <p>何より惹かれているのは、ビットコインの当初の思想 ── <strong>Encrypted P2P Cash</strong>、つまり暗号化された個人間電子現金 ── としての完成度の高さです。取引所から専用ウォレット Zodl に初めて送金したとき、その仕様の完成度に思わず興奮を覚えました。ビットコインと同じ仕様でありながら、そこに強力な機密性を手に入れたコイン。</p>
         <blockquote class="pull-quote">スイスの金庫が自分のポケットの中にあるようなコイン、Zcash。</blockquote>
         <p>いずれ日本でも解禁されることを願って、このサイトを運営しています。</p>
       </div>
