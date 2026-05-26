@@ -657,9 +657,12 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
   letter-spacing: 0.2px;
 }
 .naval-quote-translation {
-  font-size: 14px; color: var(--muted);
+  font-size: 17px; color: var(--text);
+  font-weight: 500;
   line-height: 1.8; margin-bottom: 22px;
   position: relative; z-index: 1;
+  padding: 14px 0 14px 18px;
+  border-left: 2px solid var(--gold);
 }
 .naval-quote-cite {
   font-size: 13px; color: var(--muted);
@@ -675,9 +678,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 }
 /* ── Founder story (refined for readability) ── */
 .founder-story {
-  max-width: 720px;
-  margin: 0 auto 56px;
-  padding: 0 4px;
+  max-width: 100%;
+  margin: 0 0 56px;
+  padding: 0;
 }
 .founder-story-title {
   font-size: 22px; font-weight: 700;
@@ -1133,7 +1136,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <div class="naval-quote-text">
         Zcash's privacy tech makes it the most interesting Bitcoin alternative.
       </div>
-      <div class="naval-quote-translation">
+      <div class="naval-quote-translation" style="border-left-color:var(--note);">
         Zcashのプライバシー技術は、ビットコインの代替として最も興味深い存在にしている。
       </div>
       <div class="naval-quote-cite">
