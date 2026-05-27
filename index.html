@@ -406,7 +406,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </table>
         <div class="roi-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          Source: CoinGecko
+          Source: CryptoCompare（S&P 500は概算値）
         </div>
       </div>
     </div>
@@ -978,45 +978,42 @@ async function fetchROI() {
     { label: '3年', days: 1095 },
     { label: '5年', days: 1825 },
   ];
-  // S&P 500 & Gold フォールバック値（2025-05基準の概算）
+  // S&P 500 フォールバック値（CryptoCompareに株式データなし）
   const sp500Roi = { 365: 15, 1095: 32, 1825: 85 };
-  const goldRoi = { 365: 38, 1095: 55, 1825: 82 };
 
-  // 1コインにつき1回だけAPIを叩く（5年分を一括取得）
-  function calcRoi(prices, daysAgo) {
-    if (!prices || prices.length < 2) return null;
-    const now = prices[prices.length - 1];
-    const targetTs = now[0] - daysAgo * 86400000;
-    // targetTs に最も近いデータポイントを探す
-    let closest = prices[0];
-    for (const p of prices) {
-      if (Math.abs(p[0] - targetTs) < Math.abs(closest[0] - targetTs)) closest = p;
-    }
-    if (closest[1] <= 0) return null;
-    return ((now[1] - closest[1]) / closest[1]) * 100;
+  // CryptoCompare API — 1回で2000日分の日足データ取得、APIキー不要
+  function calcRoiFromDaily(dailyData, daysAgo) {
+    if (!dailyData || dailyData.length < daysAgo) return null;
+    const endIdx = dailyData.length - 1;
+    const startIdx = endIdx - daysAgo;
+    if (startIdx < 0) return null;
+    const startPrice = dailyData[startIdx].close;
+    const endPrice = dailyData[endIdx].close;
+    if (!startPrice || startPrice <= 0) return null;
+    return ((endPrice - startPrice) / startPrice) * 100;
   }
 
-  const roiData = { zcash: {}, bitcoin: {} };
-  for (const id of ['zcash', 'bitcoin']) {
+  const symbols = ['ZEC', 'BTC', 'XAU'];
+  const roiData = {};
+  for (const sym of symbols) {
     try {
-      await new Promise(r => setTimeout(r, 1500));
-      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1826`);
-      const data = await res.json();
-      if (data.prices && data.prices.length > 10) {
-        for (const p of periods) {
-          roiData[id][p.days] = calcRoi(data.prices, p.days);
-        }
+      // XAU（金）はPAXG（金連動トークン）で代用
+      const fsym = sym === 'XAU' ? 'PAXG' : sym;
+      const res = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${fsym}&tsym=USD&limit=1826`);
+      const json = await res.json();
+      if (json.Response === 'Success' && json.Data?.Data) {
+        roiData[sym] = json.Data.Data;
       }
-    } catch(e) { console.warn('ROI fetch failed for', id, e); }
+    } catch(e) { console.warn('CryptoCompare fetch failed for', sym, e); }
   }
 
   const tbody = document.getElementById('roi-tbody');
   if (!tbody) return;
   let html = '';
   for (const p of periods) {
-    const zec = roiData.zcash?.[p.days];
-    const btc = roiData.bitcoin?.[p.days];
-    const gold = goldRoi[p.days];
+    const zec = calcRoiFromDaily(roiData['ZEC'], p.days);
+    const btc = calcRoiFromDaily(roiData['BTC'], p.days);
+    const gold = calcRoiFromDaily(roiData['XAU'], p.days);
     const sp = sp500Roi[p.days];
     const fmt = (v, isZec) => {
       if (v == null || isNaN(v)) return '<span style="color:var(--muted)">—</span>';
