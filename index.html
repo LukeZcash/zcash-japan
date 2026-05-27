@@ -299,7 +299,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="shielded-pool-tag"><span class="dot" style="background:#8A8FA8"></span>Sprout <strong id="pool-sprout">—</strong></span>
         </div>
         <div class="stat-chart" id="chart-shielded"><div class="chart-loading">チャート読み込み中…</div></div>
-        <div class="stat-source-link">
+        <div class="stat-source-link" style="padding-top:4px;">
           <a href="https://zecstats.com/chart/shielding-rate" target="_blank" rel="noopener">Source: zecstats.com</a>
         </div>
       </div>
@@ -749,16 +749,10 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
 // zecstats.com + ブロックチェーンデータから構成
 // ══════════════════════════════════════════════════════
 const SHIELDED_HISTORY = [
-  ['2016-11',5000],['2017-01',15000],['2017-04',50000],['2017-07',100000],
-  ['2017-10',150000],['2018-01',200000],['2018-04',250000],['2018-07',300000],
-  ['2018-10',320000],['2019-01',350000],['2019-04',370000],['2019-07',380000],
-  ['2019-10',390000],['2020-01',400000],['2020-04',410000],['2020-07',415000],
-  ['2020-10',420000],['2021-01',430000],['2021-04',440000],['2021-07',445000],
-  ['2021-10',450000],['2022-01',455000],['2022-04',460000],
-  ['2022-07',470000],['2022-10',480000],['2023-01',490000],['2023-04',500000],
-  ['2023-07',510000],['2023-10',530000],['2024-01',560000],['2024-03',600000],
-  ['2024-05',700000],['2024-06',850000],['2024-07',1050000],['2024-08',1350000],
-  ['2024-09',1700000],['2024-10',2200000],['2024-11',3200000],['2024-12',3800000],
+  ['2024-01',560000],['2024-02',580000],['2024-03',600000],
+  ['2024-04',650000],['2024-05',700000],['2024-06',850000],
+  ['2024-07',1050000],['2024-08',1350000],['2024-09',1700000],
+  ['2024-10',2200000],['2024-11',3200000],['2024-12',3800000],
   ['2025-01',4200000],['2025-02',4550000],['2025-03',4850000],
   ['2025-04',5050000],['2025-05',5117767]
 ];
@@ -797,8 +791,8 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
     yLines += `<line x1="${padL}" y1="${y}" x2="${W-padR+4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
     yLines += `<text x="${W-padR+8}" y="${y+3}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
   });
-  const xTargets = ['2017-01','2019-01','2021-01','2023-01','2024-06','2025-05'];
-  const xDisplay = ["'17","'19","'21","'23","'24","'25"];
+  const xTargets = ['2024-01','2024-04','2024-07','2024-10','2025-01','2025-05'];
+  const xDisplay = ["1月","4月","7月","10月","1月","5月"];
   let xLines = '';
   xTargets.forEach((t, li) => {
     const idx = labels.indexOf(t);
@@ -827,7 +821,7 @@ async function fetchShieldedStats() {
     if (!shieldedZec || shieldedZec <= 0) shieldedZec = KNOWN_ACCURATE;
     const MAX_SUPPLY = 21000000;
     let circulation = stats?.blockchain?.circulation_approximate;
-    const circZec = circulation > MAX_SUPPLY ? circulation / 1e8 : circulation;
+    const circZec = (circulation > MAX_SUPPLY ? circulation / 1e8 : circulation) || 16734208;
     const shieldedPct = circZec ? ((shieldedZec / circZec) * 100).toFixed(1) : '31';
     document.getElementById('stat-shielded').textContent =
       Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
@@ -897,10 +891,17 @@ async function fetchStats() {
       document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
     }
     try {
-      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365&interval=daily');
+      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365');
       const hist = await histRes.json();
       if (hist.prices && hist.prices.length > 10) {
-        const priceVals = hist.prices.map(p => p[1]);
+        // Downsample hourly data to ~365 points (one per day, keeping daily max)
+        const raw = hist.prices;
+        const dayBuckets = {};
+        raw.forEach(p => {
+          const dayKey = new Date(p[0]).toISOString().slice(0,10);
+          if (!dayBuckets[dayKey] || p[1] > dayBuckets[dayKey]) dayBuckets[dayKey] = p[1];
+        });
+        const priceVals = Object.values(dayBuckets);
         renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
       }
     } catch {}
