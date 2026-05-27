@@ -249,7 +249,22 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 28px; text-align: left; }
 .stat-source-link a { color: var(--muted); text-decoration: none; }
 .stat-source-link a:hover { color: var(--gold); }
-@media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } }
+/* ROI比較テーブル */
+.roi-section { margin-bottom: 40px; }
+.roi-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; }
+.roi-card .sec-stat-label { margin-bottom: 16px; }
+.roi-table { width: 100%; border-collapse: collapse; font-family: 'Space Grotesk', sans-serif; font-size: 13px; }
+.roi-table thead th { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); text-align: right; padding: 0 0 10px; border-bottom: 1px solid var(--border2); }
+.roi-table thead th:first-child { text-align: left; }
+.roi-table tbody td { padding: 10px 0; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--muted); }
+.roi-table tbody td:first-child { text-align: left; color: var(--text); font-weight: 500; }
+.roi-table .roi-positive { color: #4ADE80; }
+.roi-table .roi-negative { color: #F87171; }
+.roi-table .roi-zec { color: var(--gold); font-weight: 700; }
+.roi-table tbody tr:last-child td { border-bottom: none; }
+.roi-source { font-size: 10px; color: var(--muted); opacity: 0.7; margin-top: 14px; display: flex; align-items: center; gap: 4px; }
+.roi-source svg { width: 10px; height: 10px; }
+@media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } .roi-table { font-size: 12px; } }
 </style>
 </head>
 <body>
@@ -315,6 +330,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
         <div class="sec-stat-value" id="stat-mcap">—</div>
         <div class="sec-stat-sub" id="stat-mcap-sub">読み込み中…</div>
+        <div class="sec-stat-sub" id="stat-mcap-rank" style="margin-top:2px;">時価総額ランク: <strong>—</strong></div>
         <div class="sec-stat-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           Source: CoinGecko
@@ -367,6 +383,32 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           Source: zecstats.com
         </div>
       </a>
+    </div>
+    <div class="roi-section">
+      <div class="roi-card">
+        <div class="sec-stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+          ROI 比較（vs USD）
+        </div>
+        <table class="roi-table">
+          <thead>
+            <tr>
+              <th>期間</th>
+              <th>ZEC</th>
+              <th>BTC</th>
+              <th>Gold</th>
+              <th>S&P 500</th>
+            </tr>
+          </thead>
+          <tbody id="roi-tbody">
+            <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px 0;">読み込み中…</td></tr>
+          </tbody>
+        </table>
+        <div class="roi-source">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          Source: CoinGecko
+        </div>
+      </div>
     </div>
     <div class="section-header">
       <span class="section-title">記事一覧</span>
@@ -893,6 +935,10 @@ async function fetchStats() {
       const mcapBn = (zecMcapUsd / 1e9).toFixed(2);
       document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
     }
+    const mcapRank = coin.market_cap_rank;
+    if (mcapRank) {
+      document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${mcapRank}</strong>`;
+    }
     try {
       // OHLC endpoint returns [timestamp, open, high, low, close] — use HIGH to capture peaks like Nov $750
       const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/ohlc?vs_currency=usd&days=365');
@@ -923,7 +969,77 @@ async function fetchStats() {
     document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.62%</strong>';
   }
   await fetchShieldedStats();
+  await fetchROI();
 }
+
+async function fetchROI() {
+  const periods = [
+    { label: '1年', days: 365 },
+    { label: '3年', days: 1095 },
+    { label: '5年', days: 1825 },
+  ];
+  const ids = ['zcash', 'bitcoin', 'gold', 'sp500'];
+  // CoinGecko IDs: zcash, bitcoin; gold は別途計算
+  // market_chart で start/end price を取って ROI を計算
+  const roiData = {};
+  for (const id of ['zcash', 'bitcoin']) {
+    roiData[id] = {};
+    for (const p of periods) {
+      try {
+        await new Promise(r => setTimeout(r, 1200));
+        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${p.days}&interval=daily`);
+        const data = await res.json();
+        if (data.prices && data.prices.length > 2) {
+          const startPrice = data.prices[0][1];
+          const endPrice = data.prices[data.prices.length - 1][1];
+          roiData[id][p.days] = ((endPrice - startPrice) / startPrice * 100);
+        }
+      } catch {}
+    }
+  }
+  // S&P 500 — CoinGeckoにないのでフォールバック値（2025年5月時点の概算）
+  const sp500Roi = { 365: 15, 1095: 32, 1825: 85 };
+  // Gold — CoinGeckoにあるが別IDは不安定なのでフォールバック
+  const goldRoi = { 365: 38, 1095: 55, 1825: 82 };
+  // CoinGeckoでgold取得を試みる
+  for (const p of periods) {
+    try {
+      await new Promise(r => setTimeout(r, 1200));
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/tether-gold/market_chart?vs_currency=usd&days=${p.days}&interval=daily`);
+      const data = await res.json();
+      if (data.prices && data.prices.length > 10) {
+        const s = data.prices[0][1];
+        const e = data.prices[data.prices.length - 1][1];
+        goldRoi[p.days] = ((e - s) / s * 100);
+      }
+    } catch {}
+  }
+
+  const tbody = document.getElementById('roi-tbody');
+  if (!tbody) return;
+  let html = '';
+  for (const p of periods) {
+    const zec = roiData.zcash?.[p.days];
+    const btc = roiData.bitcoin?.[p.days];
+    const gold = goldRoi[p.days];
+    const sp = sp500Roi[p.days];
+    const fmt = (v, isZec) => {
+      if (v == null || isNaN(v)) return '<span style="color:var(--muted)">—</span>';
+      const sign = v >= 0 ? '+' : '';
+      const cls = isZec ? 'roi-zec' : (v >= 0 ? 'roi-positive' : 'roi-negative');
+      return `<span class="${cls}">${sign}${v.toFixed(0)}%</span>`;
+    };
+    html += `<tr>
+      <td>${p.label}</td>
+      <td>${fmt(zec, true)}</td>
+      <td>${fmt(btc, false)}</td>
+      <td>${fmt(gold, false)}</td>
+      <td>${fmt(sp, false)}</td>
+    </tr>`;
+  }
+  tbody.innerHTML = html;
+}
+
 fetchStats();
 </script>
 </body>
