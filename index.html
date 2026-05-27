@@ -978,41 +978,36 @@ async function fetchROI() {
     { label: '3年', days: 1095 },
     { label: '5年', days: 1825 },
   ];
-  const ids = ['zcash', 'bitcoin', 'gold', 'sp500'];
-  // CoinGecko IDs: zcash, bitcoin; gold は別途計算
-  // market_chart で start/end price を取って ROI を計算
-  const roiData = {};
-  for (const id of ['zcash', 'bitcoin']) {
-    roiData[id] = {};
-    for (const p of periods) {
-      try {
-        await new Promise(r => setTimeout(r, 1200));
-        const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${p.days}&interval=daily`);
-        const data = await res.json();
-        if (data.prices && data.prices.length > 2) {
-          const startPrice = data.prices[0][1];
-          const endPrice = data.prices[data.prices.length - 1][1];
-          roiData[id][p.days] = ((endPrice - startPrice) / startPrice * 100);
-        }
-      } catch {}
-    }
-  }
-  // S&P 500 — CoinGeckoにないのでフォールバック値（2025年5月時点の概算）
+  // S&P 500 & Gold フォールバック値（2025-05基準の概算）
   const sp500Roi = { 365: 15, 1095: 32, 1825: 85 };
-  // Gold — CoinGeckoにあるが別IDは不安定なのでフォールバック
   const goldRoi = { 365: 38, 1095: 55, 1825: 82 };
-  // CoinGeckoでgold取得を試みる
-  for (const p of periods) {
+
+  // 1コインにつき1回だけAPIを叩く（5年分を一括取得）
+  function calcRoi(prices, daysAgo) {
+    if (!prices || prices.length < 2) return null;
+    const now = prices[prices.length - 1];
+    const targetTs = now[0] - daysAgo * 86400000;
+    // targetTs に最も近いデータポイントを探す
+    let closest = prices[0];
+    for (const p of prices) {
+      if (Math.abs(p[0] - targetTs) < Math.abs(closest[0] - targetTs)) closest = p;
+    }
+    if (closest[1] <= 0) return null;
+    return ((now[1] - closest[1]) / closest[1]) * 100;
+  }
+
+  const roiData = { zcash: {}, bitcoin: {} };
+  for (const id of ['zcash', 'bitcoin']) {
     try {
-      await new Promise(r => setTimeout(r, 1200));
-      const res = await fetch(`https://api.coingecko.com/api/v3/coins/tether-gold/market_chart?vs_currency=usd&days=${p.days}&interval=daily`);
+      await new Promise(r => setTimeout(r, 1500));
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=1826`);
       const data = await res.json();
       if (data.prices && data.prices.length > 10) {
-        const s = data.prices[0][1];
-        const e = data.prices[data.prices.length - 1][1];
-        goldRoi[p.days] = ((e - s) / s * 100);
+        for (const p of periods) {
+          roiData[id][p.days] = calcRoi(data.prices, p.days);
+        }
       }
-    } catch {}
+    } catch(e) { console.warn('ROI fetch failed for', id, e); }
   }
 
   const tbody = document.getElementById('roi-tbody');
