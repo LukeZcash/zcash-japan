@@ -285,6 +285,9 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="stat-value-sub" id="stat-price-jpy">—</div>
         <div class="stat-change" id="stat-change"><span style="color:var(--muted);background:none">読み込み中…</span></div>
         <div class="stat-chart" id="chart-price"><div class="chart-loading">チャート読み込み中…</div></div>
+        <div class="stat-source-link" style="padding-top:4px;">
+          <a href="https://www.coingecko.com/en/coins/zcash" target="_blank" rel="noopener">Source: CoinGecko</a>
+        </div>
       </div>
       <div class="stat-card">
         <div class="stat-label">
@@ -869,7 +872,7 @@ async function fetchStats() {
     38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
     80,90,110,130,150,180,200,220,250,280,310,330
   ];
-  const priceXLabels = ['5月','7月','9月','11月','1月','3月','4月'];
+  const priceXLabels = ['5月','7月','9月','11月','1月','3月','5月'];
   const priceYFmt = v => '$' + Math.round(v);
   renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
   let zecMcapUsd = null;
@@ -891,17 +894,11 @@ async function fetchStats() {
       document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
     }
     try {
-      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365');
-      const hist = await histRes.json();
-      if (hist.prices && hist.prices.length > 10) {
-        // Downsample hourly data to ~365 points (one per day, keeping daily max)
-        const raw = hist.prices;
-        const dayBuckets = {};
-        raw.forEach(p => {
-          const dayKey = new Date(p[0]).toISOString().slice(0,10);
-          if (!dayBuckets[dayKey] || p[1] > dayBuckets[dayKey]) dayBuckets[dayKey] = p[1];
-        });
-        const priceVals = Object.values(dayBuckets);
+      // OHLC endpoint returns [timestamp, open, high, low, close] — use HIGH to capture peaks like Nov $750
+      const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/ohlc?vs_currency=usd&days=365');
+      const ohlc = await histRes.json();
+      if (Array.isArray(ohlc) && ohlc.length > 10) {
+        const priceVals = ohlc.map(c => c[2]); // index 2 = high
         renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
       }
     } catch {}
