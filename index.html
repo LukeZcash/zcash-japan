@@ -25,7 +25,6 @@
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background: var(--bg); color: var(--text); font-family: 'Noto Sans JP', sans-serif; min-height: 100vh; }
-/* ── Header ── */
 header { background: var(--bg2); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
 .header-inner { max-width: 1100px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 64px; }
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); cursor: pointer; }
@@ -46,687 +45,146 @@ nav { display: flex; gap: 4px; }
 .social-icon.yt:hover { background: rgba(255,0,0,0.1); }
 .social-icon.note { color: var(--note); font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 11px; }
 .social-icon.note:hover { background: rgba(65,201,180,0.1); }
-/* ── Pages ── */
 .page { display: none; }
 .page.active { display: block; }
 main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
-/* ── Buttons ── */
 .btn-primary { background: var(--gold); color: #080B14; border: none; cursor: pointer; font-size: 13px; font-weight: 700; font-family: 'Noto Sans JP', sans-serif; padding: 10px 20px; border-radius: 8px; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 .btn-primary:hover { background: #ffc93d; transform: translateY(-1px); }
 .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border2); cursor: pointer; font-size: 13px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 10px 18px; border-radius: 8px; transition: all 0.2s; }
 .btn-secondary:hover { border-color: var(--border); }
-/* ── Section header ── */
 .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; margin-top: 16px; }
 .section-title { font-size: 18px; font-weight: 600; }
 .section-link { font-size: 12px; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; transition: color 0.2s; }
 .section-link:hover { color: var(--note); }
 .section-link svg { width: 11px; height: 11px; }
-/* ── Articles grid ── */
-.articles-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
+.articles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 @media (max-width: 900px) { .articles-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 600px) { .articles-grid { grid-template-columns: 1fr; } }
-.article-card {
-  background: var(--bg2); border: 1px solid var(--border2);
-  border-radius: 12px; padding: 24px;
-  text-decoration: none; color: inherit;
-  transition: all 0.2s; position: relative; overflow: hidden;
-  display: flex; flex-direction: column;
-  min-height: 220px;
-}
+.article-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; transition: all 0.2s; position: relative; overflow: hidden; display: flex; flex-direction: column; min-height: 220px; }
 .article-card:hover { border-color: var(--border); transform: translateY(-2px); }
-.article-card::after {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 3px; background: var(--gold);
-  border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s;
-}
+.article-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--gold); border-radius: 3px 0 0 3px; opacity: 0; transition: opacity 0.2s; }
 .article-card:hover::after { opacity: 1; }
-.article-card.pinned {
-  background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%);
-  border-color: rgba(65,201,180,0.25);
-}
+.article-card.pinned { background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%); border-color: rgba(65,201,180,0.25); }
 .article-card.pinned:hover { border-color: var(--note); }
 .article-card.pinned::after { background: var(--note); }
-.card-tag {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: var(--gold-glow); color: var(--gold);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 3px 10px; border-radius: 20px;
-  margin-bottom: 12px; border: 1px solid var(--border);
-  align-self: flex-start;
-}
-.card-tag.pinned-tag {
-  background: rgba(65,201,180,0.12); color: var(--note);
-  border-color: rgba(65,201,180,0.3);
-}
+.card-tag { display: inline-flex; align-items: center; gap: 4px; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; border: 1px solid var(--border); align-self: flex-start; }
+.card-tag.pinned-tag { background: rgba(65,201,180,0.12); color: var(--note); border-color: rgba(65,201,180,0.3); }
 .card-tag svg { width: 10px; height: 10px; }
 .card-title { font-size: 15px; font-weight: 600; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
 .card-excerpt { font-size: 13px; color: var(--muted); line-height: 1.7; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; flex-grow: 1; }
 .card-meta { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--border2); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
 .card-meta-source { display: inline-flex; align-items: center; gap: 4px; }
 .card-meta-source svg { width: 11px; height: 11px; }
-.card-price-badge {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 12px; font-weight: 700; color: var(--note);
-}
+.card-price-badge { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--note); }
 .article-card.loading { pointer-events: none; opacity: 0.6; background: var(--bg2); }
-.article-card.loading .card-title,
-.article-card.loading .card-excerpt {
-  background: linear-gradient(90deg, var(--bg3) 0%, rgba(255,255,255,0.04) 50%, var(--bg3) 100%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-  color: transparent; border-radius: 4px;
-}
+.article-card.loading .card-title, .article-card.loading .card-excerpt { background: linear-gradient(90deg, var(--bg3) 0%, rgba(255,255,255,0.04) 50%, var(--bg3) 100%); background-size: 200% 100%; animation: shimmer 1.5s infinite; color: transparent; border-radius: 4px; }
 .article-card.loading .card-title { height: 18px; margin-bottom: 8px; }
 .article-card.loading .card-excerpt { height: 60px; }
 @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-/* ── Buy page (legacy styles kept for reference) ── */
 .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); }
 .price-label { font-size: 12px; color: var(--muted); }
 .notice-box { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.25); border-radius: 12px; padding: 18px 22px; margin-top: 32px; font-size: 13px; color: var(--muted); line-height: 1.7; }
 .notice-box strong { color: var(--gold); }
-/* ── Unified MEXC Product Card ── */
-.mexc-product {
-  background: linear-gradient(135deg, #0b1426 0%, #122040 50%, #0d1a30 100%);
-  border: 1px solid rgba(54, 162, 235, 0.3);
-  border-radius: 16px; padding: 32px 36px 28px;
-  margin-bottom: 28px; position: relative; overflow: hidden;
-}
-.mexc-product::before {
-  content: 'MEXC'; position: absolute; right: 28px; top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 110px; font-weight: 700;
-  color: rgba(54, 162, 235, 0.05);
-  letter-spacing: -3px; user-select: none;
-}
-.mexc-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(54, 162, 235, 0.12); color: var(--mexc);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 4px 12px; border-radius: 20px;
-  border: 1px solid rgba(54, 162, 235, 0.25);
-  margin-bottom: 12px;
-  position: relative;
-}
+.mexc-product { background: linear-gradient(135deg, #0b1426 0%, #122040 50%, #0d1a30 100%); border: 1px solid rgba(54, 162, 235, 0.3); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 28px; position: relative; overflow: hidden; }
+.mexc-product::before { content: 'MEXC'; position: absolute; right: 28px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 110px; font-weight: 700; color: rgba(54, 162, 235, 0.05); letter-spacing: -3px; user-select: none; }
+.mexc-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(54, 162, 235, 0.12); color: var(--mexc); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(54, 162, 235, 0.25); margin-bottom: 12px; position: relative; }
 .mexc-product h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; position: relative; }
 .mexc-product h3 span { color: var(--mexc); }
 .mexc-product > p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 20px; position: relative; }
 .mexc-product > p strong { color: var(--text); }
-.zec-ticker-inline {
-  margin-bottom: 20px; padding: 14px 18px;
-  background: rgba(54, 162, 235, 0.06);
-  border: 1px solid rgba(54, 162, 235, 0.18);
-  border-radius: 10px; display: inline-block;
-  position: relative;
-}
+.zec-ticker-inline { margin-bottom: 20px; padding: 14px 18px; background: rgba(54, 162, 235, 0.06); border: 1px solid rgba(54, 162, 235, 0.18); border-radius: 10px; display: inline-block; position: relative; }
 .zec-ticker-inline .zec-price { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--mexc); line-height: 1; margin-bottom: 4px; }
 .zec-ticker-inline .price-label { font-size: 11px; color: var(--muted); }
-.mexc-pairs {
-  display: flex; gap: 8px; flex-wrap: wrap;
-  margin-bottom: 18px; position: relative;
-}
-.mexc-pair-tag {
-  background: rgba(54, 162, 235, 0.08);
-  border: 1px solid rgba(54, 162, 235, 0.2);
-  font-size: 11px; font-weight: 600; color: var(--mexc);
-  padding: 4px 12px; border-radius: 6px;
-  font-family: 'Space Grotesk', monospace;
-}
-.mexc-cta-link {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--mexc); color: #fff;
-  font-size: 13px; font-weight: 700;
-  text-decoration: none;
-  padding: 11px 20px; border-radius: 8px;
-  position: relative; transition: all 0.2s;
-}
+.mexc-pairs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; position: relative; }
+.mexc-pair-tag { background: rgba(54, 162, 235, 0.08); border: 1px solid rgba(54, 162, 235, 0.2); font-size: 11px; font-weight: 600; color: var(--mexc); padding: 4px 12px; border-radius: 6px; font-family: 'Space Grotesk', monospace; }
+.mexc-cta-link { display: inline-flex; align-items: center; gap: 8px; background: var(--mexc); color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; padding: 11px 20px; border-radius: 8px; position: relative; transition: all 0.2s; }
 .mexc-cta-link:hover { background: #4DB1F5; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(54, 162, 235, 0.25); }
 .mexc-cta-link svg { width: 14px; height: 14px; }
-.mexc-supplement {
-  margin-top: 24px; padding: 16px 20px 18px;
-  background: linear-gradient(135deg, rgba(65,201,180,0.1) 0%, rgba(65,201,180,0.04) 100%);
-  border: 1px solid rgba(65, 201, 180, 0.35);
-  border-left: 3px solid var(--note);
-  border-radius: 10px;
-  font-size: 13px; color: var(--text); line-height: 1.75;
-  position: relative;
-}
-.mexc-supplement-label {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11px; font-weight: 700;
-  color: var(--note); letter-spacing: 0.8px;
-  margin-bottom: 8px; text-transform: uppercase;
-}
-.mexc-supplement a {
-  color: var(--note); text-decoration: none; font-weight: 700;
-  border-bottom: 1px solid rgba(65, 201, 180, 0.5);
-  transition: all 0.2s;
-}
+.mexc-supplement { margin-top: 24px; padding: 16px 20px 18px; background: linear-gradient(135deg, rgba(65,201,180,0.1) 0%, rgba(65,201,180,0.04) 100%); border: 1px solid rgba(65, 201, 180, 0.35); border-left: 3px solid var(--note); border-radius: 10px; font-size: 13px; color: var(--text); line-height: 1.75; position: relative; }
+.mexc-supplement-label { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; color: var(--note); letter-spacing: 0.8px; margin-bottom: 8px; text-transform: uppercase; }
+.mexc-supplement a { color: var(--note); text-decoration: none; font-weight: 700; border-bottom: 1px solid rgba(65, 201, 180, 0.5); transition: all 0.2s; }
 .mexc-supplement a:hover { color: #5dd4c1; border-bottom-color: #5dd4c1; }
-@media (max-width: 640px) {
-  .mexc-product::before { display: none; }
-  .mexc-product { padding: 24px 20px; }
-}
-/* ── Price Analysis Note Product ── */
-.analysis-banner {
-  display: block; text-decoration: none; color: inherit;
-  background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%);
-  border: 1px solid rgba(65,201,180,0.3);
-  border-radius: 16px; padding: 28px 32px;
-  margin-bottom: 28px; position: relative; overflow: hidden;
-  transition: all 0.3s ease;
-}
+@media (max-width: 640px) { .mexc-product::before { display: none; } .mexc-product { padding: 24px 20px; } }
+.analysis-banner { display: block; text-decoration: none; color: inherit; background: linear-gradient(135deg, rgba(65,201,180,0.06) 0%, rgba(244,183,40,0.05) 100%); border: 1px solid rgba(65,201,180,0.3); border-radius: 16px; padding: 28px 32px; margin-bottom: 28px; position: relative; overflow: hidden; transition: all 0.3s ease; }
 .analysis-banner:hover { border-color: var(--note); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(65,201,180,0.1); }
-.analysis-banner::before {
-  content: 'ANALYSIS'; position: absolute; right: 20px; top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 70px; font-weight: 700;
-  color: rgba(65,201,180,0.05);
-  letter-spacing: -2px; user-select: none;
-}
-.analysis-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(65,201,180,0.12); color: var(--note);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 4px 12px; border-radius: 20px;
-  border: 1px solid rgba(65,201,180,0.3);
-  margin-bottom: 12px;
-}
+.analysis-banner::before { content: 'ANALYSIS'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 70px; font-weight: 700; color: rgba(65,201,180,0.05); letter-spacing: -2px; user-select: none; }
+.analysis-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(65,201,180,0.12); color: var(--note); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(65,201,180,0.3); margin-bottom: 12px; }
 .analysis-banner h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; position: relative; }
 .analysis-banner h3 span { color: var(--note); }
 .analysis-banner > div > p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 520px; margin-bottom: 18px; position: relative; }
-.analysis-cta {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--note); color: #080B14;
-  font-size: 13px; font-weight: 700;
-  padding: 11px 20px; border-radius: 8px;
-  position: relative; transition: all 0.2s;
-}
+.analysis-cta { display: inline-flex; align-items: center; gap: 8px; background: var(--note); color: #080B14; font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 8px; position: relative; transition: all 0.2s; }
 .analysis-banner:hover .analysis-cta { background: #5dd4c1; }
 .analysis-cta svg { width: 14px; height: 14px; }
-@media (max-width: 640px) {
-  .analysis-banner::before { display: none; }
-  .analysis-banner { padding: 24px 20px; }
-}
-/* ── Book Product Card ── */
-.book-product {
-  background: linear-gradient(135deg, rgba(244,183,40,0.06) 0%, rgba(244,183,40,0.02) 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px; padding: 32px 36px 28px;
-  margin-bottom: 28px; position: relative; overflow: hidden;
-  transition: all 0.25s;
-}
-.book-product:hover {
-  border-color: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(244,183,40,0.08);
-}
-.book-product::before {
-  content: 'BOOK'; position: absolute; right: 28px; top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 110px; font-weight: 700;
-  color: rgba(244,183,40,0.04);
-  letter-spacing: -3px; user-select: none;
-}
-.book-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--gold-glow); color: var(--gold);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 4px 12px; border-radius: 20px;
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
-  position: relative;
-}
+@media (max-width: 640px) { .analysis-banner::before { display: none; } .analysis-banner { padding: 24px 20px; } }
+.book-product { background: linear-gradient(135deg, rgba(244,183,40,0.06) 0%, rgba(244,183,40,0.02) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px 28px; margin-bottom: 28px; position: relative; overflow: hidden; transition: all 0.25s; }
+.book-product:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(244,183,40,0.08); }
+.book-product::before { content: 'BOOK'; position: absolute; right: 28px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 110px; font-weight: 700; color: rgba(244,183,40,0.04); letter-spacing: -3px; user-select: none; }
+.book-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 12px; position: relative; }
 .book-product h3 { font-size: 22px; font-weight: 700; margin-bottom: 10px; position: relative; }
 .book-product h3 em { color: var(--gold); font-style: normal; }
 .book-product > p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 560px; margin-bottom: 20px; position: relative; }
 .book-product > p strong { color: var(--text); }
-.book-details {
-  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
-  margin-bottom: 20px; position: relative;
-}
-.book-price-tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 28px; font-weight: 700;
-  color: var(--gold);
-  padding: 10px 20px;
-  background: var(--gold-glow);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  line-height: 1;
-}
-.book-price-tag small {
-  font-size: 12px; font-weight: 500;
-  color: var(--muted); display: block;
-  margin-top: 4px;
-}
-.book-features {
-  display: flex; gap: 8px; flex-wrap: wrap;
-  position: relative;
-}
-.book-feature-tag {
-  background: rgba(244,183,40,0.08);
-  border: 1px solid rgba(244,183,40,0.2);
-  font-size: 11px; font-weight: 600; color: var(--gold);
-  padding: 4px 12px; border-radius: 6px;
-}
-.book-coming-soon {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--gold); color: #080B14;
-  font-size: 13px; font-weight: 700;
-  padding: 11px 20px; border-radius: 8px;
-  position: relative; cursor: default;
-}
-.book-visual {
-  position: absolute; right: 140px; top: 50%;
-  transform: translateY(-50%);
-  opacity: 0.12;
-  pointer-events: none;
-}
-@media (max-width: 640px) {
-  .book-product::before { display: none; }
-  .book-product { padding: 24px 20px; }
-  .book-visual { display: none; }
-}
-/* ── Consulting Product Card ── */
-.consulting-product {
-  background: linear-gradient(135deg, #0d1426 0%, #141e38 50%, #0f1830 100%);
-  border: 1px solid rgba(244,183,40,0.25);
-  border-radius: 16px; padding: 36px 36px 32px;
-  margin-top: 12px; position: relative; overflow: hidden;
-  transition: all 0.25s;
-}
-.consulting-product:hover {
-  border-color: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(244,183,40,0.1);
-}
-.consulting-product::before {
-  content: 'ADVISORY'; position: absolute; right: 20px; top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 90px; font-weight: 700;
-  color: rgba(244,183,40,0.035);
-  letter-spacing: -3px; user-select: none;
-}
-.consulting-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--gold-glow); color: var(--gold);
-  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
-  padding: 4px 12px; border-radius: 20px;
-  border: 1px solid var(--border);
-  margin-bottom: 14px;
-  position: relative;
-}
-.consulting-product h3 {
-  font-size: 24px; font-weight: 700;
-  margin-bottom: 10px; position: relative;
-  line-height: 1.4;
-}
+.book-details { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; margin-bottom: 20px; position: relative; }
+.book-price-tag { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; color: var(--gold); padding: 10px 20px; background: var(--gold-glow); border: 1px solid var(--border); border-radius: 10px; line-height: 1; }
+.book-price-tag small { font-size: 12px; font-weight: 500; color: var(--muted); display: block; margin-top: 4px; }
+.book-features { display: flex; gap: 8px; flex-wrap: wrap; position: relative; }
+.book-feature-tag { background: rgba(244,183,40,0.08); border: 1px solid rgba(244,183,40,0.2); font-size: 11px; font-weight: 600; color: var(--gold); padding: 4px 12px; border-radius: 6px; }
+.book-coming-soon { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #080B14; font-size: 13px; font-weight: 700; padding: 11px 20px; border-radius: 8px; position: relative; cursor: default; }
+.book-visual { position: absolute; right: 140px; top: 50%; transform: translateY(-50%); opacity: 0.12; pointer-events: none; }
+@media (max-width: 640px) { .book-product::before { display: none; } .book-product { padding: 24px 20px; } .book-visual { display: none; } }
+.consulting-product { background: linear-gradient(135deg, #0d1426 0%, #141e38 50%, #0f1830 100%); border: 1px solid rgba(244,183,40,0.25); border-radius: 16px; padding: 36px 36px 32px; margin-top: 12px; position: relative; overflow: hidden; transition: all 0.25s; }
+.consulting-product:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(244,183,40,0.1); }
+.consulting-product::before { content: 'ADVISORY'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 90px; font-weight: 700; color: rgba(244,183,40,0.035); letter-spacing: -3px; user-select: none; }
+.consulting-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--gold-glow); color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 0.5px; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 14px; position: relative; }
+.consulting-product h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; position: relative; line-height: 1.4; }
 .consulting-product h3 span { color: var(--gold); }
-.consulting-subtitle {
-  font-size: 14px; color: var(--muted);
-  margin-bottom: 20px; position: relative;
-  line-height: 1.8;
-  max-width: 600px;
-}
+.consulting-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 20px; position: relative; line-height: 1.8; max-width: 600px; }
 .consulting-subtitle strong { color: var(--text); }
-.consulting-offerings {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 14px; margin-bottom: 24px; position: relative;
-}
-@media (max-width: 640px) {
-  .consulting-offerings { grid-template-columns: 1fr; }
-}
-.consulting-offering {
-  background: rgba(244,183,40,0.04);
-  border: 1px solid rgba(244,183,40,0.15);
-  border-radius: 10px;
-  padding: 18px 20px;
-}
-.consulting-offering-label {
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.5px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 6px;
-}
-.consulting-offering-title {
-  font-size: 14px; font-weight: 600;
-  color: var(--text); margin-bottom: 4px;
-}
-.consulting-offering-desc {
-  font-size: 12px; color: var(--muted);
-  line-height: 1.6;
-}
-.consulting-price-row {
-  display: flex; align-items: center; gap: 20px;
-  flex-wrap: wrap; margin-bottom: 24px;
-  position: relative;
-}
-.consulting-price {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 32px; font-weight: 700;
-  color: var(--gold); line-height: 1;
-}
-.consulting-price small {
-  font-size: 14px; font-weight: 500;
-  color: var(--muted);
-}
-.consulting-price-note {
-  font-size: 12px; color: var(--muted);
-  line-height: 1.5;
-}
-.consulting-cta-link {
-  display: inline-flex; align-items: center; gap: 8px;
-  background: var(--gold); color: #080B14;
-  font-size: 13px; font-weight: 700;
-  text-decoration: none;
-  padding: 12px 24px; border-radius: 8px;
-  position: relative; transition: all 0.2s;
-}
-.consulting-cta-link:hover {
-  background: #ffc93d;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(244,183,40,0.25);
-}
+.consulting-offerings { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; position: relative; }
+@media (max-width: 640px) { .consulting-offerings { grid-template-columns: 1fr; } }
+.consulting-offering { background: rgba(244,183,40,0.04); border: 1px solid rgba(244,183,40,0.15); border-radius: 10px; padding: 18px 20px; }
+.consulting-offering-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--gold); margin-bottom: 6px; }
+.consulting-offering-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.consulting-offering-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+.consulting-price-row { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 24px; position: relative; }
+.consulting-price { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--gold); line-height: 1; }
+.consulting-price small { font-size: 14px; font-weight: 500; color: var(--muted); }
+.consulting-price-note { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.consulting-cta-link { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: #080B14; font-size: 13px; font-weight: 700; text-decoration: none; padding: 12px 24px; border-radius: 8px; position: relative; transition: all 0.2s; }
+.consulting-cta-link:hover { background: #ffc93d; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(244,183,40,0.25); }
 .consulting-cta-link svg { width: 14px; height: 14px; }
-.consulting-divider {
-  width: 100%; height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
-  margin: 36px 0 28px;
-}
-@media (max-width: 640px) {
-  .consulting-product::before { display: none; }
-  .consulting-product { padding: 28px 20px 24px; }
-}
-/* ── Merchandise section (Coming Soon) ── */
-.merch-section-tag {
-  font-size: 11px; font-weight: 700; letter-spacing: 0.8px;
-  background: linear-gradient(90deg, var(--note), var(--gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.merch-intro {
-  font-size: 13px; color: var(--muted); line-height: 1.8;
-  margin-top: -8px; margin-bottom: 28px; max-width: 580px;
-}
-.merch-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 20px; margin-bottom: 32px;
-}
-@media (max-width: 900px) { .merch-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 600px) { .merch-grid { grid-template-columns: 1fr; } }
-.merch-grid-single { grid-template-columns: minmax(0, 340px) !important; justify-content: start; }
-.merch-card {
-  background: var(--bg2);
-  border: 1px solid var(--border2);
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  transition: all 0.25s;
-  position: relative;
-}
-.merch-card:hover {
-  border-color: var(--border);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(244,183,40,0.06);
-}
-.merch-image {
-  background: linear-gradient(135deg, rgba(244,183,40,0.04) 0%, rgba(65,201,180,0.03) 100%);
-  height: 180px;
-  display: flex; align-items: center; justify-content: center;
-  position: relative;
-  border-bottom: 1px solid var(--border2);
-  overflow: hidden;
-}
-.merch-image svg {
-  width: 100px; height: 100px;
-  color: var(--gold);
-  opacity: 0.85;
-  transition: transform 0.3s;
-}
-.merch-card:hover .merch-image svg { transform: scale(1.05); }
-.merch-logo-tag {
-  position: absolute; top: 12px; right: 12px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  color: var(--gold);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 700; font-size: 11px;
-  letter-spacing: 0.5px;
-  padding: 3px 9px; border-radius: 6px;
-}
-.merch-logo-tag.merch-logo-large {
-  font-size: 32px; padding: 6px 14px;
-  position: absolute; top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  background: var(--bg2);
-}
-.merch-info {
-  padding: 20px 22px 22px;
-  display: flex; flex-direction: column;
-  gap: 6px;
-}
-.merch-name { font-size: 16px; font-weight: 700; color: var(--text); }
-.merch-desc { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 12px; }
-.merch-badge {
-  align-self: flex-start;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 4px 12px; border-radius: 20px;
-  background: rgba(65,201,180,0.12);
-  color: var(--note);
-  border: 1px solid rgba(65,201,180,0.3);
-}
-.merch-notice {
-  font-size: 12px; color: var(--muted);
-  text-align: center;
-  padding: 16px;
-  margin-top: 8px;
-}
-.merch-notice a {
-  color: var(--gold);
-  text-decoration: none;
-  font-weight: 600;
-}
-.merch-notice a:hover { text-decoration: underline; }
-/* ── About page ── */
-/* ── About manifesto (thesis-driven hero) ── */
-.about-manifesto {
-  position: relative;
-  padding: 72px 56px 64px;
-  margin-bottom: 56px;
-  background:
-    radial-gradient(circle at 18% 25%, rgba(244,183,40,0.07) 0%, transparent 55%),
-    radial-gradient(circle at 82% 75%, rgba(29,190,172,0.04) 0%, transparent 55%),
-    linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-}
-.about-manifesto::before {
-  content: 'P2P';
-  position: absolute;
-  right: -20px; top: -30px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 240px; font-weight: 700;
-  color: rgba(244,183,40,0.035);
-  letter-spacing: -10px; line-height: 1;
-  user-select: none;
-}
-.manifesto-tag {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px; font-weight: 700;
-  letter-spacing: 2.5px; text-transform: uppercase;
-  color: var(--gold);
-  background: var(--gold-glow);
-  border: 1px solid var(--border);
-  padding: 7px 16px; border-radius: 20px;
-  margin-bottom: 32px;
-  position: relative;
-}
-.manifesto-tag .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--gold);
-  box-shadow: 0 0 10px var(--gold);
-  animation: pulse-glow 2.4s ease-in-out infinite;
-}
-@keyframes pulse-glow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.45; }
-}
-.manifesto-headline {
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 46px; font-weight: 700;
-  line-height: 1.4;
-  letter-spacing: 0.01em;
-  color: var(--text);
-  margin-bottom: 36px;
-  max-width: 720px;
-  position: relative;
-}
-.manifesto-headline em {
-  color: var(--gold);
-  font-style: normal;
-}
-.manifesto-lede {
-  font-size: 16px;
-  line-height: 2.05;
-  color: var(--muted);
-  max-width: 640px;
-  position: relative;
-  letter-spacing: 0.015em;
-}
-.manifesto-lede strong {
-  color: var(--text);
-  font-weight: 600;
-}
-.manifesto-lede em {
-  color: var(--gold);
-  font-style: normal;
-  font-weight: 500;
-  font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-}
-@media (max-width: 640px) {
-  .about-manifesto { padding: 48px 28px 44px; margin-bottom: 40px; }
-  .about-manifesto::before { font-size: 150px; top: -10px; right: -10px; }
-  .manifesto-headline { font-size: 28px; line-height: 1.5; margin-bottom: 28px; }
-  .manifesto-lede { font-size: 14.5px; line-height: 1.95; }
-  .manifesto-tag { margin-bottom: 24px; }
-}
-/* ── Naval quote card ── */
-.naval-quote {
-  display: block;
-  background: linear-gradient(135deg, var(--bg2) 0%, rgba(244,183,40,0.04) 100%);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 36px 44px 32px;
-  margin-bottom: 32px;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.25s;
-}
-.naval-quote:hover {
-  border-color: var(--gold);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(244,183,40,0.06);
-}
-.naval-quote-mark {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 110px; font-weight: 700;
-  color: var(--gold);
-  opacity: 0.18;
-  position: absolute;
-  top: 8px; left: 24px;
-  line-height: 1; user-select: none;
-}
-.naval-quote-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 22px; font-weight: 600;
-  line-height: 1.55; color: var(--text);
-  margin-bottom: 16px;
-  position: relative; z-index: 1;
-  letter-spacing: 0.2px;
-}
-.naval-quote-translation {
-  font-size: 17px; color: var(--text);
-  font-weight: 500;
-  line-height: 1.8; margin-bottom: 22px;
-  position: relative; z-index: 1;
-  padding: 14px 0 14px 18px;
-  border-left: 2px solid var(--gold);
-}
-.naval-quote-cite {
-  font-size: 13px; color: var(--muted);
-  display: inline-flex; align-items: center; gap: 8px;
-  position: relative; z-index: 1;
-}
+.consulting-divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin: 36px 0 28px; }
+@media (max-width: 640px) { .consulting-product::before { display: none; } .consulting-product { padding: 28px 20px 24px; } }
+.merch-section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(90deg, var(--note), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.merch-intro { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: -8px; margin-bottom: 28px; max-width: 580px; }
+.about-manifesto { position: relative; padding: 72px 56px 64px; margin-bottom: 56px; background: radial-gradient(circle at 18% 25%, rgba(244,183,40,0.07) 0%, transparent 55%), radial-gradient(circle at 82% 75%, rgba(29,190,172,0.04) 0%, transparent 55%), linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+.about-manifesto::before { content: 'P2P'; position: absolute; right: -20px; top: -30px; font-family: 'Space Grotesk', sans-serif; font-size: 240px; font-weight: 700; color: rgba(244,183,40,0.035); letter-spacing: -10px; line-height: 1; user-select: none; }
+.manifesto-tag { display: inline-flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 7px 16px; border-radius: 20px; margin-bottom: 32px; position: relative; }
+.manifesto-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); animation: pulse-glow 2.4s ease-in-out infinite; }
+@keyframes pulse-glow { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+.manifesto-headline { font-family: 'Noto Sans JP', sans-serif; font-size: 46px; font-weight: 700; line-height: 1.4; letter-spacing: 0.01em; color: var(--text); margin-bottom: 36px; max-width: 720px; position: relative; }
+.manifesto-headline em { color: var(--gold); font-style: normal; }
+.manifesto-lede { font-size: 16px; line-height: 2.05; color: var(--muted); max-width: 640px; position: relative; letter-spacing: 0.015em; }
+.manifesto-lede strong { color: var(--text); font-weight: 600; }
+.manifesto-lede em { color: var(--gold); font-style: normal; font-weight: 500; font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif; }
+@media (max-width: 640px) { .about-manifesto { padding: 48px 28px 44px; margin-bottom: 40px; } .about-manifesto::before { font-size: 150px; top: -10px; right: -10px; } .manifesto-headline { font-size: 28px; line-height: 1.5; margin-bottom: 28px; } .manifesto-lede { font-size: 14.5px; line-height: 1.95; } .manifesto-tag { margin-bottom: 24px; } }
+.naval-quote { display: block; background: linear-gradient(135deg, var(--bg2) 0%, rgba(244,183,40,0.04) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 36px 44px 32px; margin-bottom: 32px; position: relative; overflow: hidden; text-decoration: none; color: inherit; transition: all 0.25s; }
+.naval-quote:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(244,183,40,0.06); }
+.naval-quote-mark { font-family: 'Space Grotesk', sans-serif; font-size: 110px; font-weight: 700; color: var(--gold); opacity: 0.18; position: absolute; top: 8px; left: 24px; line-height: 1; user-select: none; }
+.naval-quote-text { font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 600; line-height: 1.55; color: var(--text); margin-bottom: 16px; position: relative; z-index: 1; letter-spacing: 0.2px; }
+.naval-quote-translation { font-size: 17px; color: var(--text); font-weight: 500; line-height: 1.8; margin-bottom: 22px; position: relative; z-index: 1; padding: 14px 0 14px 18px; border-left: 2px solid var(--gold); }
+.naval-quote-cite { font-size: 13px; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; position: relative; z-index: 1; }
 .naval-quote-cite svg { color: var(--text); opacity: 0.6; }
 .naval-quote-handle { color: var(--gold); font-weight: 500; }
-@media (max-width: 640px) {
-  .naval-quote { padding: 28px 24px 24px; }
-  .naval-quote-mark { font-size: 80px; left: 12px; }
-  .naval-quote-text { font-size: 17px; }
-}
-/* ── Founder story (refined for readability) ── */
-.founder-story {
-  max-width: 100%;
-  margin: 0 0 56px;
-  padding: 0;
-}
-.founder-story-title {
-  font-size: 22px; font-weight: 700;
-  color: var(--text);
-  margin-bottom: 32px;
-  padding: 0 0 18px;
-  border-left: none;
-  position: relative;
-  line-height: 1.4;
-}
-.founder-story-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0;
-  width: 48px; height: 2px;
-  background: var(--gold);
-  border-radius: 2px;
-}
-.founder-story-body p {
-  font-size: 15.5px; color: var(--text);
-  line-height: 2.05; margin-bottom: 26px;
-  letter-spacing: 0.025em;
-}
+@media (max-width: 640px) { .naval-quote { padding: 28px 24px 24px; } .naval-quote-mark { font-size: 80px; left: 12px; } .naval-quote-text { font-size: 17px; } }
+.founder-story { max-width: 100%; margin: 0 0 56px; padding: 0; }
+.founder-story-title { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 32px; padding: 0 0 18px; border-left: none; position: relative; line-height: 1.4; }
+.founder-story-title::after { content: ''; position: absolute; bottom: 0; left: 0; width: 48px; height: 2px; background: var(--gold); border-radius: 2px; }
+.founder-story-body p { font-size: 15.5px; color: var(--text); line-height: 2.05; margin-bottom: 26px; letter-spacing: 0.025em; }
 .founder-story-body p:last-child { margin-bottom: 0; }
-.founder-story-body p strong {
-  color: var(--gold);
-  font-weight: 600;
-}
-.pull-quote {
-  font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif;
-  font-size: 20px; font-weight: 500;
-  color: var(--gold);
-  background: rgba(244,183,40,0.04);
-  border-left: 3px solid var(--gold);
-  padding: 24px 28px;
-  margin: 36px 0;
-  border-radius: 0 8px 8px 0;
-  line-height: 1.7;
-  letter-spacing: 0.015em;
-  position: relative;
-}
-@media (max-width: 640px) {
-  .pull-quote { font-size: 17px; padding: 20px 22px; }
-  .founder-story-body p { font-size: 14.5px; line-height: 1.95; margin-bottom: 22px; }
-  .founder-story-title { font-size: 19px; margin-bottom: 24px; }
-}
+.founder-story-body p strong { color: var(--gold); font-weight: 600; }
+.pull-quote { font-family: 'Space Grotesk', 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 500; color: var(--gold); background: rgba(244,183,40,0.04); border-left: 3px solid var(--gold); padding: 24px 28px; margin: 36px 0; border-radius: 0 8px 8px 0; line-height: 1.7; letter-spacing: 0.015em; position: relative; }
+@media (max-width: 640px) { .pull-quote { font-size: 17px; padding: 20px 22px; } .founder-story-body p { font-size: 14.5px; line-height: 1.95; margin-bottom: 22px; } .founder-story-title { font-size: 19px; margin-bottom: 24px; } }
 .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 40px; }
 .about-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px; }
 .about-card-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--gold-glow); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
@@ -753,12 +211,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .sns-info p { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .sns-arrow { margin-left: auto; color: var(--muted); flex-shrink: 0; }
 .sns-arrow svg { width: 16px; height: 16px; }
-/* ── Footer ── */
 footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .footer-inner { max-width: 1100px; margin: 0 auto; padding: 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .footer-text { font-size: 12px; color: var(--muted); }
 .footer-social { display: flex; gap: 8px; }
-/* ── Stats bar ── */
 .stats-bar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; }
 .stat-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px 16px; transition: border-color 0.2s; overflow: hidden; display: flex; flex-direction: column; }
 .stat-card:hover { border-color: var(--border); }
@@ -773,7 +229,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .stat-chart { height: 110px; margin: 0 -24px -16px; position: relative; margin-top: auto; }
 .stat-chart svg { width: 100%; height: 100%; display: block; }
 .chart-loading { font-size: 11px; color: var(--muted); text-align: center; padding-top: 40px; }
-/* ── Secondary stats ── */
 .secondary-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 40px; }
 .sec-stat-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: all 0.2s; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
 .sec-stat-card:hover { border-color: var(--border); transform: translateY(-1px); }
@@ -785,41 +240,16 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .sec-stat-sub strong { color: var(--gold); font-weight: 600; }
 .sec-stat-source { font-size: 10px; color: var(--muted); opacity: 0.7; margin-top: auto; padding-top: 10px; display: flex; align-items: center; gap: 4px; }
 .sec-stat-source svg { width: 10px; height: 10px; }
-/* ── Supply progress bar ── */
-.supply-progress-bar {
-  height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px;
-  overflow: hidden; margin: 8px 0 10px;
-}
-.supply-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 100%);
-  border-radius: 3px; transition: width 1.2s ease;
-}
-/* ── Shielded pool breakdown ── */
-.shielded-pools {
-  display: flex; gap: 14px; flex-wrap: wrap;
-  font-size: 11px; color: var(--muted);
-  margin-bottom: 14px;
-  padding-top: 2px;
-}
-.shielded-pool-tag {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-weight: 500;
-}
-.shielded-pool-tag strong {
-  color: var(--text); font-weight: 700;
-  font-family: 'Space Grotesk', sans-serif;
-}
-.shielded-pool-tag .dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  display: inline-block;
-}
-@media (max-width: 640px) {
-  .stats-bar, .secondary-stats { grid-template-columns: 1fr; }
-  main { padding: 24px 16px 60px; }
-  .social-links { display: none; }
-  .nav-btn { padding: 8px 10px; font-size: 13px; }
-}
+.supply-progress-bar { height: 5px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; margin: 8px 0 10px; }
+.supply-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 100%); border-radius: 3px; transition: width 1.2s ease; }
+.shielded-pools { display: flex; gap: 14px; flex-wrap: wrap; font-size: 11px; color: var(--muted); margin-bottom: 14px; padding-top: 2px; }
+.shielded-pool-tag { display: inline-flex; align-items: center; gap: 5px; font-weight: 500; }
+.shielded-pool-tag strong { color: var(--text); font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+.shielded-pool-tag .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
+.stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 6px; text-align: right; }
+.stat-source-link a { color: var(--muted); text-decoration: none; }
+.stat-source-link a:hover { color: var(--gold); }
+@media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } }
 </style>
 </head>
 <body>
@@ -835,18 +265,14 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
       </nav>
       <div class="social-links">
-        <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener" title="X (Twitter)">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-        <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener" title="YouTube">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </a>
+        <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+        <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener" title="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
         <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" rel="noopener" title="note">note</a>
       </div>
     </div>
   </div>
 </header>
-<!-- ━━━ Home Page (default) ━━━ -->
+<!-- ━━━ Home Page ━━━ -->
 <div id="page-home" class="page active">
   <main>
     <div class="stats-bar">
@@ -868,10 +294,14 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="stat-value" id="stat-shielded">—</div>
         <div class="stat-sub" id="stat-shielded-pct">読み込み中…</div>
         <div class="shielded-pools">
-          <span class="shielded-pool-tag"><span class="dot" style="background:#F4B728"></span>Orchard <strong id="pool-orchard">27.1%</strong></span>
-          <span class="shielded-pool-tag"><span class="dot" style="background:#1DBEAC"></span>Sapling <strong id="pool-sapling">3.6%</strong></span>
+          <span class="shielded-pool-tag"><span class="dot" style="background:#F4B728"></span>Orchard <strong id="pool-orchard">—</strong></span>
+          <span class="shielded-pool-tag"><span class="dot" style="background:#1DBEAC"></span>Sapling <strong id="pool-sapling">—</strong></span>
+          <span class="shielded-pool-tag"><span class="dot" style="background:#8A8FA8"></span>Sprout <strong id="pool-sprout">—</strong></span>
         </div>
         <div class="stat-chart" id="chart-shielded"><div class="chart-loading">チャート読み込み中…</div></div>
+        <div class="stat-source-link">
+          <a href="https://zecstats.com/chart/shielding-rate" target="_blank" rel="noopener">Source: zecstats.com</a>
+        </div>
       </div>
     </div>
     <div class="secondary-stats">
@@ -962,19 +392,13 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <span class="card-tag">note</span>
         <div class="card-title">読み込み中…</div>
         <div class="card-excerpt">noteから最新記事を取得しています…</div>
-        <div class="card-meta">
-          <span class="card-meta-source">note.com</span>
-          <span></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-source">note.com</span><span></span></div>
       </a>
       <a class="article-card loading" id="article-slot-2" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
         <span class="card-tag">note</span>
         <div class="card-title">読み込み中…</div>
         <div class="card-excerpt">noteから最新記事を取得しています…</div>
-        <div class="card-meta">
-          <span class="card-meta-source">note.com</span>
-          <span></span>
-        </div>
+        <div class="card-meta"><span class="card-meta-source">note.com</span><span></span></div>
       </a>
     </div>
   </main>
@@ -982,7 +406,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <!-- ━━━ Buy Page ━━━ -->
 <div id="page-buy" class="page">
   <main>
-    <!-- ━━ 商品①：MEXC（統合版） ━━ -->
     <div class="mexc-product">
       <div class="mexc-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
@@ -1012,7 +435,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         海外取引所での購入がはじめての方は、<a href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">noteの完全ガイド</a>を参考にどうぞ。ゼロから丁寧に解説しています。
       </div>
     </div>
-    <!-- ━━ 商品②：Zcash 解説本 ━━ -->
     <div class="book-product">
       <div class="book-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
@@ -1021,10 +443,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h3>Zcashを日本語で<em>わかりやすく解説する本</em></h3>
       <p>プライバシーコインの仕組みから購入方法、ウォレット運用、将来の展望まで ── Zcashのすべてを日本語で体系的にまとめた一冊。暗号資産の初心者から、ビットコインの次を探している投資家まで。</p>
       <div class="book-details">
-        <div class="book-price-tag">
-          ¥1,900
-          <small>税込</small>
-        </div>
+        <div class="book-price-tag">¥1,900<small>税込</small></div>
         <div class="book-features">
           <span class="book-feature-tag">日本語</span>
           <span class="book-feature-tag">初心者対応</span>
@@ -1045,7 +464,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <text x="30" y="62" font-family="Space Grotesk, sans-serif" font-size="10" font-weight="700" fill="currentColor" opacity="0.4">ZEC</text>
       </svg>
     </div>
-    <!-- ━━ 商品③：価格分析note ━━ -->
     <a class="analysis-banner" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
       <div>
         <div class="analysis-badge">
@@ -1061,7 +479,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </span>
       </div>
     </a>
-    <!-- ━━ 商品④：コンサルティング ━━ -->
     <div class="consulting-divider"></div>
     <div class="consulting-product">
       <div class="consulting-badge">
@@ -1083,13 +500,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </div>
       <div class="consulting-price-row">
-        <div class="consulting-price">
-          ¥100,000 <small>/ 単発セッション</small>
-        </div>
-        <div class="consulting-price-note">
-          60分 ／ オンライン（Zoom）<br>
-          日本語 &amp; 英語対応
-        </div>
+        <div class="consulting-price">¥100,000 <small>/ 単発セッション</small></div>
+        <div class="consulting-price-note">60分 ／ オンライン（Zoom）<br>日本語 &amp; 英語対応</div>
       </div>
       <a class="consulting-cta-link" href="mailto:japanzcash@gmail.com?subject=Zcash%20%E3%82%B3%E3%83%B3%E3%82%B5%E3%83%AB%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%E3%81%AE%E3%81%8A%E5%95%8F%E3%81%84%E5%90%88%E3%82%8F%E3%81%9B" target="_blank" rel="noopener">
         メールで問い合わせる
@@ -1105,27 +517,14 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <div id="page-about" class="page">
   <main>
     <div class="about-manifesto">
-      <div class="manifesto-tag">
-        <span class="dot"></span>
-        About — Encrypted P2P Cash
-      </div>
-      <h1 class="manifesto-headline">
-        ビットコインの夢のつづきを、<br>
-        <em>Zcash</em> で。
-      </h1>
-      <p class="manifesto-lede">
-        2008年、サトシ・ナカモトが描いた <em>「A Peer-to-Peer Electronic Cash System」</em> ── 暗号化された個人間電子現金。透明な台帳のビットコインは、その夢の半分を実現した。残りの半分 ── 取引のプライバシー ── を埋めるのが、<strong>Zcash</strong> です。
-      </p>
+      <div class="manifesto-tag"><span class="dot"></span>About — Encrypted P2P Cash</div>
+      <h1 class="manifesto-headline">ビットコインの夢のつづきを、<br><em>Zcash</em> で。</h1>
+      <p class="manifesto-lede">2008年、サトシ・ナカモトが描いた <em>「A Peer-to-Peer Electronic Cash System」</em> ── 暗号化された個人間電子現金。透明な台帳のビットコインは、その夢の半分を実現した。残りの半分 ── 取引のプライバシー ── を埋めるのが、<strong>Zcash</strong> です。</p>
     </div>
     <a class="naval-quote" href="https://x.com/naval/status/1973254136394293708" target="_blank" rel="noopener">
       <div class="naval-quote-mark">"</div>
-      <div class="naval-quote-text">
-        Bitcoin is insurance against fiat.<br>
-        Zcash is insurance against Bitcoin.
-      </div>
-      <div class="naval-quote-translation">
-        ビットコインは法定通貨への保険。Zcash はビットコインへの保険。
-      </div>
+      <div class="naval-quote-text">Bitcoin is insurance against fiat.<br>Zcash is insurance against Bitcoin.</div>
+      <div class="naval-quote-translation">ビットコインは法定通貨への保険。Zcash はビットコインへの保険。</div>
       <div class="naval-quote-cite">
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         Naval Ravikant <span class="naval-quote-handle">@naval</span> · 2025年10月
@@ -1133,12 +532,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </a>
     <a class="naval-quote" href="https://x.com/Snowden/status/943165560438886400" target="_blank" rel="noopener" style="border-color: rgba(65,201,180,0.3); background: linear-gradient(135deg, var(--bg2) 0%, rgba(65,201,180,0.04) 100%);">
       <div class="naval-quote-mark" style="color:var(--note);">"</div>
-      <div class="naval-quote-text">
-        Zcash's privacy tech makes it the most interesting Bitcoin alternative.
-      </div>
-      <div class="naval-quote-translation" style="border-left-color:var(--note);">
-        Zcashのプライバシー技術は、ビットコインの代替として最も興味深い存在にしている。
-      </div>
+      <div class="naval-quote-text">Zcash's privacy tech makes it the most interesting Bitcoin alternative.</div>
+      <div class="naval-quote-translation" style="border-left-color:var(--note);">Zcashのプライバシー技術は、ビットコインの代替として最も興味深い存在にしている。</div>
       <div class="naval-quote-cite">
         <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         Edward Snowden <span class="naval-quote-handle" style="color:var(--note);">@Snowden</span> · 2017年9月
@@ -1169,31 +564,18 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h3>SNSでフォローする</h3>
       <div class="sns-cards">
         <a class="sns-card twitter" href="https://x.com/zcashjp" target="_blank" rel="noopener">
-          <div class="sns-logo">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-          </div>
-          <div class="sns-info">
-            <h4>X (Twitter)</h4>
-            <p>最新情報をリアルタイムで発信。Zcash関連ニュースや価格動向も。</p>
-          </div>
+          <div class="sns-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></div>
+          <div class="sns-info"><h4>X (Twitter)</h4><p>最新情報をリアルタイムで発信。Zcash関連ニュースや価格動向も。</p></div>
           <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
         <a class="sns-card youtube" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener">
-          <div class="sns-logo">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-          </div>
-          <div class="sns-info">
-            <h4>YouTube</h4>
-            <p>Zcashの使い方、技術解説、マーケット分析を動画でわかりやすく解説。</p>
-          </div>
+          <div class="sns-logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div>
+          <div class="sns-info"><h4>YouTube</h4><p>Zcashの使い方、技術解説、マーケット分析を動画でわかりやすく解説。</p></div>
           <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
         <a class="sns-card note" href="https://note.com/zcashjapan" target="_blank" rel="noopener">
           <div class="sns-logo">note</div>
-          <div class="sns-info">
-            <h4>note</h4>
-            <p>購入ガイドや解説記事を販売。日本人がZcashを買うための実践的なノウハウ。</p>
-          </div>
+          <div class="sns-info"><h4>note</h4><p>購入ガイドや解説記事を販売。日本人がZcashを買うための実践的なノウハウ。</p></div>
           <div class="sns-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>
         </a>
       </div>
@@ -1204,12 +586,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   <div class="footer-inner">
     <span class="footer-text">© 2026 Zcash Japan. コミュニティ運営サイト。</span>
     <div class="footer-social">
-      <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
-      <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
+      <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a class="social-icon yt" href="https://www.youtube.com/@ZcashJapan" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
       <a class="social-icon note" href="https://note.com/zcashjapan" target="_blank" rel="noopener" title="note">note</a>
     </div>
   </div>
@@ -1254,9 +632,7 @@ window.addEventListener('popstate', () => {
   window.scrollTo(0, 0);
 });
 showPage(pathToPage(window.location.pathname));
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function formatPubDate(s) {
   if (!s) return '';
   const d = new Date(s);
@@ -1290,10 +666,7 @@ function showSlotFallback(slotId, label) {
     <span class="card-tag">note</span>
     <div class="card-title">${escHtml(label)}</div>
     <div class="card-excerpt">noteで Zcash Japan の最新記事をご覧ください。</div>
-    <div class="card-meta">
-      <span class="card-meta-source">note.com</span>
-      <span></span>
-    </div>
+    <div class="card-meta"><span class="card-meta-source">note.com</span><span></span></div>
   `;
 }
 async function loadNoteArticles() {
@@ -1302,17 +675,9 @@ async function loadNoteArticles() {
     if (!res.ok) throw new Error('feed unavailable');
     const data = await res.json();
     const items = (data.items || []).filter(it => it.url && it.url !== PINNED_URL);
-    if (items.length === 0) {
-      showSlotFallback('article-slot-1', '記事一覧を見る');
-      showSlotFallback('article-slot-2', 'note でフォローする');
-      return;
-    }
+    if (items.length === 0) { showSlotFallback('article-slot-1', '記事一覧を見る'); showSlotFallback('article-slot-2', 'note でフォローする'); return; }
     fillSlot('article-slot-1', items[0]);
-    if (items[1]) {
-      fillSlot('article-slot-2', items[1]);
-    } else {
-      showSlotFallback('article-slot-2', 'note でフォローする');
-    }
+    if (items[1]) { fillSlot('article-slot-2', items[1]); } else { showSlotFallback('article-slot-2', 'note でフォローする'); }
   } catch (e) {
     console.warn('note feed load failed:', e);
     showSlotFallback('article-slot-1', '最新記事は note で公開中');
@@ -1329,6 +694,7 @@ async function fetchPrice() {
   } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
 }
 fetchPrice();
+
 function renderSparkline(containerId, values, color, fillColor, xLabels, yFormatter) {
   const container = document.getElementById(containerId);
   if (!container || values.length < 2) return;
@@ -1370,19 +736,140 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
     });
   }
   container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-    <defs>
-      <linearGradient id="grad-${containerId}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${color}" stop-opacity="0.4"/>
-        <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    ${yLines}
-    ${xLines}
+    <defs><linearGradient id="grad-${containerId}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${color}" stop-opacity="0.4"/><stop offset="100%" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    ${yLines}${xLines}
     <polygon points="${fillPts}" fill="url(#grad-${containerId})"/>
     <polyline points="${polyline}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>
     <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
   </svg>`;
 }
+
+// ══════════════════════════════════════════════════════
+// Shielded Supply — 月次履歴データ（All-time）
+// zecstats.com + ブロックチェーンデータから構成
+// ══════════════════════════════════════════════════════
+const SHIELDED_HISTORY = [
+  ['2016-11',5000],['2017-01',15000],['2017-04',50000],['2017-07',100000],
+  ['2017-10',150000],['2018-01',200000],['2018-04',250000],['2018-07',300000],
+  ['2018-10',320000],['2019-01',350000],['2019-04',370000],['2019-07',380000],
+  ['2019-10',390000],['2020-01',400000],['2020-04',410000],['2020-07',415000],
+  ['2020-10',420000],['2021-01',430000],['2021-04',440000],['2021-07',445000],
+  ['2021-10',450000],['2022-01',455000],['2022-04',460000],
+  ['2022-07',470000],['2022-10',480000],['2023-01',490000],['2023-04',500000],
+  ['2023-07',510000],['2023-10',530000],['2024-01',560000],['2024-03',600000],
+  ['2024-05',700000],['2024-06',850000],['2024-07',1050000],['2024-08',1350000],
+  ['2024-09',1700000],['2024-10',2200000],['2024-11',3200000],['2024-12',3800000],
+  ['2025-01',4200000],['2025-02',4550000],['2025-03',4850000],
+  ['2025-04',5050000],['2025-05',5117767]
+];
+
+function renderShieldedChart(containerId, dataPoints, liveValue) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const values = dataPoints.map(d => d[1]);
+  if (liveValue && liveValue > 0) values[values.length - 1] = liveValue;
+  const labels = dataPoints.map(d => d[0]);
+  const W = container.offsetWidth || 500;
+  const H = 110;
+  const padL = 8, padR = 44, padT = 8, padB = 22;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+  const dataMax = Math.max(...values) * 1.08;
+  const range = dataMax || 1;
+  const toX = i => padL + (i / (values.length - 1)) * chartW;
+  const toY = v => padT + chartH - (v / range) * chartH;
+  let pathD = `M ${toX(0)},${toY(values[0])}`;
+  for (let i = 1; i < values.length; i++) {
+    const x0 = toX(i-1), y0 = toY(values[i-1]);
+    const x1 = toX(i), y1 = toY(values[i]);
+    const cx = (x0 + x1) / 2;
+    pathD += ` C ${cx},${y0} ${cx},${y1} ${x1},${y1}`;
+  }
+  const lastX = toX(values.length - 1);
+  const lastY = toY(values[values.length - 1]);
+  const fillD = pathD + ` L ${lastX},${padT+chartH} L ${padL},${padT+chartH} Z`;
+  const ySteps = [0, 2000000, 4000000, 6000000];
+  let yLines = '';
+  ySteps.forEach(val => {
+    if (val > dataMax) return;
+    const y = toY(val);
+    const label = val === 0 ? '0' : (val/1e6).toFixed(0)+'M';
+    yLines += `<line x1="${padL}" y1="${y}" x2="${W-padR+4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
+    yLines += `<text x="${W-padR+8}" y="${y+3}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
+  });
+  const xTargets = ['2017-01','2019-01','2021-01','2023-01','2024-06','2025-05'];
+  const xDisplay = ["'17","'19","'21","'23","'24","'25"];
+  let xLines = '';
+  xTargets.forEach((t, li) => {
+    const idx = labels.indexOf(t);
+    if (idx === -1) return;
+    const x = toX(idx);
+    xLines += `<text x="${x}" y="${H-4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="middle">${xDisplay[li]}</text>`;
+  });
+  container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    <defs><linearGradient id="shielded-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F4B728" stop-opacity="0.5"/><stop offset="70%" stop-color="#F4B728" stop-opacity="0.08"/><stop offset="100%" stop-color="#F4B728" stop-opacity="0"/></linearGradient></defs>
+    ${yLines}${xLines}
+    <path d="${fillD}" fill="url(#shielded-grad)"/>
+    <path d="${pathD}" fill="none" stroke="#F4B728" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${lastX}" cy="${lastY}" r="3.5" fill="#F4B728"/>
+    <circle cx="${lastX}" cy="${lastY}" r="6" fill="none" stroke="#F4B728" stroke-width="1" opacity="0.3"/>
+  </svg>`;
+}
+
+async function fetchShieldedStats() {
+  renderShieldedChart('chart-shielded', SHIELDED_HISTORY, null);
+  try {
+    const r = await fetch('https://api.blockchair.com/zcash/stats');
+    const d = await r.json();
+    const stats = d.data;
+    const KNOWN_ACCURATE = 5117767;
+    let shieldedZec = stats?.blockchain?.shielded_coins_value_approximate;
+    if (!shieldedZec || shieldedZec <= 0) shieldedZec = KNOWN_ACCURATE;
+    const MAX_SUPPLY = 21000000;
+    let circulation = stats?.blockchain?.circulation_approximate;
+    const circZec = circulation > MAX_SUPPLY ? circulation / 1e8 : circulation;
+    const shieldedPct = circZec ? ((shieldedZec / circZec) * 100).toFixed(1) : '31';
+    document.getElementById('stat-shielded').textContent =
+      Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
+    document.getElementById('stat-shielded-pct').textContent = shieldedPct + '% SHIELDED';
+    // プール内訳（zecstats.com 2025-05基準）
+    const POOL = { orchard:4498823, sapling:593354, sprout:25409 };
+    document.getElementById('pool-orchard').textContent = ((POOL.orchard/circZec)*100).toFixed(1)+'%';
+    document.getElementById('pool-sapling').textContent = ((POOL.sapling/circZec)*100).toFixed(1)+'%';
+    document.getElementById('pool-sprout').textContent = ((POOL.sprout/circZec)*100).toFixed(2)+'%';
+    renderShieldedChart('chart-shielded', SHIELDED_HISTORY, shieldedZec);
+    // Supply progress + halving
+    const NEXT_HALVING_BLOCK = 4406400;
+    const BLOCK_TIME_SEC = 75;
+    if (circZec) {
+      const pct = (circZec / MAX_SUPPLY) * 100;
+      document.getElementById('stat-supply-circ').textContent = (circZec/1e6).toFixed(2)+'M';
+      document.getElementById('stat-supply-pct').textContent = pct.toFixed(1)+'%';
+      document.getElementById('supply-progress-fill').style.width = pct.toFixed(1)+'%';
+    }
+    const blockHeight = stats?.blockchain?.blocks;
+    if (blockHeight && blockHeight < NEXT_HALVING_BLOCK) {
+      const remSec = (NEXT_HALVING_BLOCK - blockHeight) * BLOCK_TIME_SEC;
+      const remDays = Math.round(remSec / 86400);
+      const halvingDate = new Date(Date.now() + remSec * 1000);
+      document.getElementById('stat-halving-eta').textContent =
+        `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月頃（約${remDays.toLocaleString('ja-JP')}日）`;
+    } else {
+      document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
+    }
+    const hashrate = stats?.blockchain?.hashrate_24h;
+    if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
+  } catch(e) {
+    console.warn('Blockchair fetch failed:', e);
+    document.getElementById('stat-shielded').textContent = '5.118M ZEC';
+    document.getElementById('stat-shielded-pct').textContent = '30.6% SHIELDED';
+    document.getElementById('pool-orchard').textContent = '26.9%';
+    document.getElementById('pool-sapling').textContent = '3.5%';
+    document.getElementById('pool-sprout').textContent = '0.15%';
+    document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
+  }
+}
+
 async function fetchStats() {
   const fallbackPriceHistory = [
     38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
@@ -1435,63 +922,7 @@ async function fetchStats() {
   } catch {
     document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
   }
-  try {
-    const r2 = await fetch('https://api.blockchair.com/zcash/stats');
-    const d2 = await r2.json();
-    const shielded = d2.data?.blockchain?.shielded_coins_value_approximate;
-    let shieldedZec = 5183591;
-    if (shielded && shielded > 0) shieldedZec = shielded;
-    document.getElementById('stat-shielded').textContent = Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US', {minimumFractionDigits:3}) + 'M ZEC';
-    document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
-    // ── Supply progress + halving countdown ──
-    const NEXT_HALVING_BLOCK = 4406400; // 2nd halving (block 2,726,400) + 1,680,000 blocks ≈ Nov 2028
-    const BLOCK_TIME_SEC = 75;
-    const MAX_SUPPLY = 21000000;
-    let circulation = d2.data?.blockchain?.circulation_approximate;
-    let blockHeight = d2.data?.blockchain?.blocks;
-    if (circulation) {
-      // Detect unit: if value > max supply, treat as zatoshi (atomic units)
-      const circZec = circulation > MAX_SUPPLY ? circulation / 1e8 : circulation;
-      const pct = (circZec / MAX_SUPPLY) * 100;
-      document.getElementById('stat-supply-circ').textContent = (circZec / 1e6).toFixed(2) + 'M';
-      document.getElementById('stat-supply-pct').textContent = pct.toFixed(1) + '%';
-      document.getElementById('supply-progress-fill').style.width = pct.toFixed(1) + '%';
-    }
-    if (blockHeight && blockHeight < NEXT_HALVING_BLOCK) {
-      const remSec = (NEXT_HALVING_BLOCK - blockHeight) * BLOCK_TIME_SEC;
-      const remDays = Math.round(remSec / 86400);
-      const halvingDate = new Date(Date.now() + remSec * 1000);
-      document.getElementById('stat-halving-eta').textContent =
-        `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月頃（約${remDays.toLocaleString('ja-JP')}日）`;
-    } else {
-      document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
-    }
-    // ── Network hashrate ──
-    const hashrate = d2.data?.blockchain?.hashrate_24h;
-    if (hashrate) {
-      const ghs = hashrate / 1e9;
-      document.getElementById('stat-hashrate').textContent = ghs.toFixed(2);
-    }
-    const shieldedHistory = [
-      0, 10000, 50000, 100000, 150000, 200000, 250000, 280000,
-      300000, 400000, 500000, 600000, 700000, 750000, 800000,
-      900000, 1000000, 1200000, 1500000, 1800000, 2000000,
-      2500000, 3000000, 3500000, 4000000, 4500000, 5000000,
-      5100000, 5183591
-    ];
-    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
-    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
-    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
-  } catch {
-    document.getElementById('stat-shielded').textContent = '≈5.18M ZEC';
-    document.getElementById('stat-shielded-pct').textContent = '31% SHIELDED';
-    // Fallback for new tiles
-    document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
-    const shieldedHistory = [0,10000,50000,200000,400000,600000,800000,1000000,1500000,2000000,2500000,3000000,3500000,4000000,4500000,5000000,5183591];
-    const shieldXLabels = ['2024/5','2024/7','2024/9','2024/11','2025/1','2025/4'];
-    const shieldYFmt = v => (v/1e6).toFixed(1)+'M';
-    renderSparkline('chart-shielded', shieldedHistory, '#1DBEAC', 'rgba(29,190,172,0.1)', shieldXLabels, shieldYFmt);
-  }
+  await fetchShieldedStats();
 }
 fetchStats();
 </script>
