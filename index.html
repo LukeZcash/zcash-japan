@@ -246,7 +246,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .shielded-pool-tag { display: inline-flex; align-items: center; gap: 5px; font-weight: 500; }
 .shielded-pool-tag strong { color: var(--text); font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
 .shielded-pool-tag .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-.stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 6px; text-align: right; }
+.stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 10px; text-align: left; }
 .stat-source-link a { color: var(--muted); text-decoration: none; }
 .stat-source-link a:hover { color: var(--gold); }
 @media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } }
@@ -285,7 +285,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="stat-value-sub" id="stat-price-jpy">—</div>
         <div class="stat-change" id="stat-change"><span style="color:var(--muted);background:none">読み込み中…</span></div>
         <div class="stat-chart" id="chart-price"><div class="chart-loading">チャート読み込み中…</div></div>
-        <div class="stat-source-link" style="padding-top:4px;">
+        <div class="stat-source-link">
           <a href="https://www.coingecko.com/en/coins/zcash" target="_blank" rel="noopener">Source: CoinGecko</a>
         </div>
       </div>
@@ -302,7 +302,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="shielded-pool-tag"><span class="dot" style="background:#8A8FA8"></span>Sprout <strong id="pool-sprout">—</strong></span>
         </div>
         <div class="stat-chart" id="chart-shielded"><div class="chart-loading">チャート読み込み中…</div></div>
-        <div class="stat-source-link" style="padding-top:4px;">
+        <div class="stat-source-link">
           <a href="https://zecstats.com/chart/shielding-rate" target="_blank" rel="noopener">Source: zecstats.com</a>
         </div>
       </div>
