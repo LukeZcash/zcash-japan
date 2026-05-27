@@ -246,7 +246,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .shielded-pool-tag { display: inline-flex; align-items: center; gap: 5px; font-weight: 500; }
 .shielded-pool-tag strong { color: var(--text); font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
 .shielded-pool-tag .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; }
-.stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 18px; text-align: left; }
+.stat-source-link { font-size: 10px; color: var(--muted); opacity: 0.6; margin-top: 28px; text-align: left; }
 .stat-source-link a { color: var(--muted); text-decoration: none; }
 .stat-source-link a:hover { color: var(--gold); }
 @media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } }
@@ -907,6 +907,8 @@ async function fetchStats() {
     if (el) el.textContent = '取得不可';
     document.getElementById('stat-mcap').textContent = '$7.0B';
   }
+  // CoinGeckoレート制限回避のため少し待つ
+  await new Promise(r => setTimeout(r, 1500));
   try {
     const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true');
     const btc = await btcRes.json();
@@ -915,10 +917,10 @@ async function fetchStats() {
       const ratio = (zecMcapUsd / btcMcap * 100).toFixed(2);
       document.getElementById('stat-mcap-sub').innerHTML = `BTC時価総額の <strong>${ratio}%</strong>`;
     } else {
-      document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
+      document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.62%</strong>';
     }
   } catch {
-    document.getElementById('stat-mcap-sub').textContent = 'BTC時価総額の参考比較';
+    document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.62%</strong>';
   }
   await fetchShieldedStats();
 }
