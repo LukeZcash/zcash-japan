@@ -189,54 +189,24 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
 .step-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
 @media (max-width: 640px) { .donation-steps-grid { grid-template-columns: 1fr 1fr; } }
-/* Treasury Page (Support) */
-.treasury-manifesto { position: relative; padding: 72px 56px 64px; margin-bottom: 32px; background: radial-gradient(circle at 18% 25%, rgba(244,183,40,0.08) 0%, transparent 55%), radial-gradient(circle at 82% 75%, rgba(65,201,180,0.05) 0%, transparent 55%), linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
-.treasury-manifesto::before { content: 'TREASURY'; position: absolute; right: -10px; top: -30px; font-family: 'Space Grotesk', sans-serif; font-size: 200px; font-weight: 700; color: rgba(244,183,40,0.035); letter-spacing: -8px; line-height: 1; user-select: none; }
-.treasury-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
-.treasury-stat-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; transition: border-color 0.2s; }
-.treasury-stat-card:hover { border-color: var(--border); }
-.treasury-stat-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
-.treasury-stat-label svg { width: 13px; height: 13px; }
-.treasury-stat-value { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 8px; }
-.treasury-stat-value.note { color: var(--note); }
-.treasury-stat-value.muted { color: var(--text); }
-.treasury-stat-sub { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.treasury-stat-sub strong { color: var(--text); font-weight: 600; }
-.milestones-section { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 26px 18px; margin-bottom: 32px; }
-.milestones-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-.milestones-title { font-size: 13px; font-weight: 700; letter-spacing: 0.3px; color: var(--text); }
-.milestones-current { font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--gold); font-weight: 600; }
-.milestone-bar { height: 8px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; position: relative; margin-bottom: 10px; }
-.milestone-bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold-dark) 0%, var(--gold) 50%, var(--note) 100%); border-radius: 4px; transition: width 1.5s ease; position: relative; }
-.milestone-markers { display: flex; justify-content: space-between; margin-top: 8px; }
-.milestone-marker { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
-.milestone-marker:first-child { align-items: flex-start; }
-.milestone-marker:last-child { align-items: flex-end; }
-.milestone-marker-value { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); transition: color 0.3s; }
-.milestone-marker-label { font-size: 9px; font-weight: 700; letter-spacing: 0.8px; color: var(--muted); opacity: 0.5; }
-.milestone-marker.achieved .milestone-marker-value { color: var(--gold); }
-.milestone-marker.achieved .milestone-marker-label { color: var(--gold); opacity: 0.8; }
-.treasury-why { margin-top: 36px; padding: 32px 36px 28px; background: linear-gradient(135deg, rgba(244,183,40,0.04) 0%, rgba(244,183,40,0.01) 100%); border: 1px solid var(--border); border-radius: 16px; position: relative; }
-.treasury-why h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: var(--text); position: relative; padding-bottom: 14px; }
-.treasury-why h2 span { color: var(--gold); }
-.treasury-why h2::after { content: ''; position: absolute; bottom: 0; left: 0; width: 44px; height: 2px; background: var(--gold); border-radius: 2px; }
-.treasury-why p { font-size: 14.5px; line-height: 1.95; color: var(--muted); margin-bottom: 18px; }
-.treasury-why p:last-child { margin-bottom: 0; }
-.treasury-why strong { color: var(--text); font-weight: 600; }
-.treasury-tx-link { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 28px; padding: 14px 20px; background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; color: var(--muted); text-decoration: none; font-size: 13px; transition: all 0.2s; }
-.treasury-tx-link:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-1px); }
-.treasury-tx-link svg { width: 14px; height: 14px; }
-@media (max-width: 640px) {
-  .treasury-manifesto { padding: 48px 28px 44px; }
-  .treasury-manifesto::before { font-size: 110px; top: -10px; }
-  .treasury-stats { grid-template-columns: 1fr; }
-  .milestones-section { padding: 20px 22px 16px; }
-  .milestone-marker-value { font-size: 10px; }
-  .milestone-marker-label { font-size: 8px; }
-  .treasury-why { padding: 24px 22px; }
-  .treasury-why h2 { font-size: 18px; }
-  .treasury-why p { font-size: 13.5px; line-height: 1.9; }
-}
+/* Allocation Split (50/50) */
+.allocation-split { background: rgba(244,183,40,0.025); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px 18px; margin-bottom: 22px; position: relative; }
+.allocation-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.allocation-badge { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
+.allocation-title { font-size: 14px; font-weight: 600; color: var(--text); }
+.allocation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.allocation-card { padding: 18px 20px 16px; border-radius: 10px; position: relative; overflow: hidden; }
+.allocation-card.stake { background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.2); }
+.allocation-card.charity { background: rgba(65,201,180,0.06); border: 1px solid rgba(65,201,180,0.25); }
+.allocation-percent { font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; line-height: 1; margin-bottom: 10px; }
+.allocation-card.stake .allocation-percent { color: var(--gold); }
+.allocation-card.charity .allocation-percent { color: var(--note); }
+.allocation-card-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.allocation-card-desc { font-size: 12.5px; line-height: 1.7; color: var(--muted); margin-bottom: 10px; }
+.allocation-card-tag { font-size: 11px; font-weight: 600; letter-spacing: 0.2px; }
+.allocation-card.stake .allocation-card-tag { color: var(--gold); }
+.allocation-card.charity .allocation-card-tag { color: var(--note); }
+@media (max-width: 640px) { .allocation-grid { grid-template-columns: 1fr; } .allocation-split { padding: 18px 18px 16px; } }
 @media (max-width: 640px) { .donation-product::before { display: none; } .donation-product { padding: 28px 20px 24px; } .donation-payload { flex-direction: column; align-items: center; } .donation-qr { width: 200px; height: 200px; } .donation-address-side { width: 100%; } .copy-btn { width: 100%; justify-content: center; } .donation-address-text { font-size: 11px; } }
 .merch-section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(90deg, var(--note), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .merch-intro { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: -8px; margin-bottom: 28px; max-width: 580px; }
@@ -359,9 +329,9 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </a>
     <div class="header-right">
       <nav>
+        <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
         <button class="nav-btn" data-page="buy" onclick="navigateTo('buy')">購入</button>
         <button class="nav-btn" data-page="support" onclick="navigateTo('support')">応援</button>
-        <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
       </nav>
       <div class="social-links">
         <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -613,62 +583,36 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </div>
   </main>
 </div>
-<!-- ━━━ Support / Treasury Page ━━━ -->
+<!-- ━━━ Support Page ━━━ -->
 <div id="page-support" class="page">
   <main>
-    <div class="treasury-manifesto">
-      <div class="manifesto-tag"><span class="dot"></span>Support — Zcash Treasury Reserve</div>
-      <h1 class="manifesto-headline">日本初の<br><em>Zcash トレジャリー</em>カンパニーへ。</h1>
-      <p class="manifesto-lede">MicroStrategy がビットコインで切り拓いた道のように ── <strong>Zcash 中心のトレジャリーリザーブ</strong>を、ここ日本でゼロから組み上げます。寄付者の皆さまから預かる ZEC は <em>1 ZEC 残らず長期保有</em>。活動費には1円も使わず、Zcash 文化を日本に根付かせる<strong>長期保有モデル</strong>を実装します。</p>
-    </div>
-    <div class="treasury-stats">
-      <div class="treasury-stat-card">
-        <div class="treasury-stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-          トレジャリー保有量
-        </div>
-        <div class="treasury-stat-value" id="treasury-balance">— ZEC</div>
-        <div class="treasury-stat-sub" id="treasury-balance-usd">読み込み中…</div>
-      </div>
-      <div class="treasury-stat-card">
-        <div class="treasury-stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
-          累計寄付件数
-        </div>
-        <div class="treasury-stat-value note" id="treasury-txcount">—</div>
-        <div class="treasury-stat-sub">受信トランザクション数</div>
-      </div>
-      <div class="treasury-stat-card">
-        <div class="treasury-stat-label">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          稼働日数
-        </div>
-        <div class="treasury-stat-value muted" id="treasury-days">Day 1</div>
-        <div class="treasury-stat-sub">設立: 2026年5月</div>
-      </div>
-    </div>
-    <div class="milestones-section">
-      <div class="milestones-header">
-        <span class="milestones-title">📈 トレジャリー・マイルストーン</span>
-        <span class="milestones-current" id="milestone-current">次の目標: 10 ZEC</span>
-      </div>
-      <div class="milestone-bar">
-        <div class="milestone-bar-fill" id="milestone-fill" style="width: 0%"></div>
-      </div>
-      <div class="milestone-markers">
-        <div class="milestone-marker" data-ms="10"><span class="milestone-marker-value">10 ZEC</span><span class="milestone-marker-label">SEED</span></div>
-        <div class="milestone-marker" data-ms="100"><span class="milestone-marker-value">100 ZEC</span><span class="milestone-marker-label">FOUNDATION</span></div>
-        <div class="milestone-marker" data-ms="1000"><span class="milestone-marker-value">1K ZEC</span><span class="milestone-marker-label">GROWTH</span></div>
-        <div class="milestone-marker" data-ms="10000"><span class="milestone-marker-value">10K ZEC</span><span class="milestone-marker-label">TREASURY</span></div>
-      </div>
-    </div>
     <div class="donation-product">
       <div class="donation-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         Donate ZEC
       </div>
       <h3>Zcash Japan を <span>ZEC で応援する</span></h3>
-      <p class="donation-subtitle">寄付者の皆さまから預かった ZEC は<strong style="color:var(--text);">活動費に充当せず、全額を長期リザーブとして保管</strong>します。MicroStrategy がビットコインで切り拓いた道のように ── <strong style="color:var(--text);">Zcash 中心トレジャリーカンパニーへの第一歩</strong>を、寄付者の皆さまと共に踏み出していきます。</p>
+      <p class="donation-subtitle">寄付者の皆さまから預かった ZEC は活動費には充当しません。<strong style="color:var(--text);">50%は Zcash の Crosslink でステーキング運用しながら長期保有、50%は子供の貧困問題に取り組む団体へ寄付</strong>します。Zcash で価値を生み、社会へ還元する <em>50 / 50</em> モデルです。</p>
+      <div class="allocation-split">
+        <div class="allocation-header">
+          <span class="allocation-badge">📊 Allocation</span>
+          <span class="allocation-title">寄付の使い道（50 / 50 モデル）</span>
+        </div>
+        <div class="allocation-grid">
+          <div class="allocation-card stake">
+            <div class="allocation-percent">50%</div>
+            <div class="allocation-card-title">Crosslink ステーキング</div>
+            <div class="allocation-card-desc">Zcashの「Crosslink」プロトコルでステーキング運用。yieldを生みながら長期保有し、Zcash経済圏の成長を支えるリザーブに。</div>
+            <div class="allocation-card-tag">📈 長期保有 + yield</div>
+          </div>
+          <div class="allocation-card charity">
+            <div class="allocation-percent">50%</div>
+            <div class="allocation-card-title">子供の貧困支援への寄付</div>
+            <div class="allocation-card-desc">日本国内で子供の貧困問題に取り組む団体・NPOへ、定期的に寄付として送金。Zcashの価値を社会的還元に直結させます。</div>
+            <div class="allocation-card-tag">❤️ 社会的還元</div>
+          </div>
+        </div>
+      </div>
       <div class="donation-receivers">
         <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent (t1)</span>
         <span class="receiver-tag" style="background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.25);color:#4ADE80;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:9px;height:9px;"><polyline points="20 6 9 17 4 12"/></svg> MEXC等 取引所から直接送金OK</span>
@@ -715,16 +659,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <strong>💡 Tip:</strong> ウォレット未所持の方は<strong>Zcash公式アプリ「Zodl」</strong>がおすすめです（旧称Zashi、2026年1月にZcash Open Development Labへ移行・リブランド）。Transparent アドレス (t1) はあらゆる Zcash 対応ウォレットおよび MEXC 等の取引所から直接送金可能。すべての寄付は公開ブロックチェーン上に透明に記録され、<strong>トレジャリー保有量として誰でも検証可能</strong>です。
       </div>
     </div>
-    <div class="treasury-why">
-      <h2>なぜ <span>Zcash トレジャリー</span>なのか</h2>
-      <p>Michael Saylor / MicroStrategy がビットコインで証明したのは、<strong>「企業が暗号資産を長期保有する」というモデルの正当性</strong>でした。MSTR は BTC 保有量を増やすたびに株価が上昇し、企業価値そのものが「BTC への忠誠度」によって評価される時代が到来しました。</p>
-      <p>Zcash には、ビットコインにはない<strong>強力なプライバシー機能</strong>があります。スイスの金庫が自分のポケットの中にあるような、Encrypted P2P Cash としての完成度。この特性は、企業トレジャリーにとっても本質的な価値です ── 競合や規制当局から保有量を完全に隠せる、唯一のメジャー暗号資産。</p>
-      <p>Zcash Japan は、この思想を日本で実装する最初の事業体になります。<strong>10 ZEC、100 ZEC、1,000 ZEC ── 寄付者ひとりひとりの ZEC が、未来の Zcash 中心トレジャリーカンパニーの礎</strong>になります。</p>
-    </div>
-    <a class="treasury-tx-link" href="https://blockchair.com/zcash/address/t1ZtgVAT5w7acBEGr4siW4F7VWL4hbdGZWL" target="_blank" rel="noopener">
-      <span>📊 ブロックチェーン上で全寄付トランザクションを検証する</span>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-    </a>
   </main>
 </div>
 <!-- ━━━ About Page ━━━ -->
@@ -835,7 +769,6 @@ function showPage(name) {
   const activeBtn = document.querySelector('.nav-btn[data-page="' + name + '"]');
   if (activeBtn) activeBtn.classList.add('active');
   document.title = PAGE_TITLES[name] || PAGE_TITLES.home;
-  if (name === 'support' && typeof fetchTreasuryStats === 'function') fetchTreasuryStats();
 }
 function navigateTo(name) {
   const newPath = pageToPath(name);
@@ -903,94 +836,6 @@ async function loadNoteArticles() {
   }
 }
 loadNoteArticles();
-async function fetchTreasuryStats() {
-  const TREASURY_ADDR = 't1ZtgVAT5w7acBEGr4siW4F7VWL4hbdGZWL';
-  const INCEPTION_DATE = new Date('2026-05-28');
-  // Day counter (always available even if blockchain fetch fails)
-  const daysSince = Math.max(1, Math.floor((Date.now() - INCEPTION_DATE.getTime()) / 86400000) + 1);
-  const daysEl = document.getElementById('treasury-days');
-  if (daysEl) daysEl.textContent = 'Day ' + daysSince.toLocaleString('en-US');
-  const milestones = [10, 100, 1000, 10000];
-  const updateMilestones = (balanceZec) => {
-    let prevMs = 0, nextMs = milestones[milestones.length - 1];
-    for (const m of milestones) { if (balanceZec < m) { nextMs = m; break; } prevMs = m; }
-    const segWidth = 100 / milestones.length;
-    const idx = milestones.indexOf(nextMs);
-    let totalPct;
-    if (balanceZec >= milestones[milestones.length - 1]) {
-      totalPct = 100;
-    } else {
-      const segProgress = prevMs === 0 ? (balanceZec / nextMs) : ((balanceZec - prevMs) / (nextMs - prevMs));
-      totalPct = idx * segWidth + Math.max(0, Math.min(1, segProgress)) * segWidth;
-    }
-    const fill = document.getElementById('milestone-fill');
-    const current = document.getElementById('milestone-current');
-    if (fill) fill.style.width = totalPct.toFixed(1) + '%';
-    if (current) {
-      const fmt = v => v >= 1000 ? (v/1000) + 'K' : v;
-      if (balanceZec >= milestones[milestones.length - 1]) {
-        current.textContent = `🏆 全マイルストーン達成: ${balanceZec.toLocaleString('en-US')} ZEC`;
-      } else {
-        current.textContent = `次の目標: ${fmt(nextMs)} ZEC（${(balanceZec / nextMs * 100).toFixed(1)}%）`;
-      }
-    }
-    // 達成済みマーカーをハイライト
-    document.querySelectorAll('.milestone-marker').forEach(el => {
-      const ms = parseFloat(el.dataset.ms);
-      if (balanceZec >= ms) el.classList.add('achieved');
-      else el.classList.remove('achieved');
-    });
-  };
-  let balanceZec = 0;
-  let txCount = 0;
-  try {
-    const r = await fetch(`https://api.blockchair.com/zcash/dashboards/address/${TREASURY_ADDR}`);
-    const j = await r.json();
-    const data = j?.data?.[TREASURY_ADDR];
-    if (data && data.address) {
-      balanceZec = (data.address.balance || 0) / 1e8;
-      txCount = data.address.transaction_count || 0;
-    }
-  } catch (e) { console.warn('Blockchair treasury fetch failed:', e); }
-  // 残高表示（取得失敗時も0で初期化）
-  const balEl = document.getElementById('treasury-balance');
-  if (balEl) balEl.textContent = balanceZec.toLocaleString('en-US', {minimumFractionDigits: balanceZec < 1 ? 4 : 2, maximumFractionDigits: 4}) + ' ZEC';
-  const txEl = document.getElementById('treasury-txcount');
-  if (txEl) txEl.textContent = txCount.toLocaleString('en-US');
-  updateMilestones(balanceZec);
-  // USD/JPY換算（CoinGecko）
-  try {
-    const pr = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=usd,jpy');
-    const pj = await pr.json();
-    const usd = pj?.zcash?.usd || 0;
-    const jpy = pj?.zcash?.jpy || 0;
-    const usdVal = balanceZec * usd;
-    const jpyVal = balanceZec * jpy;
-    const subEl = document.getElementById('treasury-balance-usd');
-    if (subEl) {
-      if (balanceZec === 0) {
-        subEl.innerHTML = '<strong>Day 1 — 最初の寄付者を募集中</strong>';
-      } else {
-        subEl.textContent = '$' + usdVal.toLocaleString('en-US', {maximumFractionDigits: 2}) + ' ／ ¥' + Math.round(jpyVal).toLocaleString('ja-JP');
-      }
-    }
-  } catch(e) {
-    const subEl = document.getElementById('treasury-balance-usd');
-    if (subEl && balanceZec === 0) subEl.innerHTML = '<strong>Day 1 — 最初の寄付者を募集中</strong>';
-  }
-}
-// /support ページが開かれた時のみ実行（パフォーマンス用）
-function maybeFetchTreasuryStats() {
-  if (document.getElementById('page-support') && document.getElementById('page-support').classList.contains('active')) {
-    fetchTreasuryStats();
-  }
-}
-// 初回ロード時にチェック
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', maybeFetchTreasuryStats);
-} else {
-  maybeFetchTreasuryStats();
-}
 function renderDonationQR() {
   const container = document.getElementById('donation-qr');
   const addrEl = document.getElementById('donation-address');
