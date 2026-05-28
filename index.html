@@ -940,11 +940,13 @@ async function fetchStats() {
       document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${mcapRank}</strong>`;
     }
     try {
-      // OHLC endpoint returns [timestamp, open, high, low, close] — use HIGH to capture peaks like Nov $750
+      // OHLC endpoint: [timestamp, open, high, low, close]
+      // Use HIGH values to capture peaks (Nov $750), but replace last point with live price for accuracy
       const histRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/ohlc?vs_currency=usd&days=365');
       const ohlc = await histRes.json();
       if (Array.isArray(ohlc) && ohlc.length > 10) {
-        const priceVals = ohlc.map(c => c[2]); // index 2 = high
+        const priceVals = ohlc.map(c => c[2]); // index 2 = high (captures peaks)
+        if (price > 0) priceVals[priceVals.length - 1] = price; // last point = live price
         renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
       }
     } catch {}
