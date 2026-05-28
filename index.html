@@ -243,9 +243,46 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .founders-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .founder-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; transition: all 0.25s; position: relative; }
 .founder-card:hover { border-color: var(--gold); transform: translateY(-2px); }
-.founder-card.legend { background: linear-gradient(135deg, rgba(244,183,40,0.06) 0%, var(--bg2) 100%); border-color: var(--border); box-shadow: 0 0 0 1px rgba(244,183,40,0.1), 0 8px 24px rgba(244,183,40,0.06); position: relative; }
-.founder-card.legend:hover { box-shadow: 0 0 0 1px var(--gold), 0 12px 32px rgba(244,183,40,0.15); }
-.founder-legend-badge { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
+/* Featured Founder (Zooko) */
+.founder-featured { background: linear-gradient(135deg, rgba(244,183,40,0.07) 0%, var(--bg2) 50%, rgba(244,183,40,0.04) 100%); border: 1px solid var(--gold); border-radius: 16px; padding: 26px 32px 24px; margin-bottom: 18px; position: relative; overflow: hidden; box-shadow: 0 0 0 1px rgba(244,183,40,0.1), 0 8px 32px rgba(244,183,40,0.08); }
+.founder-featured::before { content: 'LEGEND'; position: absolute; right: 24px; bottom: -16px; font-family: 'Space Grotesk', sans-serif; font-size: 90px; font-weight: 700; color: rgba(244,183,40,0.04); letter-spacing: -3px; user-select: none; pointer-events: none; }
+.founder-featured-badge { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 5px 12px; border-radius: 20px; margin-bottom: 22px; position: relative; }
+.founder-featured-grid { display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: flex-start; position: relative; }
+.founder-featured-left { border-right: 1px solid var(--border); padding-right: 32px; }
+.founder-featured-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: #080B14; margin-bottom: 16px; box-shadow: 0 4px 16px rgba(244,183,40,0.3); }
+.founder-featured-name { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.founder-featured-role { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--gold); margin-bottom: 16px; letter-spacing: 0.2px; }
+.founder-featured-cred { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--muted); padding-top: 14px; border-top: 1px solid var(--border2); line-height: 1.7; letter-spacing: 0.2px; }
+.founder-featured-right { padding-top: 4px; }
+.founder-featured-desc { font-size: 14px; line-height: 1.9; color: var(--text); margin-bottom: 14px; }
+.founder-featured-desc:last-child { margin-bottom: 0; }
+.founder-featured-desc strong { color: var(--gold); font-weight: 600; }
+/* Key Developers (ZODL Lab members) */
+.key-devs-subtitle { display: flex; align-items: center; gap: 12px; margin: 36px 0 18px; padding-top: 24px; border-top: 1px solid var(--border2); flex-wrap: wrap; }
+.key-devs-tag { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; }
+.key-devs-title-text { font-size: 16px; font-weight: 700; color: var(--text); }
+.key-devs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.dev-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; transition: all 0.2s; }
+.dev-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.dev-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #080B14; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.dev-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.dev-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.2px; }
+.dev-desc { font-size: 12.5px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
+.dev-desc strong { color: var(--text); font-weight: 600; }
+.dev-link { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none; padding-top: 12px; border-top: 1px solid var(--border2); }
+.dev-link:hover { color: #ffc93d; }
+.dev-link svg { width: 11px; height: 11px; }
+@media (max-width: 900px) {
+  .key-devs-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .founder-featured { padding: 22px 22px 20px; }
+  .founder-featured-grid { grid-template-columns: 1fr; gap: 22px; }
+  .founder-featured-left { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 22px; }
+  .founder-featured-avatar { width: 64px; height: 64px; font-size: 22px; }
+  .founder-featured-name { font-size: 18px; }
+  .founder-featured-desc { font-size: 13.5px; line-height: 1.85; }
+}
 .founder-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #080B14; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 .founder-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
 .founder-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.2px; }
@@ -743,17 +780,22 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <h2 class="zec-section-title">創業者・コア研究者</h2>
         <p class="zec-section-lede">Zcash は <strong>zk-SNARKs の共同発明論文「Zerocash」</strong>（2014年）から生まれました。著者陣には今や暗号業界の中核人物が並んでいます。</p>
       </div>
-      <div class="founders-grid">
-        <div class="founder-card legend">
-          <div class="founder-legend-badge">🌟 Cypherpunk Legend</div>
-          <div class="founder-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">ZW</div>
-          <div class="founder-info">
-            <div class="founder-name">Zooko Wilcox-O'Hearn</div>
-            <div class="founder-role">Zcash 共同創業者・初代CEO</div>
-            <div class="founder-desc"><strong>19歳でサイファーパンクメーリングリストに参加</strong>した生粋のOG。1996年、David Chaum と <strong>世界初の暗号通貨「DigiCash」を共同開発</strong>。そして <strong>2009年1月、Bitcoin について公に論じた最初の一人として、Satoshi Nakamoto 本人が Zooko のブログ記事を bitcoin.org からリンクで紹介</strong>した、暗号通貨史の生き字引。Phil Zimmermann と <strong>ZRTP</strong>（暗号化音声）を共同設計、分散ストレージ <strong>Tahoe-LAFS</strong> 開発を経て、2013年に Zcash 立ち上げ・ECC 創業。</div>
-            <div class="founder-cred">🏛 DigiCash / ZRTP / Tahoe-LAFS / ECC 創業</div>
+      <div class="founder-featured">
+        <div class="founder-featured-badge">🌟 Cypherpunk Legend — Featured Founder</div>
+        <div class="founder-featured-grid">
+          <div class="founder-featured-left">
+            <div class="founder-featured-avatar">ZW</div>
+            <div class="founder-featured-name">Zooko Wilcox-O'Hearn</div>
+            <div class="founder-featured-role">Zcash 共同創業者・初代CEO</div>
+            <div class="founder-featured-cred">🏛 DigiCash / ZRTP<br>Tahoe-LAFS / ECC 創業</div>
+          </div>
+          <div class="founder-featured-right">
+            <p class="founder-featured-desc"><strong>19歳でサイファーパンクメーリングリストに参加</strong>した生粋のOG。1996年、David Chaum と <strong>世界初の暗号通貨「DigiCash」を共同開発</strong>。そして <strong>2009年1月、Bitcoin について公に論じた最初の一人として、Satoshi Nakamoto 本人が Zooko のブログ記事を bitcoin.org からリンクで紹介</strong>した、暗号通貨史の生き字引。</p>
+            <p class="founder-featured-desc">Phil Zimmermann と <strong>ZRTP</strong>（暗号化音声）を共同設計、分散ストレージ <strong>Tahoe-LAFS</strong> 開発を経て、2013年に Zcash 立ち上げ・ECC 創業。30年にわたる暗号史の人物。</p>
           </div>
         </div>
+      </div>
+      <div class="founders-grid">
         <div class="founder-card">
           <div class="founder-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">EB</div>
           <div class="founder-info">
@@ -922,6 +964,42 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <div class="core-card-meta">旧 Zashi 開発チームの一部</div>
           <div class="core-card-desc">2026年1月、元ECC/Zashi開発者の一部が独立して立ち上げた新ウォレット。Zashi のコードベースを基に、Zcash の大規模採用拡大を目指す。</div>
           <a class="core-card-link" href="https://cashz.io" target="_blank" rel="noopener">cashz.io →</a>
+        </div>
+      </div>
+      <div class="key-devs-subtitle">
+        <span class="key-devs-tag">⚡ Key People</span>
+        <span class="key-devs-title-text">ZODL Lab の中核メンバー</span>
+      </div>
+      <div class="key-devs-grid">
+        <div class="dev-card">
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">JS</div>
+          <div class="dev-name">Josh Swihart</div>
+          <div class="dev-role">ZODL Lab 創業者・CEO</div>
+          <div class="dev-desc">前 <strong>ECC CEO</strong>。2024年に Zashi（現 Zodl）ウォレットをローンチし、Zcash のシールドプールを <strong>400%以上拡大</strong>させた立役者。2026年1月、Bootstrap理事会との対立を経て、元ECCチーム全員を率いて ZODL Lab を設立、$25M シードラウンドを成功させる。</div>
+          <a class="dev-link" href="https://www.linkedin.com/in/swihart/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <div class="dev-card">
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">SB</div>
+          <div class="dev-name">Sean Bowe</div>
+          <div class="dev-role">Zcash コア暗号研究者</div>
+          <div class="dev-desc">現代zk証明系の最重要人物の一人。<strong>2019年に Halo を発明</strong>、トラステッドセットアップなしでリカーシブzk証明を実現。<strong>Halo 2</strong> 共同発明（Jack Grigg・Daira Hopwood と）。現在は <strong>Project Tachyon</strong>（数千TPS級シールドスケーリング）チームを率いる。Zcashが最先端であり続ける技術的基盤を作り続けている。</div>
+          <a class="dev-link" href="https://x.com/ebfull" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @ebfull
+          </a>
+        </div>
+        <div class="dev-card">
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #8E5BF8 0%, #5A2DAD 100%);">🐉</div>
+          <div class="dev-name">zkDragon</div>
+          <div class="dev-role">ZODL Lab エンジニア</div>
+          <div class="dev-desc">Zcash コミュニティで活躍する開発者。<strong>Zodl ウォレットの新機能実装</strong>（コインホルダー投票プロトコル等）を担当。暗号業界に根強く存在する <strong>匿名開発者カルチャー</strong>を体現する一人で、X 上での技術発信も精力的。</div>
+          <a class="dev-link" href="https://x.com/zkDragon" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @zkDragon
+          </a>
         </div>
       </div>
     </div>
