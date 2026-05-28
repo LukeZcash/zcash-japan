@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Zcash Japan</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
 :root {
   --gold: #F4B728;
@@ -167,15 +168,20 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .receiver-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 6px; font-family: 'Space Grotesk', sans-serif; background: rgba(244,183,40,0.06); border: 1px solid rgba(244,183,40,0.18); color: var(--gold); }
 .receiver-tag.transparent { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: var(--muted); }
 .receiver-tag span { font-size: 8px; line-height: 1; }
-.donation-address-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; position: relative; }
-.donation-address-box { background: rgba(0,0,0,0.35); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; position: relative; display: flex; align-items: flex-start; gap: 12px; }
-.donation-address-text { font-family: 'Space Grotesk', monospace; font-size: 12px; color: var(--text); word-break: break-all; line-height: 1.65; flex: 1; user-select: all; }
-.copy-btn { background: var(--gold); color: #080B14; border: none; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: 700; padding: 8px 14px; border-radius: 7px; cursor: pointer; white-space: nowrap; transition: all 0.2s; flex-shrink: 0; display: inline-flex; align-items: center; }
+.donation-address-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; position: relative; }
+.donation-payload { display: flex; gap: 18px; align-items: stretch; margin-bottom: 16px; position: relative; }
+.donation-qr { background: #fff; padding: 10px; border-radius: 10px; flex-shrink: 0; width: 168px; height: 168px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(0,0,0,0.25); }
+.donation-qr svg, .donation-qr img { width: 100%; height: 100%; display: block; }
+.donation-qr-loading { font-size: 11px; color: #999; font-family: 'Space Grotesk', sans-serif; }
+.donation-address-side { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.donation-address-box { background: rgba(0,0,0,0.35); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; position: relative; flex: 1; }
+.donation-address-text { font-family: 'Space Grotesk', monospace; font-size: 12px; color: var(--text); word-break: break-all; line-height: 1.65; user-select: all; }
+.copy-btn { background: var(--gold); color: #080B14; border: none; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: 700; padding: 9px 16px; border-radius: 7px; cursor: pointer; white-space: nowrap; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; align-self: flex-start; }
 .copy-btn:hover { background: #ffc93d; transform: translateY(-1px); }
 .copy-btn.copied { background: var(--note); color: #fff; }
 .donation-tip { font-size: 12.5px; color: var(--muted); line-height: 1.75; padding: 13px 16px; background: rgba(244,183,40,0.04); border: 1px solid rgba(244,183,40,0.12); border-left: 2px solid var(--gold); border-radius: 0 8px 8px 0; position: relative; }
 .donation-tip strong { color: var(--gold); }
-@media (max-width: 640px) { .donation-product::before { display: none; } .donation-product { padding: 28px 20px 24px; } .donation-address-box { flex-direction: column; } .copy-btn { width: 100%; justify-content: center; } .donation-address-text { font-size: 11px; } }
+@media (max-width: 640px) { .donation-product::before { display: none; } .donation-product { padding: 28px 20px 24px; } .donation-payload { flex-direction: column; align-items: center; } .donation-qr { width: 200px; height: 200px; } .donation-address-side { width: 100%; } .copy-btn { width: 100%; justify-content: center; } .donation-address-text { font-size: 11px; } }
 .merch-section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(90deg, var(--note), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .merch-intro { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: -8px; margin-bottom: 28px; max-width: 580px; }
 .about-manifesto { position: relative; padding: 72px 56px 64px; margin-bottom: 56px; background: radial-gradient(circle at 18% 25%, rgba(244,183,40,0.07) 0%, transparent 55%), radial-gradient(circle at 82% 75%, rgba(29,190,172,0.04) 0%, transparent 55%), linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
@@ -562,12 +568,17 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent</span>
       </div>
       <div class="donation-address-label">寄付先 Unified Address</div>
-      <div class="donation-address-box">
-        <div class="donation-address-text" id="donation-address">u1ng8hu494k6cmwwa6523aa4dnz00aqh3wygx52qea54zr5wq0840kzk4qrpp7qx9zke80lvl38y4pzup99efd5jtwsmc0fd5gckgh0yplxtwvls8f6pzrxa7ema488lthmlfkfaj4sjjcns47tn7gtl9el4qrw5505zksvegzr58umpq2</div>
-        <button class="copy-btn" type="button" onclick="copyDonationAddress(this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-          コピー
-        </button>
+      <div class="donation-payload">
+        <div class="donation-qr" id="donation-qr" aria-label="ZEC Donation QR Code"></div>
+        <div class="donation-address-side">
+          <div class="donation-address-box">
+            <div class="donation-address-text" id="donation-address">u1ng8hu494k6cmwwa6523aa4dnz00aqh3wygx52qea54zr5wq0840kzk4qrpp7qx9zke80lvl38y4pzup99efd5jtwsmc0fd5gckgh0yplxtwvls8f6pzrxa7ema488lthmlfkfaj4sjjcns47tn7gtl9el4qrw5505zksvegzr58umpq2</div>
+          </div>
+          <button class="copy-btn" type="button" onclick="copyDonationAddress(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            アドレスをコピー
+          </button>
+        </div>
       </div>
       <div class="donation-tip">
         <strong>💡 Tip:</strong> Unified Address は <strong>Zashi / Zingo / Ywallet</strong> など主要なZcashウォレットに対応。デフォルトの Shielded 送金（Orchard）で<strong>プライバシーを守りながら</strong>送金できます。MEXC など取引所からも、Transparent 経由で直接送金可能です。
@@ -747,6 +758,28 @@ async function loadNoteArticles() {
   }
 }
 loadNoteArticles();
+function renderDonationQR() {
+  const container = document.getElementById('donation-qr');
+  const addrEl = document.getElementById('donation-address');
+  if (!container || !addrEl || typeof qrcode === 'undefined') return;
+  const addr = addrEl.textContent.trim();
+  try {
+    // type 0 = auto-detect minimum version, 'L' = ~7% error correction (enough for clean screens, smaller QR)
+    const qr = qrcode(0, 'L');
+    qr.addData(addr);
+    qr.make();
+    // SVG output scales perfectly; 4px module, 0 margin (white padding handled by container)
+    container.innerHTML = qr.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+  } catch (e) {
+    console.warn('QR render failed:', e);
+    container.innerHTML = '<div class="donation-qr-loading">QR生成失敗</div>';
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', renderDonationQR);
+} else {
+  renderDonationQR();
+}
 function copyDonationAddress(btn) {
   const el = document.getElementById('donation-address');
   if (!el) return;
