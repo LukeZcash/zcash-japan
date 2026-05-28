@@ -243,6 +243,9 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .founders-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .founder-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; transition: all 0.25s; position: relative; }
 .founder-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.founder-card.legend { background: linear-gradient(135deg, rgba(244,183,40,0.06) 0%, var(--bg2) 100%); border-color: var(--border); box-shadow: 0 0 0 1px rgba(244,183,40,0.1), 0 8px 24px rgba(244,183,40,0.06); position: relative; }
+.founder-card.legend:hover { box-shadow: 0 0 0 1px var(--gold), 0 12px 32px rgba(244,183,40,0.15); }
+.founder-legend-badge { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.6px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
 .founder-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #080B14; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
 .founder-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
 .founder-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.2px; }
@@ -741,13 +744,14 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <p class="zec-section-lede">Zcash は <strong>zk-SNARKs の共同発明論文「Zerocash」</strong>（2014年）から生まれました。著者陣には今や暗号業界の中核人物が並んでいます。</p>
       </div>
       <div class="founders-grid">
-        <div class="founder-card">
+        <div class="founder-card legend">
+          <div class="founder-legend-badge">🌟 Cypherpunk Legend</div>
           <div class="founder-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">ZW</div>
           <div class="founder-info">
             <div class="founder-name">Zooko Wilcox-O'Hearn</div>
             <div class="founder-role">Zcash 共同創業者・初代CEO</div>
-            <div class="founder-desc">伝説的サイファーパンク。Phil Zimmermann と <strong>ZRTP</strong>（暗号化音声通信）を共同設計、分散ストレージ <strong>Tahoe-LAFS</strong> を開発。Mojo Nation・SimpleGeo 創業。Electric Coin Company を立ち上げ Zcash を 2016 年にローンチ。</div>
-            <div class="founder-cred">🏛 ZRTP / Tahoe-LAFS / ECC 創業</div>
+            <div class="founder-desc"><strong>19歳でサイファーパンクメーリングリストに参加</strong>した生粋のOG。1996年、David Chaum と <strong>世界初の暗号通貨「DigiCash」を共同開発</strong>。そして <strong>2009年1月、Bitcoin について公に論じた最初の一人として、Satoshi Nakamoto 本人が Zooko のブログ記事を bitcoin.org からリンクで紹介</strong>した、暗号通貨史の生き字引。Phil Zimmermann と <strong>ZRTP</strong>（暗号化音声）を共同設計、分散ストレージ <strong>Tahoe-LAFS</strong> 開発を経て、2013年に Zcash 立ち上げ・ECC 創業。</div>
+            <div class="founder-cred">🏛 DigiCash / ZRTP / Tahoe-LAFS / ECC 創業</div>
           </div>
         </div>
         <div class="founder-card">
@@ -866,6 +870,34 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 
     <div class="zec-section">
       <div class="zec-section-header">
+        <span class="zec-section-tag">ROADMAP</span>
+        <h2 class="zec-section-title">ロードマップ（2026以降）</h2>
+        <p class="zec-section-lede">Zcash の最も野心的な3つの方向性。それぞれが現代ブロックチェーンの最先端課題への挑戦です。</p>
+      </div>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <div class="roadmap-status active">開発中・Milestone 4</div>
+          <h3 class="roadmap-title">Crosslink</h3>
+          <div class="roadmap-tagline">PoW + PoS ハイブリッドコンセンサス</div>
+          <p class="roadmap-desc">PoW（マイニング）の上に <strong>BFT 最終性レイヤー</strong>を追加するハイブリッド設計。ステーキング報酬（yield）を ZEC ホルダーに付与しつつ、マイニングの分散性も維持。Zcash Japan のトレジャリーが運用予定。<strong>2026年テストネット</strong>予定。</p>
+        </div>
+        <div class="roadmap-card">
+          <div class="roadmap-status next">次期NU7予定</div>
+          <h3 class="roadmap-title">Zcash Shielded Assets (ZSA)</h3>
+          <div class="roadmap-tagline">プライバシー付きステーブル・NFT・ラップ資産</div>
+          <p class="roadmap-desc">Zcash のプライバシー基盤の上で、<strong>ステーブルコイン・NFT・ラップトークン</strong>を発行可能に。Ethereum の ERC-20 に匹敵する汎用性を、プライバシー付きで実現。テストネットで監査済み。コミュニティ合意の上 NU7 で本実装予定。</p>
+        </div>
+        <div class="roadmap-card">
+          <div class="roadmap-status future">研究段階</div>
+          <h3 class="roadmap-title">Project Tachyon</h3>
+          <div class="roadmap-tagline">数千 TPS のシールドスケーリング</div>
+          <p class="roadmap-desc"><strong>Proof-carrying wallets</strong> と <strong>oblivious synchronization</strong> を用い、シールドトランザクションを <strong>数千 TPS</strong> に拡張する野心的計画。プライバシーを犠牲にせず、Visa 級のスループットを目指す。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="zec-section">
+      <div class="zec-section-header">
         <span class="zec-section-tag">CURRENT CORE</span>
         <h2 class="zec-section-title">現在の開発体制（2026）</h2>
       </div>
@@ -890,34 +922,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <div class="core-card-meta">旧 Zashi 開発チームの一部</div>
           <div class="core-card-desc">2026年1月、元ECC/Zashi開発者の一部が独立して立ち上げた新ウォレット。Zashi のコードベースを基に、Zcash の大規模採用拡大を目指す。</div>
           <a class="core-card-link" href="https://cashz.io" target="_blank" rel="noopener">cashz.io →</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="zec-section">
-      <div class="zec-section-header">
-        <span class="zec-section-tag">ROADMAP</span>
-        <h2 class="zec-section-title">ロードマップ（2026以降）</h2>
-        <p class="zec-section-lede">Zcash の最も野心的な3つの方向性。それぞれが現代ブロックチェーンの最先端課題への挑戦です。</p>
-      </div>
-      <div class="roadmap-grid">
-        <div class="roadmap-card">
-          <div class="roadmap-status active">開発中・Milestone 4</div>
-          <h3 class="roadmap-title">Crosslink</h3>
-          <div class="roadmap-tagline">PoW + PoS ハイブリッドコンセンサス</div>
-          <p class="roadmap-desc">PoW（マイニング）の上に <strong>BFT 最終性レイヤー</strong>を追加するハイブリッド設計。ステーキング報酬（yield）を ZEC ホルダーに付与しつつ、マイニングの分散性も維持。Zcash Japan のトレジャリーが運用予定。<strong>2026年テストネット</strong>予定。</p>
-        </div>
-        <div class="roadmap-card">
-          <div class="roadmap-status next">次期NU7予定</div>
-          <h3 class="roadmap-title">Zcash Shielded Assets (ZSA)</h3>
-          <div class="roadmap-tagline">プライバシー付きステーブル・NFT・ラップ資産</div>
-          <p class="roadmap-desc">Zcash のプライバシー基盤の上で、<strong>ステーブルコイン・NFT・ラップトークン</strong>を発行可能に。Ethereum の ERC-20 に匹敵する汎用性を、プライバシー付きで実現。テストネットで監査済み。コミュニティ合意の上 NU7 で本実装予定。</p>
-        </div>
-        <div class="roadmap-card">
-          <div class="roadmap-status future">研究段階</div>
-          <h3 class="roadmap-title">Project Tachyon</h3>
-          <div class="roadmap-tagline">数千 TPS のシールドスケーリング</div>
-          <p class="roadmap-desc"><strong>Proof-carrying wallets</strong> と <strong>oblivious synchronization</strong> を用い、シールドトランザクションを <strong>数千 TPS</strong> に拡張する野心的計画。プライバシーを犠牲にせず、Visa 級のスループットを目指す。</p>
         </div>
       </div>
     </div>
