@@ -207,6 +207,30 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .allocation-card.stake .allocation-card-tag { color: var(--gold); }
 .allocation-card.charity .allocation-card-tag { color: var(--note); }
 @media (max-width: 640px) { .allocation-grid { grid-template-columns: 1fr; } .allocation-split { padding: 18px 18px 16px; } }
+/* Transparency & Roadmap Block */
+.transparency-block { background: rgba(65,201,180,0.04); border: 1px solid rgba(65,201,180,0.2); border-left: 3px solid var(--note); border-radius: 0 10px 10px 0; padding: 18px 22px 16px; margin-bottom: 22px; position: relative; }
+.transparency-title { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; color: var(--note); margin-bottom: 14px; letter-spacing: 0.3px; }
+.transparency-title svg { width: 14px; height: 14px; }
+.transparency-list { display: flex; flex-direction: column; gap: 12px; }
+.transparency-item { padding-left: 0; }
+.t-label { display: block; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; letter-spacing: 0.2px; }
+.t-desc { display: block; font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+.t-desc strong { color: var(--text); font-weight: 600; }
+/* ZEC Payment Banner (Buy Page) */
+.zec-payment-banner { background: linear-gradient(135deg, rgba(244,183,40,0.08) 0%, rgba(65,201,180,0.04) 100%); border: 1px solid var(--gold); border-radius: 14px; padding: 20px 24px; margin-bottom: 28px; display: flex; gap: 18px; align-items: flex-start; position: relative; box-shadow: 0 4px 24px rgba(244,183,40,0.06); }
+.zec-payment-icon { font-size: 36px; line-height: 1; flex-shrink: 0; filter: drop-shadow(0 0 8px rgba(244,183,40,0.4)); }
+.zec-payment-content { flex: 1; }
+.zec-payment-title { font-size: 16px; font-weight: 700; color: var(--gold); margin-bottom: 6px; letter-spacing: 0.3px; }
+.zec-payment-desc { font-size: 13px; line-height: 1.8; color: var(--muted); }
+.zec-payment-desc strong { color: var(--text); }
+.zec-payment-desc a:hover { color: #ffc93d !important; border-bottom-color: var(--gold) !important; }
+/* ZEC Pay Badge (on product cards) */
+.zec-pay-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--gold); background: linear-gradient(135deg, rgba(244,183,40,0.12) 0%, rgba(65,201,180,0.08) 100%); border: 1px solid rgba(244,183,40,0.35); padding: 4px 12px; border-radius: 6px; letter-spacing: 0.2px; }
+@media (max-width: 640px) {
+  .zec-payment-banner { flex-direction: column; gap: 10px; padding: 18px 20px; }
+  .zec-payment-icon { font-size: 28px; }
+  .transparency-block { padding: 16px 18px 14px; }
+}
 @media (max-width: 640px) { .donation-product::before { display: none; } .donation-product { padding: 28px 20px 24px; } .donation-payload { flex-direction: column; align-items: center; } .donation-qr { width: 200px; height: 200px; } .donation-address-side { width: 100%; } .copy-btn { width: 100%; justify-content: center; } .donation-address-text { font-size: 11px; } }
 .merch-section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(90deg, var(--note), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .merch-intro { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: -8px; margin-bottom: 28px; max-width: 580px; }
@@ -505,6 +529,13 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <!-- ━━━ Buy Page ━━━ -->
 <div id="page-buy" class="page">
   <main>
+    <div class="zec-payment-banner">
+      <div class="zec-payment-icon">💎</div>
+      <div class="zec-payment-content">
+        <div class="zec-payment-title">ZEC 支払い歓迎</div>
+        <div class="zec-payment-desc"><strong>Zcash Japan の目的は ZEC を日本に普及させること</strong>。下記の有料商品（解説本・分析レポート）は ZEC での支払いも歓迎します。ZEC払いの場合も同じ <strong style="color:var(--gold);">50 / 50 モデル</strong> ── <strong style="color:var(--note);">50%は子供の貧困支援団体へZECのまま寄付</strong>、<strong style="color:var(--gold);">50%はCrosslinkでステーキング運用</strong>。<strong>ZECで支払うこと自体が、ZECの実用普及への一歩</strong>になります。<a href="/support" onclick="navigateTo('support'); return false;" style="color:var(--gold);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--border);">詳しくは応援ページへ →</a></div>
+      </div>
+    </div>
     <div class="mexc-product">
       <div class="mexc-badge">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
@@ -547,6 +578,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <span class="book-feature-tag">日本語</span>
           <span class="book-feature-tag">初心者対応</span>
           <span class="book-feature-tag">実践ガイド付き</span>
+          <span class="zec-pay-badge">💎 ZEC払いOK（50%寄付）</span>
         </div>
       </div>
       <a class="consulting-cta-link" href="https://buy.stripe.com/XXXXX" target="_blank" rel="noopener" style="background:var(--gold);display:inline-flex;">
@@ -574,7 +606,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div style="font-size:11.5px;color:var(--muted);background:rgba(255,255,255,0.03);border:1px solid var(--border2);padding:12px 16px;border-radius:8px;margin-bottom:18px;line-height:1.75;position:relative;max-width:560px;">
           <strong style="color:var(--text);">※ 重要 ──</strong> 本レポートは執筆者個人の見立て・投資戦略を公開するものであり、特定の暗号資産の購入を推奨・勧誘するものではありません。<strong style="color:var(--text);">投資助言（financial advice）ではなく</strong>、金融商品取引法上の投資助言業務にも該当しません。投資判断はすべてご自身の責任において行ってください。
         </div>
-        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--note);margin-bottom:16px;position:relative;">¥50,000 <span style="font-size:12px;font-weight:500;color:var(--muted)">税込</span></div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:var(--note);margin-bottom:12px;position:relative;">¥50,000 <span style="font-size:12px;font-weight:500;color:var(--muted)">税込</span></div>
+        <div style="margin-bottom:18px;position:relative;"><span class="zec-pay-badge">💎 ZEC払いOK（50%寄付・50%ステーキング）</span></div>
         <a class="analysis-cta" href="https://buy.stripe.com/XXXXX" target="_blank" rel="noopener" style="text-decoration:none;">
           購入する
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -592,7 +625,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         Donate ZEC
       </div>
       <h3>Zcash Japan を <span>ZEC で応援する</span></h3>
-      <p class="donation-subtitle">寄付者の皆さまから預かった ZEC は活動費には充当しません。<strong style="color:var(--text);">50%は Zcash の Crosslink でステーキング運用しながら長期保有、50%は子供の貧困問題に取り組む団体へ寄付</strong>します。Zcash で価値を生み、社会へ還元する <em>50 / 50</em> モデルです。</p>
+      <p class="donation-subtitle"><strong style="color:var(--text);">Zcash Japan の目的は、ZEC を日本に普及させること</strong>です。寄付者の皆さまから預かった ZEC は活動費には充当せず、<strong style="color:var(--text);">50%は Crosslink でステーキング運用しながら長期保有、50%は子供の貧困問題に取り組む団体へ ZEC のまま寄付</strong>します。価値創出と社会的還元、両方を ZEC で完結させる <em>50 / 50</em> モデルです。</p>
       <div class="allocation-split">
         <div class="allocation-header">
           <span class="allocation-badge">📊 Allocation</span>
@@ -602,14 +635,34 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           <div class="allocation-card stake">
             <div class="allocation-percent">50%</div>
             <div class="allocation-card-title">Crosslink ステーキング</div>
-            <div class="allocation-card-desc">Zcashの「Crosslink」プロトコルでステーキング運用。yieldを生みながら長期保有し、Zcash経済圏の成長を支えるリザーブに。</div>
+            <div class="allocation-card-desc">Zcashの「Crosslink」プロトコルでステーキング運用。<strong style="color:var(--text);">ZECのまま yield を生みながら長期保有</strong>し、Zcash経済圏の成長を支えるリザーブに。</div>
             <div class="allocation-card-tag">📈 長期保有 + yield</div>
           </div>
           <div class="allocation-card charity">
             <div class="allocation-percent">50%</div>
             <div class="allocation-card-title">子供の貧困支援への寄付</div>
-            <div class="allocation-card-desc">日本国内で子供の貧困問題に取り組む団体・NPOへ、定期的に寄付として送金。Zcashの価値を社会的還元に直結させます。</div>
-            <div class="allocation-card-tag">❤️ 社会的還元</div>
+            <div class="allocation-card-desc">日本国内で子供の貧困問題に取り組む団体へ、<strong style="color:var(--text);">ZECそのまま寄付として送金</strong>。社会的還元と、<strong style="color:var(--text);">Zcashの実用普及</strong>を同時に推進します。</div>
+            <div class="allocation-card-tag">❤️ 社会的還元 + ZEC普及</div>
+          </div>
+        </div>
+      </div>
+      <div class="transparency-block">
+        <div class="transparency-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4M21 12c0 4.97-4.03 9-9 9s-9-4.03-9-9 4.03-9 9-9 9 4.03 9 9z"/></svg>
+          透明性 &amp; 運用ロードマップ
+        </div>
+        <div class="transparency-list">
+          <div class="transparency-item">
+            <div class="t-label">🎯 寄付先団体</div>
+            <div class="t-desc">日本国内で<strong>子供の貧困問題に取り組む団体</strong>（あしなが育英会、Learning for All、フローレンス、Children's Future Fund 等の候補から選定）。最初の寄付実施時に具体的な送金先を公開します。</div>
+          </div>
+          <div class="transparency-item">
+            <div class="t-label">📅 配分タイミング</div>
+            <div class="t-desc"><strong>四半期ごと（3 / 6 / 9 / 12月）</strong>に寄付分の50%を ZEC のまま送金。Crosslink稼働後はステーキング分も同時に運用開始。</div>
+          </div>
+          <div class="transparency-item">
+            <div class="t-label">📊 実績レポート</div>
+            <div class="t-desc"><strong>累計寄付額・送金先団体・TXハッシュ</strong>をこのページで定期的に公開（最初の寄付実施後に開始）。すべての送金はオンチェーンで誰でも検証可能。</div>
           </div>
         </div>
       </div>
