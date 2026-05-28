@@ -224,6 +224,91 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .zec-payment-desc { font-size: 13px; line-height: 1.8; color: var(--muted); }
 .zec-payment-desc strong { color: var(--text); }
 .zec-payment-desc a:hover { color: #ffc93d !important; border-bottom-color: var(--gold) !important; }
+/* ━━━ Zcashとは Page ━━━ */
+.zec-manifesto { position: relative; padding: 72px 56px 64px; margin-bottom: 32px; background: radial-gradient(circle at 20% 30%, rgba(244,183,40,0.08) 0%, transparent 55%), radial-gradient(circle at 80% 70%, rgba(65,201,180,0.06) 0%, transparent 55%), linear-gradient(180deg, var(--bg2) 0%, rgba(14,18,32,0.7) 100%); border: 1px solid var(--border); border-radius: 20px; overflow: hidden; }
+.zec-manifesto::before { content: 'zk-SNARKs'; position: absolute; right: -10px; bottom: -30px; font-family: 'Space Grotesk', sans-serif; font-size: 150px; font-weight: 700; color: rgba(244,183,40,0.035); letter-spacing: -5px; line-height: 1; user-select: none; pointer-events: none; }
+.zec-quick-facts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 48px; }
+.quick-fact { background: var(--bg2); border: 1px solid var(--border2); border-radius: 12px; padding: 18px 20px 16px; transition: border-color 0.2s; }
+.quick-fact:hover { border-color: var(--border); }
+.quick-fact-label { font-size: 10.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.quick-fact-value { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: var(--gold); line-height: 1.1; margin-bottom: 6px; }
+.quick-fact-value span { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 2px; }
+.quick-fact-sub { font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+.zec-section { margin-bottom: 56px; }
+.zec-section-header { margin-bottom: 28px; }
+.zec-section-tag { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+.zec-section-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.3; letter-spacing: 0.01em; }
+.zec-section-lede { font-size: 14.5px; line-height: 1.9; color: var(--muted); max-width: 720px; }
+.zec-section-lede strong { color: var(--text); font-weight: 600; }
+.founders-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.founder-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; transition: all 0.25s; position: relative; }
+.founder-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.founder-avatar { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #080B14; margin-bottom: 14px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+.founder-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.founder-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.2px; }
+.founder-desc { font-size: 12.5px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
+.founder-desc strong { color: var(--text); font-weight: 600; }
+.founder-cred { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--muted); padding-top: 12px; border-top: 1px solid var(--border2); letter-spacing: 0.2px; }
+.timeline { position: relative; padding-left: 28px; }
+.timeline::before { content: ''; position: absolute; left: 8px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(180deg, var(--gold) 0%, var(--border) 100%); border-radius: 1px; }
+.timeline-item { position: relative; padding-bottom: 22px; }
+.timeline-item:last-child { padding-bottom: 0; }
+.timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--gold-dark); border: 2px solid var(--bg); box-shadow: 0 0 0 2px var(--border); }
+.timeline-item.highlight::before { background: var(--gold); box-shadow: 0 0 0 2px var(--gold), 0 0 12px var(--gold); }
+.timeline-year { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; margin-bottom: 4px; }
+.timeline-content { background: var(--bg2); border: 1px solid var(--border2); border-radius: 10px; padding: 14px 18px 12px; }
+.timeline-item.highlight .timeline-content { border-color: var(--border); background: linear-gradient(135deg, rgba(244,183,40,0.05) 0%, var(--bg2) 100%); }
+.timeline-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
+.timeline-desc { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+.timeline-desc strong { color: var(--text); font-weight: 600; }
+.core-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.core-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; transition: all 0.2s; position: relative; }
+.core-card:hover { border-color: var(--border); transform: translateY(-1px); }
+.core-card.primary { background: linear-gradient(135deg, rgba(244,183,40,0.05) 0%, var(--bg2) 100%); border-color: var(--border); }
+.core-card.primary:hover { border-color: var(--gold); }
+.core-card-badge { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 3px 10px; border-radius: 20px; margin-bottom: 12px; }
+.core-card-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.core-card-meta { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; color: var(--muted); margin-bottom: 14px; letter-spacing: 0.2px; }
+.core-card-desc { font-size: 12.5px; line-height: 1.75; color: var(--muted); margin-bottom: 14px; }
+.core-card-desc strong { color: var(--text); font-weight: 600; }
+.core-card-link { display: inline-flex; align-items: center; gap: 4px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none; padding-top: 12px; border-top: 1px solid var(--border2); }
+.core-card-link:hover { color: #ffc93d; }
+.roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.roadmap-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 22px 20px; position: relative; transition: all 0.2s; }
+.roadmap-card:hover { border-color: var(--border); transform: translateY(-2px); }
+.roadmap-status { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; padding: 3px 10px; border-radius: 20px; margin-bottom: 14px; }
+.roadmap-status.active { color: var(--note); background: rgba(65,201,180,0.1); border: 1px solid rgba(65,201,180,0.3); }
+.roadmap-status.next { color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); }
+.roadmap-status.future { color: var(--muted); background: rgba(255,255,255,0.04); border: 1px solid var(--border2); }
+.roadmap-title { font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 4px; line-height: 1.3; }
+.roadmap-tagline { font-size: 12.5px; color: var(--gold); font-weight: 600; margin-bottom: 14px; letter-spacing: 0.2px; }
+.roadmap-desc { font-size: 12.5px; line-height: 1.75; color: var(--muted); }
+.roadmap-desc strong { color: var(--text); font-weight: 600; }
+.zec-resources { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 26px 20px; }
+.zec-resources-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 14px; letter-spacing: 0.3px; }
+.resources-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.resource-link { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: rgba(255,255,255,0.02); border: 1px solid var(--border2); border-radius: 8px; text-decoration: none; transition: all 0.2s; }
+.resource-link:hover { border-color: var(--gold); background: rgba(244,183,40,0.05); }
+.resource-label { font-size: 11px; color: var(--muted); font-weight: 500; }
+.resource-value { font-family: 'Space Grotesk', sans-serif; font-size: 13px; color: var(--gold); font-weight: 600; }
+@media (max-width: 900px) {
+  .founders-grid { grid-template-columns: repeat(2, 1fr); }
+  .core-grid { grid-template-columns: 1fr; }
+  .roadmap-grid { grid-template-columns: 1fr; }
+  .zec-quick-facts { grid-template-columns: repeat(2, 1fr); }
+  .resources-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .zec-manifesto { padding: 48px 28px 44px; }
+  .zec-manifesto::before { font-size: 90px; bottom: -10px; }
+  .founders-grid { grid-template-columns: 1fr; }
+  .zec-quick-facts { grid-template-columns: 1fr; gap: 10px; }
+  .resources-list { grid-template-columns: 1fr; }
+  .zec-section-title { font-size: 22px; }
+  .timeline { padding-left: 24px; }
+  .timeline::before { left: 6px; }
+  .timeline-item::before { left: -24px; }
+}
 /* ZEC Pay Badge (on product cards) */
 .zec-pay-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 700; color: var(--gold); background: linear-gradient(135deg, rgba(244,183,40,0.12) 0%, rgba(65,201,180,0.08) 100%); border: 1px solid rgba(244,183,40,0.35); padding: 4px 12px; border-radius: 6px; letter-spacing: 0.2px; }
 @media (max-width: 640px) {
@@ -353,6 +438,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </a>
     <div class="header-right">
       <nav>
+        <button class="nav-btn" data-page="zec" onclick="navigateTo('zec')">Zcashとは</button>
         <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
         <button class="nav-btn" data-page="buy" onclick="navigateTo('buy')">購入</button>
         <button class="nav-btn" data-page="support" onclick="navigateTo('support')">応援</button>
@@ -616,6 +702,257 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </div>
   </main>
 </div>
+<!-- ━━━ Zcashとは Page ━━━ -->
+<div id="page-zec" class="page">
+  <main>
+    <div class="zec-manifesto">
+      <div class="manifesto-tag"><span class="dot"></span>What is Zcash — zk-SNARKs Pioneer</div>
+      <h1 class="manifesto-headline"><em>Zcash</em> とは、<br>暗号学の頂点が作った通貨。</h1>
+      <p class="manifesto-lede">Zcash は、ビットコインの透明な台帳に <strong>「取引のプライバシー」</strong> を加えた暗号通貨です。<strong>zk-SNARKs（ゼロ知識証明）</strong> を世界で初めてブロックチェーンに実装し、送金額・送信者・受信者を完全に秘匿しつつ、不正のない検証可能な取引を実現しました。創業メンバーには <em>zk-SNARKs の共同発明者</em>、サイファーパンクの伝説、MIT・Berkeley・Johns Hopkins の暗号学者たち ── つまり、<strong>暗号学界の最高峰</strong>が結集した、極めて稀有なプロジェクトです。</p>
+    </div>
+
+    <div class="zec-quick-facts">
+      <div class="quick-fact">
+        <div class="quick-fact-label">メインネット稼働</div>
+        <div class="quick-fact-value">2016<span>年10月</span></div>
+        <div class="quick-fact-sub">世界初の zk-SNARKs 実装</div>
+      </div>
+      <div class="quick-fact">
+        <div class="quick-fact-label">ティッカー</div>
+        <div class="quick-fact-value">ZEC</div>
+        <div class="quick-fact-sub">最大供給 21,000,000 ZEC</div>
+      </div>
+      <div class="quick-fact">
+        <div class="quick-fact-label">コンセンサス</div>
+        <div class="quick-fact-value">PoW <span style="font-size:14px;">→ PoS hybrid</span></div>
+        <div class="quick-fact-sub">Equihash ／ Crosslink 移行準備中</div>
+      </div>
+      <div class="quick-fact">
+        <div class="quick-fact-label">現在の開発主体</div>
+        <div class="quick-fact-value">ZODL<span style="font-size:14px;">+ Foundation</span></div>
+        <div class="quick-fact-sub">$25M シード（Paradigm, a16z等）</div>
+      </div>
+    </div>
+
+    <div class="zec-section">
+      <div class="zec-section-header">
+        <span class="zec-section-tag">FOUNDERS</span>
+        <h2 class="zec-section-title">創業者・コア研究者</h2>
+        <p class="zec-section-lede">Zcash は <strong>zk-SNARKs の共同発明論文「Zerocash」</strong>（2014年）から生まれました。著者陣には今や暗号業界の中核人物が並んでいます。</p>
+      </div>
+      <div class="founders-grid">
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">ZW</div>
+          <div class="founder-info">
+            <div class="founder-name">Zooko Wilcox-O'Hearn</div>
+            <div class="founder-role">Zcash 共同創業者・初代CEO</div>
+            <div class="founder-desc">伝説的サイファーパンク。Phil Zimmermann と <strong>ZRTP</strong>（暗号化音声通信）を共同設計、分散ストレージ <strong>Tahoe-LAFS</strong> を開発。Mojo Nation・SimpleGeo 創業。Electric Coin Company を立ち上げ Zcash を 2016 年にローンチ。</div>
+            <div class="founder-cred">🏛 ZRTP / Tahoe-LAFS / ECC 創業</div>
+          </div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">EB</div>
+          <div class="founder-info">
+            <div class="founder-name">Eli Ben-Sasson</div>
+            <div class="founder-role">zk-SNARKs 共同発明者</div>
+            <div class="founder-desc">Technion（イスラエル工科大学）教授。<strong>zk-SNARKs の理論基盤論文の共著者</strong>。後に <strong>StarkWare</strong> を共同創業（StarkNet・StarkEx 等を運営、Ethereum L2 業界の最大手の一つ）。</div>
+            <div class="founder-cred">🏛 StarkWare 共同創業 / Technion</div>
+          </div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #41C9B4 0%, #2A8676 100%);">AC</div>
+          <div class="founder-info">
+            <div class="founder-name">Alessandro Chiesa</div>
+            <div class="founder-role">zk-SNARKs 共同発明者</div>
+            <div class="founder-desc">UC Berkeley（現EPFL）暗号学者。Zerocash 論文の共著者であり、ゼロ知識証明系の基礎研究を牽引。<strong>StarkWare</strong> 共同創業者でもある、現代暗号証明系の世界的権威。</div>
+            <div class="founder-cred">🏛 UC Berkeley → EPFL / StarkWare</div>
+          </div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #36A2EB 0%, #1E6FA3 100%);">MG</div>
+          <div class="founder-info">
+            <div class="founder-name">Matthew Green</div>
+            <div class="founder-role">Zcash 共同創業者</div>
+            <div class="founder-desc">Johns Hopkins 大学暗号学教授。応用暗号研究の第一人者で、長年プライバシー技術の社会実装と一般啓蒙を続ける。ブログ「A Few Thoughts on Cryptographic Engineering」で世界的に有名。</div>
+            <div class="founder-cred">🏛 Johns Hopkins / 応用暗号</div>
+          </div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #8A8FA8 0%, #5A5F78 100%);">IM</div>
+          <div class="founder-info">
+            <div class="founder-name">Ian Miers</div>
+            <div class="founder-role">Zerocoin / Zerocash 共著者</div>
+            <div class="founder-desc">Zcash の前身となる <strong>Zerocoin</strong>、そして Zcash の直接の理論基盤 <strong>Zerocash 論文</strong>の共著者。現 Columbia 大学准教授。プライバシー技術の研究を継続。</div>
+            <div class="founder-cred">🏛 Columbia University / Zerocoin</div>
+          </div>
+        </div>
+        <div class="founder-card">
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #C8931A 0%, #8A6510 100%);">ET</div>
+          <div class="founder-info">
+            <div class="founder-name">Eran Tromer</div>
+            <div class="founder-role">Zcash 共同創業者</div>
+            <div class="founder-desc">Tel Aviv 大学・Columbia 大学教授。応用暗号と計算可能性理論を専門とし、Zerocash 論文の主要著者の一人。サイドチャネル攻撃研究でも著名。</div>
+            <div class="founder-cred">🏛 Tel Aviv University / Columbia</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zec-section">
+      <div class="zec-section-header">
+        <span class="zec-section-tag">HISTORY</span>
+        <h2 class="zec-section-title">10年の歴史</h2>
+        <p class="zec-section-lede">論文発表から、メインネット、複数回のプロトコル進化、そして新生 ZODL 体制へ。</p>
+      </div>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">2014</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Zerocash 論文発表</div>
+            <div class="timeline-desc">Ben-Sasson, Chiesa, Garman, Green, Miers, Tromer, Virza らが論文を発表。zk-SNARKs を用いた完全プライバシー暗号通貨の理論基盤が確立。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2016</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Zcash メインネット稼働 🎉</div>
+            <div class="timeline-desc">Zooko Wilcox-O'Hearn 率いる Electric Coin Company（ECC）が10月28日にメインネット稼働。世界初の zk-SNARKs ブロックチェーン実装。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2018</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Sapling アップグレード</div>
+            <div class="timeline-desc">Shielded トランザクションの大幅な高速化・軽量化。モバイルウォレットでも実用可能に。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2020</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Heartwood + Canopy アップグレード</div>
+            <div class="timeline-desc">Shielded Coinbase（マイニング報酬の直接シールド化）導入。プライバシープールへの自然流入が加速。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2022</div>
+          <div class="timeline-content">
+            <div class="timeline-title">NU5 + Orchard プール（Halo 2）</div>
+            <div class="timeline-desc">最新プロトコル <strong>Halo 2</strong> 採用。トラステッドセットアップが不要な新世代の zk 証明系へ移行。Orchard プールが新主流に。</div>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2024</div>
+          <div class="timeline-content">
+            <div class="timeline-title">Zashi モバイルウォレットリリース</div>
+            <div class="timeline-desc">ECC が公式モバイルウォレット Zashi をリリース。シールドプールが400%以上拡大。</div>
+          </div>
+        </div>
+        <div class="timeline-item highlight">
+          <div class="timeline-year">2026.01</div>
+          <div class="timeline-content">
+            <div class="timeline-title">ECC全エンジニアリングチームが ZODL Lab を設立 🚀</div>
+            <div class="timeline-desc">Bootstrap（ECC理事会）とのガバナンス対立を経て、Josh Swihart（前ECC CEO）率いる元ECC全チームが「<strong>Zcash Open Development Lab</strong>」を設立。Zashi は <strong>Zodl</strong> へリブランド。</div>
+          </div>
+        </div>
+        <div class="timeline-item highlight">
+          <div class="timeline-year">2026.03</div>
+          <div class="timeline-content">
+            <div class="timeline-title">ZODL Lab が $25M シード調達 💰</div>
+            <div class="timeline-desc"><strong>Paradigm・a16z crypto・Winklevoss Capital・Coinbase Ventures・Cypherpunk Technologies・Balaji Srinivasan</strong> らから$25M調達。Zcash 開発ファンドに依存しない自立開発体制へ。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="zec-section">
+      <div class="zec-section-header">
+        <span class="zec-section-tag">CURRENT CORE</span>
+        <h2 class="zec-section-title">現在の開発体制（2026）</h2>
+      </div>
+      <div class="core-grid">
+        <div class="core-card primary">
+          <div class="core-card-badge">公式</div>
+          <div class="core-card-title">ZODL Lab</div>
+          <div class="core-card-meta">Zcash Open Development Lab</div>
+          <div class="core-card-desc">前ECCのエンジニアリング・プロダクトチームがそのまま移行した新生開発主体。Josh Swihart CEO。Zcash プロトコル開発・<strong>Zodl ウォレット</strong>（旧Zashi）開発・コミュニティ運営を担う。Paradigm・a16z他から <strong>$25M</strong> 調達済。</div>
+          <a class="core-card-link" href="https://zodl.com" target="_blank" rel="noopener">zodl.com →</a>
+        </div>
+        <div class="core-card">
+          <div class="core-card-badge">財団</div>
+          <div class="core-card-title">Zcash Foundation</div>
+          <div class="core-card-meta">独立非営利財団</div>
+          <div class="core-card-desc">Zcash プロトコルの長期的な健全性を支える独立非営利財団。Zebra（Rust実装ノード）・教育コンテンツ・助成金プログラムを運営。プロトコル開発の中立性を担保。</div>
+          <a class="core-card-link" href="https://zfnd.org" target="_blank" rel="noopener">zfnd.org →</a>
+        </div>
+        <div class="core-card">
+          <div class="core-card-badge">独立</div>
+          <div class="core-card-title">cashZ</div>
+          <div class="core-card-meta">旧 Zashi 開発チームの一部</div>
+          <div class="core-card-desc">2026年1月、元ECC/Zashi開発者の一部が独立して立ち上げた新ウォレット。Zashi のコードベースを基に、Zcash の大規模採用拡大を目指す。</div>
+          <a class="core-card-link" href="https://cashz.io" target="_blank" rel="noopener">cashz.io →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="zec-section">
+      <div class="zec-section-header">
+        <span class="zec-section-tag">ROADMAP</span>
+        <h2 class="zec-section-title">ロードマップ（2026以降）</h2>
+        <p class="zec-section-lede">Zcash の最も野心的な3つの方向性。それぞれが現代ブロックチェーンの最先端課題への挑戦です。</p>
+      </div>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <div class="roadmap-status active">開発中・Milestone 4</div>
+          <h3 class="roadmap-title">Crosslink</h3>
+          <div class="roadmap-tagline">PoW + PoS ハイブリッドコンセンサス</div>
+          <p class="roadmap-desc">PoW（マイニング）の上に <strong>BFT 最終性レイヤー</strong>を追加するハイブリッド設計。ステーキング報酬（yield）を ZEC ホルダーに付与しつつ、マイニングの分散性も維持。Zcash Japan のトレジャリーが運用予定。<strong>2026年テストネット</strong>予定。</p>
+        </div>
+        <div class="roadmap-card">
+          <div class="roadmap-status next">次期NU7予定</div>
+          <h3 class="roadmap-title">Zcash Shielded Assets (ZSA)</h3>
+          <div class="roadmap-tagline">プライバシー付きステーブル・NFT・ラップ資産</div>
+          <p class="roadmap-desc">Zcash のプライバシー基盤の上で、<strong>ステーブルコイン・NFT・ラップトークン</strong>を発行可能に。Ethereum の ERC-20 に匹敵する汎用性を、プライバシー付きで実現。テストネットで監査済み。コミュニティ合意の上 NU7 で本実装予定。</p>
+        </div>
+        <div class="roadmap-card">
+          <div class="roadmap-status future">研究段階</div>
+          <h3 class="roadmap-title">Project Tachyon</h3>
+          <div class="roadmap-tagline">数千 TPS のシールドスケーリング</div>
+          <p class="roadmap-desc"><strong>Proof-carrying wallets</strong> と <strong>oblivious synchronization</strong> を用い、シールドトランザクションを <strong>数千 TPS</strong> に拡張する野心的計画。プライバシーを犠牲にせず、Visa 級のスループットを目指す。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="zec-resources">
+      <div class="zec-resources-title">📚 公式リソース</div>
+      <div class="resources-list">
+        <a class="resource-link" href="https://z.cash" target="_blank" rel="noopener">
+          <span class="resource-label">公式サイト</span>
+          <span class="resource-value">z.cash</span>
+        </a>
+        <a class="resource-link" href="https://zodl.com" target="_blank" rel="noopener">
+          <span class="resource-label">ZODL Lab</span>
+          <span class="resource-value">zodl.com</span>
+        </a>
+        <a class="resource-link" href="https://zfnd.org" target="_blank" rel="noopener">
+          <span class="resource-label">Zcash Foundation</span>
+          <span class="resource-value">zfnd.org</span>
+        </a>
+        <a class="resource-link" href="https://zips.z.cash/" target="_blank" rel="noopener">
+          <span class="resource-label">プロトコル仕様（ZIPs）</span>
+          <span class="resource-value">zips.z.cash</span>
+        </a>
+        <a class="resource-link" href="https://eprint.iacr.org/2014/349.pdf" target="_blank" rel="noopener">
+          <span class="resource-label">Zerocash 論文（原典）</span>
+          <span class="resource-value">eprint.iacr.org</span>
+        </a>
+        <a class="resource-link" href="https://github.com/zcash" target="_blank" rel="noopener">
+          <span class="resource-label">GitHub</span>
+          <span class="resource-value">github.com/zcash</span>
+        </a>
+      </div>
+    </div>
+  </main>
+</div>
 <!-- ━━━ Support Page ━━━ -->
 <div id="page-support" class="page">
   <main>
@@ -799,17 +1136,20 @@ const PINNED_URL = 'https://note.com/zcashjapan/n/ne7d6822dd472';
 const NOTE_FEED_URL = '/api/note-feed';
 const PAGE_TITLES = {
   home: 'Zcash Japan — プライバシーコイン Zcash の日本語情報',
+  zec: 'Zcashとは — 創業者・技術・ロードマップ | Zcash Japan',
   buy: 'ZECを購入する | Zcash Japan',
-  support: '応援・トレジャリー | Zcash Japan',
+  support: '応援 | Zcash Japan',
   about: 'Zcash Japanについて | Zcash Japan'
 };
 function pathToPage(path) {
+  if (path === '/zec' || path === '/zec/') return 'zec';
   if (path === '/buy' || path === '/buy/') return 'buy';
   if (path === '/support' || path === '/support/') return 'support';
   if (path === '/about' || path === '/about/') return 'about';
   return 'home';
 }
 function pageToPath(page) {
+  if (page === 'zec') return '/zec';
   if (page === 'buy') return '/buy';
   if (page === 'support') return '/support';
   if (page === 'about') return '/about';
