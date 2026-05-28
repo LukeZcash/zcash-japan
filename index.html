@@ -739,7 +739,6 @@ async function fetchPrice() {
   } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
 }
 fetchPrice();
-
 function renderSparkline(containerId, values, color, fillColor, xLabels, yFormatter) {
   const container = document.getElementById(containerId);
   if (!container || values.length < 2) return;
@@ -788,7 +787,6 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
     <circle cx="${lastX}" cy="${lastY}" r="3" fill="${color}"/>
   </svg>`;
 }
-
 // ══════════════════════════════════════════════════════
 // Shielded Supply — 月次履歴データ（All-time）
 // zecstats.com + ブロックチェーンデータから構成
@@ -801,7 +799,6 @@ const SHIELDED_HISTORY = [
   ['2025-01',4200000],['2025-02',4550000],['2025-03',4850000],
   ['2025-04',5050000],['2025-05',5117767]
 ];
-
 function renderShieldedChart(containerId, dataPoints, liveValue) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -854,7 +851,6 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
     <circle cx="${lastX}" cy="${lastY}" r="6" fill="none" stroke="#F4B728" stroke-width="1" opacity="0.3"/>
   </svg>`;
 }
-
 async function fetchShieldedStats() {
   renderShieldedChart('chart-shielded', SHIELDED_HISTORY, null);
   try {
@@ -908,7 +904,6 @@ async function fetchShieldedStats() {
     document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
   }
 }
-
 async function fetchStats() {
   const fallbackPriceHistory = [
     38,35,32,30,34,40,45,55,60,70,80,90,100,95,85,75,
@@ -918,10 +913,11 @@ async function fetchStats() {
   const priceYFmt = v => '$' + Math.round(v);
   renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
   let zecMcapUsd = null;
+  let priceUsd = null;
   try {
     const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
     const coin = await coinRes.json();
-    const priceUsd = coin.market_data.current_price.usd;
+    priceUsd = coin.market_data.current_price.usd;
     const priceJpy = coin.market_data.current_price.jpy;
     const change = coin.market_data.price_change_percentage_24h;
     zecMcapUsd = coin.market_data.market_cap.usd;
@@ -939,23 +935,24 @@ async function fetchStats() {
     if (mcapRank) {
       document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${mcapRank}</strong>`;
     }
-    try {
-      // CryptoCompare daily data — more reliable than CoinGecko free OHLC
-      // Use HIGH values to capture intraday peaks (Nov $750), last point = live price
-      const histRes = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=ZEC&tsym=USD&limit=365');
-      const histJson = await histRes.json();
-      if (histJson.Response === 'Success' && histJson.Data?.Data) {
-        const dailyData = histJson.Data.Data;
-        const priceVals = dailyData.map(d => d.high); // daily high captures peaks
-        if (price > 0) priceVals[priceVals.length - 1] = price; // last point = live price
-        renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
-      }
-    } catch {}
   } catch(e) {
     const el = document.getElementById('stat-price');
     if (el) el.textContent = '取得不可';
     document.getElementById('stat-mcap').textContent = '$7.0B';
   }
+  // 価格チャートのヒストリカルデータ取得（CoinGecko 失敗時でも単独で動かす）
+  try {
+    // CryptoCompare daily data — more reliable than CoinGecko free OHLC
+    // Use HIGH values to capture intraday peaks (Nov $750), last point = live price
+    const histRes = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=ZEC&tsym=USD&limit=365');
+    const histJson = await histRes.json();
+    if (histJson.Response === 'Success' && histJson.Data?.Data) {
+      const dailyData = histJson.Data.Data;
+      const priceVals = dailyData.map(d => d.high); // daily high captures peaks
+      if (priceUsd && priceUsd > 0) priceVals[priceVals.length - 1] = priceUsd; // last point = live price
+      renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
+    }
+  } catch(e) { console.warn('CryptoCompare price history fetch failed:', e); }
   // CoinGeckoレート制限回避のため少し待つ
   await new Promise(r => setTimeout(r, 1500));
   try {
@@ -974,7 +971,6 @@ async function fetchStats() {
   await fetchShieldedStats();
   await fetchROI();
 }
-
 async function fetchROI() {
   const periods = [
     { label: '1年', days: 365 },
@@ -983,7 +979,6 @@ async function fetchROI() {
   ];
   // S&P 500 フォールバック値（CryptoCompareに株式データなし）
   const sp500Roi = { 365: 15, 1095: 32, 1825: 85 };
-
   // CryptoCompare API — 1回で2000日分の日足データ取得、APIキー不要
   function calcRoiFromDaily(dailyData, daysAgo) {
     if (!dailyData || dailyData.length < daysAgo) return null;
@@ -995,7 +990,6 @@ async function fetchROI() {
     if (!startPrice || startPrice <= 0) return null;
     return ((endPrice - startPrice) / startPrice) * 100;
   }
-
   const symbols = ['ZEC', 'BTC', 'XAU'];
   const roiData = {};
   for (const sym of symbols) {
@@ -1009,7 +1003,6 @@ async function fetchROI() {
       }
     } catch(e) { console.warn('CryptoCompare fetch failed for', sym, e); }
   }
-
   const tbody = document.getElementById('roi-tbody');
   if (!tbody) return;
   let html = '';
@@ -1034,7 +1027,6 @@ async function fetchROI() {
   }
   tbody.innerHTML = html;
 }
-
 fetchStats();
 </script>
 </body>
