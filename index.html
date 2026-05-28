@@ -181,6 +181,14 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .copy-btn.copied { background: var(--note); color: #fff; }
 .donation-tip { font-size: 12.5px; color: var(--muted); line-height: 1.75; padding: 13px 16px; background: rgba(244,183,40,0.04); border: 1px solid rgba(244,183,40,0.12); border-left: 2px solid var(--gold); border-radius: 0 8px 8px 0; position: relative; }
 .donation-tip strong { color: var(--gold); }
+.donation-steps { margin: 6px 0 18px; position: relative; }
+.donation-steps-label { font-size: 12px; font-weight: 700; color: var(--gold); margin-bottom: 12px; letter-spacing: 0.3px; }
+.donation-steps-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.donation-step { background: rgba(244,183,40,0.04); border: 1px solid rgba(244,183,40,0.15); border-radius: 10px; padding: 14px 14px 12px; position: relative; }
+.step-num { font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.step-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; line-height: 1.4; }
+.step-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
+@media (max-width: 640px) { .donation-steps-grid { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 640px) { .donation-product::before { display: none; } .donation-product { padding: 28px 20px 24px; } .donation-payload { flex-direction: column; align-items: center; } .donation-qr { width: 200px; height: 200px; } .donation-address-side { width: 100%; } .copy-btn { width: 100%; justify-content: center; } .donation-address-text { font-size: 11px; } }
 .merch-section-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; background: linear-gradient(90deg, var(--note), var(--gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
 .merch-intro { font-size: 13px; color: var(--muted); line-height: 1.8; margin-top: -8px; margin-bottom: 28px; max-width: 580px; }
@@ -561,18 +569,17 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         Support
       </div>
       <h3>Zcash Japan を <span>ZEC で応援する</span></h3>
-      <p class="donation-subtitle">運営者ルークによるコミュニティ運営 ── 記事執筆、価格分析、サイト運用 ── を、<strong style="color:var(--text);">ZEC でご支援いただけます</strong>。いただいた寄付は、Zcashの思想と文化を日本に広げる活動費として大切に使わせていただきます。</p>
+      <p class="donation-subtitle">Zcash Japan の活動を ZEC で応援いただけます。<strong style="color:var(--text);">いただいた ZEC は活動費には充当せず、全額を長期リザーブとして保管</strong> ── MicroStrategy がビットコインで切り拓いた道のように、<strong style="color:var(--text);">Zcash 中心トレジャリーカンパニーへの第一歩</strong>を、寄付者の皆さまと共に踏み出していきます。</p>
       <div class="donation-receivers">
-        <span class="receiver-tag shielded"><span style="color:#4ADE80;">●</span> Orchard (Shielded)</span>
-        <span class="receiver-tag shielded"><span style="color:#4ADE80;">●</span> Sapling (Shielded)</span>
-        <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent</span>
+        <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent (t1)</span>
+        <span class="receiver-tag" style="background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.25);color:#4ADE80;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:9px;height:9px;"><polyline points="20 6 9 17 4 12"/></svg> MEXC等 取引所から直接送金OK</span>
       </div>
-      <div class="donation-address-label">寄付先 Unified Address</div>
+      <div class="donation-address-label">寄付先アドレス（Transparent）</div>
       <div class="donation-payload">
         <div class="donation-qr" id="donation-qr" aria-label="ZEC Donation QR Code"></div>
         <div class="donation-address-side">
           <div class="donation-address-box">
-            <div class="donation-address-text" id="donation-address">u1ng8hu494k6cmwwa6523aa4dnz00aqh3wygx52qea54zr5wq0840kzk4qrpp7qx9zke80lvl38y4pzup99efd5jtwsmc0fd5gckgh0yplxtwvls8f6pzrxa7ema488lthmlfkfaj4sjjcns47tn7gtl9el4qrw5505zksvegzr58umpq2</div>
+            <div class="donation-address-text" id="donation-address">t1ZtgVAT5w7acBEGr4siW4F7VWL4hbdGZWL</div>
           </div>
           <button class="copy-btn" type="button" onclick="copyDonationAddress(this)">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
@@ -580,8 +587,33 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           </button>
         </div>
       </div>
+      <div class="donation-steps">
+        <div class="donation-steps-label">📱 寄付のしかた（4ステップ）</div>
+        <div class="donation-steps-grid">
+          <div class="donation-step">
+            <div class="step-num">1</div>
+            <div class="step-title">Zcashウォレット or 取引所を準備</div>
+            <div class="step-desc">Zashi / Zingo / Zodl / Ywallet などの自己管理ウォレット、または MEXC 等の取引所アカウント</div>
+          </div>
+          <div class="donation-step">
+            <div class="step-num">2</div>
+            <div class="step-title">ZEC を保有</div>
+            <div class="step-desc">ウォレットへ送金 or 取引所で購入・保有しておく</div>
+          </div>
+          <div class="donation-step">
+            <div class="step-num">3</div>
+            <div class="step-title">Send / 出金画面を開く</div>
+            <div class="step-desc">ウォレット・取引所の送金（Send）画面へ</div>
+          </div>
+          <div class="donation-step">
+            <div class="step-num">4</div>
+            <div class="step-title">QR読込 or アドレス貼付</div>
+            <div class="step-desc">上のQRをスキャン、または上のアドレスをコピー＆ペースト</div>
+          </div>
+        </div>
+      </div>
       <div class="donation-tip">
-        <strong>💡 Tip:</strong> Unified Address は <strong>Zashi / Zingo / Ywallet</strong> など主要なZcashウォレットに対応。デフォルトの Shielded 送金（Orchard）で<strong>プライバシーを守りながら</strong>送金できます。MEXC など取引所からも、Transparent 経由で直接送金可能です。
+        <strong>💡 Tip:</strong> Transparent アドレス (t1) は <strong>あらゆる Zcash 対応ウォレット・取引所から直接送金可能</strong>です。MEXC等の取引所をお使いの場合は、ウォレットを介さず直接出金することもできます。すべての寄付は公開ブロックチェーン上に透明に記録され、トレジャリー保有量として誰でも検証可能です。
       </div>
     </div>
   </main>
