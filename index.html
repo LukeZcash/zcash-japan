@@ -541,6 +541,9 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   .history-impact-text { font-size: 17px; line-height: 1.65; }
   .history-impact::before { display: none; }
 }
+/* ━━━ Team lead featured (Josh) watermark override ━━━ */
+.founder-featured.team-lead::before { content: 'ZODL'; }
+.dev-role-lead { color: var(--gold) !important; }
 /* ━━━ Roadmap card impact one-liner ━━━ */
 .roadmap-impact { font-size: 15px; font-weight: 700; line-height: 1.6; color: var(--text); margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
 .roadmap-impact em { color: var(--gold); font-style: normal; }
@@ -1064,65 +1067,59 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </div>
     <div class="zec-section">
       <div class="zec-section-header">
-        <span class="zec-section-tag">CURRENT CORE</span>
-        <h2 class="zec-section-title">現在の開発体制（2026）</h2>
+        <span class="zec-section-tag">THE TEAM</span>
+        <h2 class="zec-section-title">このロードマップを実現するチーム</h2>
+        <p class="zec-section-lede">上の3つの進化を担うのが、前ECCのエンジニアリング／プロダクトチームがそのまま移行した新生開発主体 <strong>Zodl（Zcash Open Development Lab）</strong>。Paradigm・a16z 他から <strong>$25M</strong> を調達し、自立した開発体制で Zcash を前へ進めています。</p>
       </div>
-      <div class="core-grid">
-        <div class="core-card primary">
-          <div class="core-card-badge">公式</div>
-          <div class="core-card-title">ZODL Lab</div>
-          <div class="core-card-meta">Zcash Open Development Lab</div>
-          <div class="core-card-desc">前ECCのエンジニアリング・プロダクトチームがそのまま移行した新生開発主体。Josh Swihart CEO。Zcash プロトコル開発・<strong>Zodl ウォレット</strong>（旧Zashi）開発・コミュニティ運営を担う。Paradigm・a16z他から <strong>$25M</strong> 調達済。</div>
-          <a class="core-card-link" href="https://zodl.com" target="_blank" rel="noopener">zodl.com →</a>
-        </div>
-        <div class="core-card">
-          <div class="core-card-badge">財団</div>
-          <div class="core-card-title">Zcash Foundation</div>
-          <div class="core-card-meta">独立非営利財団</div>
-          <div class="core-card-desc">Zcash プロトコルの長期的な健全性を支える独立非営利財団。Zebra（Rust実装ノード）・教育コンテンツ・助成金プログラムを運営。プロトコル開発の中立性を担保。</div>
-          <a class="core-card-link" href="https://zfnd.org" target="_blank" rel="noopener">zfnd.org →</a>
-        </div>
-        <div class="core-card">
-          <div class="core-card-badge">独立</div>
-          <div class="core-card-title">cashZ</div>
-          <div class="core-card-meta">旧 Zashi 開発チームの一部</div>
-          <div class="core-card-desc">2026年1月、元ECC/Zashi開発者の一部が独立して立ち上げた新ウォレット。Zashi のコードベースを基に、Zcash の大規模採用拡大を目指す。</div>
-          <a class="core-card-link" href="https://cashz.io" target="_blank" rel="noopener">cashz.io →</a>
+      <div class="founder-featured team-lead">
+        <div class="founder-featured-badge">👑 Zodl CEO — このミッションを率いる</div>
+        <div class="founder-featured-grid">
+          <div class="founder-featured-left">
+            <div class="founder-featured-avatar">JS</div>
+            <div class="founder-featured-name">Josh Swihart</div>
+            <div class="founder-featured-role">Zodl 創業者・CEO（前 ECC CEO）</div>
+            <div class="founder-featured-cred">🏛 Zcash Open Development Lab<br>$25M シード（Paradigm・a16z 他）</div>
+            <a class="founder-x" href="https://www.linkedin.com/in/swihart/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>LinkedIn</a>
+          </div>
+          <div class="founder-featured-right">
+            <p class="founder-featured-desc">前 <strong>ECC（Electric Coin Company）CEO</strong>。2024年に公式ウォレット Zashi（現 <strong>Zodl</strong>）をローンチし、Zcash のシールドプールを <strong>400%以上</strong>拡大させた立役者。</p>
+            <p class="founder-featured-desc">2026年、元ECCのチーム全員を率いて <strong>Zodl</strong> を設立し、<strong>$25M</strong> のシードラウンドを成功させる。いま彼のチームが、上の3つの進化 ── <em>Crosslink・Quantum Recoverability・Project Tachyon</em> ── を実装している。</p>
+          </div>
         </div>
       </div>
       <div class="key-devs-subtitle">
-        <span class="key-devs-tag">⚡ Key People</span>
-        <span class="key-devs-title-text">ZODL Lab の中核メンバー</span>
+        <span class="key-devs-tag">⚡ Core Builders</span>
+        <span class="key-devs-title-text">3つの進化を担う、中核の3人</span>
       </div>
       <div class="key-devs-grid">
         <div class="dev-card">
-          <div class="dev-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">JS</div>
-          <div class="dev-name">Josh Swihart</div>
-          <div class="dev-role">ZODL Lab 創業者・CEO</div>
-          <div class="dev-desc">前 <strong>ECC CEO</strong>。2024年に Zashi（現 Zodl）ウォレットをローンチし、Zcash のシールドプールを <strong>400%以上拡大</strong>させた立役者。2026年1月、Bootstrap理事会との対立を経て、元ECCチーム全員を率いて ZODL Lab を設立、$25M シードラウンドを成功させる。</div>
-          <a class="dev-link" href="https://www.linkedin.com/in/swihart/" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-            LinkedIn
-          </a>
-        </div>
-        <div class="dev-card">
-          <div class="dev-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">SB</div>
-          <div class="dev-name">Sean Bowe</div>
-          <div class="dev-role">Zcash コア暗号研究者</div>
-          <div class="dev-desc">現代zk証明系の最重要人物の一人。<strong>2019年に Halo を発明</strong>、トラステッドセットアップなしでリカーシブzk証明を実現。<strong>Halo 2</strong> 共同発明（Jack Grigg・Daira Hopwood と）。現在は <strong>Project Tachyon</strong>（数千TPS級シールドスケーリング）チームを率いる。Zcashが最先端であり続ける技術的基盤を作り続けている。</div>
-          <a class="dev-link" href="https://x.com/ebfull" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            @ebfull
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">DH</div>
+          <div class="dev-name">Daira-Emma Hopwood</div>
+          <div class="dev-role dev-role-lead">Crosslink をリード</div>
+          <div class="dev-desc"><strong>Zcash プロトコル仕様の主筆</strong>。Sapling・Orchard を設計し、<strong>Halo 2</strong> を共同発明した、Zcash 暗号設計の中心人物。ハイブリッド PoS <strong>Crosslink 2</strong> の技術設計を主導。現在は Zodl の <strong>Head of Research &amp; Assurance</strong>。</div>
+          <a class="dev-link" href="https://github.com/daira" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.91 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222 0 1.606-.014 2.898-.014 3.293 0 .322.216.694.825.576C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            GitHub
           </a>
         </div>
         <div class="dev-card">
           <div class="dev-avatar" style="background: linear-gradient(135deg, #8E5BF8 0%, #5A2DAD 100%);">🐉</div>
           <div class="dev-name">zkDragon</div>
-          <div class="dev-role">ZODL Lab エンジニア</div>
-          <div class="dev-desc">Zcash コミュニティで活躍する開発者。<strong>Zodl ウォレットの新機能実装</strong>（コインホルダー投票プロトコル等）を担当。暗号業界に根強く存在する <strong>匿名開発者カルチャー</strong>を体現する一人で、X 上での技術発信も精力的。</div>
+          <div class="dev-role dev-role-lead">Quantum Recoverability をリード</div>
+          <div class="dev-desc">量子コンピューター時代への備え <strong>Orchard Quantum Recoverability</strong> の実装を担当。量子計算が現在の暗号を破っても資産を救出できる仕組みを構築中。暗号業界に根強い <strong>匿名開発者カルチャー</strong>を体現し、X 上での技術発信も精力的。</div>
           <a class="dev-link" href="https://x.com/zkDragon" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
             @zkDragon
+          </a>
+        </div>
+        <div class="dev-card">
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">SB</div>
+          <div class="dev-name">Sean Bowe</div>
+          <div class="dev-role dev-role-lead">Project Tachyon をリード</div>
+          <div class="dev-desc">現代zk証明系の最重要人物の一人。<strong>2019年に Halo を発明</strong>し、トラステッドセットアップ不要のリカーシブzk証明を実現。<strong>Halo 2</strong> 共同発明者。現在は <strong>Project Tachyon</strong>（数千TPS級スケーリング）を率い、Zcash を最先端に保ち続けている。</div>
+          <a class="dev-link" href="https://x.com/ebfull" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:11px;height:11px;"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            @ebfull
           </a>
         </div>
       </div>
