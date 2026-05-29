@@ -525,6 +525,22 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   .story-traits { grid-template-columns: 1fr; }
   .origin-story { padding: 0 28px; }
 }
+/* ━━━ History impact statement ━━━ */
+.history-impact { position: relative; margin: 4px 0 30px; padding: 26px 30px 24px; background: linear-gradient(135deg, rgba(244,183,40,0.08) 0%, rgba(65,201,180,0.05) 100%); border: 1px solid var(--gold); border-radius: 14px; overflow: hidden; }
+.history-impact::before { content: '2016'; position: absolute; right: 22px; bottom: -14px; font-family: 'Space Grotesk', sans-serif; font-size: 78px; font-weight: 700; color: rgba(244,183,40,0.06); letter-spacing: -3px; line-height: 1; user-select: none; pointer-events: none; }
+.history-impact-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; position: relative; }
+.history-impact-text { font-size: 21px; font-weight: 700; line-height: 1.7; color: var(--text); letter-spacing: 0.01em; position: relative; margin-bottom: 18px; }
+.history-impact-text em { color: var(--gold); font-style: normal; }
+.history-impact-flow { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; position: relative; }
+.hi-chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 7px 14px; border-radius: 8px; font-family: 'Noto Sans JP', sans-serif; }
+.hi-chip.theory { background: rgba(255,255,255,0.04); border: 1px solid var(--border2); color: var(--muted); }
+.hi-chip.real { background: var(--gold-glow); border: 1px solid var(--border); color: var(--gold); }
+.hi-arrow { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: var(--gold); }
+@media (max-width: 640px) {
+  .history-impact { padding: 22px 20px; }
+  .history-impact-text { font-size: 17px; line-height: 1.65; }
+  .history-impact::before { display: none; }
+}
 </style>
 </head>
 <body>
@@ -934,6 +950,15 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <span class="zec-section-tag">HISTORY</span>
         <h2 class="zec-section-title">10年の歴史</h2>
         <p class="zec-section-lede">論文発表から、メインネット、複数回のプロトコル進化、そして新生 ZODL 体制へ。</p>
+      </div>
+      <div class="history-impact">
+        <div class="history-impact-label">⚡ The Breakthrough</div>
+        <div class="history-impact-text">1985年の誕生から約30年 ── <em>理論の中だけ</em>に存在した「ゼロ知識証明」を、<em>2016年、Zcash が人類史上はじめて</em>「実際に動くお金」として実装した。</div>
+        <div class="history-impact-flow">
+          <span class="hi-chip theory">📄 理論のみ（1985〜）</span>
+          <span class="hi-arrow">→</span>
+          <span class="hi-chip real">🌍 実用通貨（2016〜）</span>
+        </div>
       </div>
       <div class="timeline">
         <div class="timeline-item">
