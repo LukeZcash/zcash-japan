@@ -541,6 +541,10 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   .history-impact-text { font-size: 17px; line-height: 1.65; }
   .history-impact::before { display: none; }
 }
+/* ━━━ Founder cards: bottom-align cred + X across the row ━━━ */
+.founder-card { display: flex; flex-direction: column; }
+.founder-card .founder-info { display: flex; flex-direction: column; flex: 1; }
+.founder-card .founder-desc { flex: 1 1 auto; }
 /* ━━━ Avatar profile photos (X) with initial fallback ━━━ */
 .founder-avatar, .founder-featured-avatar, .dev-avatar { position: relative; overflow: hidden; }
 .avatar-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
