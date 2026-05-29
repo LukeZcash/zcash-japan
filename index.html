@@ -541,6 +541,10 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   .history-impact-text { font-size: 17px; line-height: 1.65; }
   .history-impact::before { display: none; }
 }
+/* ━━━ Roadmap card impact one-liner ━━━ */
+.roadmap-impact { font-size: 15px; font-weight: 700; line-height: 1.6; color: var(--text); margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
+.roadmap-impact em { color: var(--gold); font-style: normal; }
+.ri-lead { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; margin-right: 8px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -1025,23 +1029,35 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <h2 class="zec-section-title">ロードマップ（2026以降）</h2>
         <p class="zec-section-lede">Zcash の最も野心的な3つの方向性。それぞれが現代ブロックチェーンの最先端課題への挑戦です。</p>
       </div>
+      <div class="history-impact">
+        <div class="history-impact-label">⚡ The Next Decade</div>
+        <div class="history-impact-text">最初の10年で、Zcash は理論を<em>「使えるお金」</em>に変えた。── 次の10年は、それを<em>世界中のすべての人に届ける</em>スケールのフェーズだ。</div>
+        <div class="history-impact-flow">
+          <span class="hi-chip theory">🔧 動くものにした（〜2026）</span>
+          <span class="hi-arrow">→</span>
+          <span class="hi-chip real">🌍 世界中に届ける（2026〜）</span>
+        </div>
+      </div>
       <div class="roadmap-grid">
         <div class="roadmap-card">
           <div class="roadmap-status active">開発中・Milestone 4</div>
           <h3 class="roadmap-title">Crosslink</h3>
           <div class="roadmap-tagline">PoW + PoS ハイブリッドコンセンサス</div>
+          <div class="roadmap-impact"><span class="ri-lead">つまり</span>ZEC を持つだけで、<em>銀行預金のように利息がつく。</em></div>
           <p class="roadmap-desc">PoW（マイニング）の上に <strong>BFT 最終性レイヤー</strong>を追加するハイブリッド設計。ステーキング報酬（yield）を ZEC ホルダーに付与しつつ、マイニングの分散性も維持。Zcash Japan のトレジャリーが運用予定。<strong>2026年テストネット</strong>予定。</p>
         </div>
         <div class="roadmap-card">
           <div class="roadmap-status next">次期NU7予定</div>
           <h3 class="roadmap-title">Zcash Shielded Assets (ZSA)</h3>
           <div class="roadmap-tagline">プライバシー付きステーブル・NFT・ラップ資産</div>
+          <div class="roadmap-impact"><span class="ri-lead">つまり</span>ドルもNFTも、<em>"中身が見えない"まま</em>発行・送金できる。</div>
           <p class="roadmap-desc">Zcash のプライバシー基盤の上で、<strong>ステーブルコイン・NFT・ラップトークン</strong>を発行可能に。Ethereum の ERC-20 に匹敵する汎用性を、プライバシー付きで実現。テストネットで監査済み。コミュニティ合意の上 NU7 で本実装予定。</p>
         </div>
         <div class="roadmap-card">
           <div class="roadmap-status future">研究段階</div>
           <h3 class="roadmap-title">Project Tachyon</h3>
           <div class="roadmap-tagline">数千 TPS のシールドスケーリング</div>
+          <div class="roadmap-impact"><span class="ri-lead">つまり</span>プライバシーはそのまま、<em>Visa 級の速度で世界中が使える。</em></div>
           <p class="roadmap-desc"><strong>Proof-carrying wallets</strong> と <strong>oblivious synchronization</strong> を用い、シールドトランザクションを <strong>数千 TPS</strong> に拡張する野心的計画。プライバシーを犠牲にせず、Visa 級のスループットを目指す。</p>
         </div>
       </div>
