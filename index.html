@@ -555,6 +555,29 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .roadmap-impact { font-size: 15px; font-weight: 700; line-height: 1.6; color: var(--text); margin-bottom: 14px; padding-bottom: 14px; border-bottom: 1px dashed var(--border); }
 .roadmap-impact em { color: var(--gold); font-style: normal; }
 .ri-lead { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; margin-right: 8px; vertical-align: middle; }
+/* ━━━ Voices: notable supporters (About) ━━━ */
+.voices-section { margin-bottom: 48px; }
+.voices-head { margin-bottom: 18px; }
+.voices-tag { display: inline-block; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 4px 12px; border-radius: 20px; margin-bottom: 12px; }
+.voices-title { font-size: 22px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 8px; }
+.voices-lede { font-size: 13.5px; color: var(--muted); line-height: 1.8; max-width: 640px; }
+.voices-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.voice-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 20px 20px 18px; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: all 0.2s; }
+.voice-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.voice-kind { align-self: flex-start; font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; padding: 2px 9px; border-radius: 20px; margin-bottom: 12px; }
+.voice-kind.say { color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); }
+.voice-kind.back { color: var(--note); background: rgba(65,201,180,0.12); border: 1px solid rgba(65,201,180,0.3); }
+.voice-statement { font-size: 14.5px; font-weight: 600; color: var(--text); line-height: 1.75; flex: 1; margin-bottom: 16px; }
+.voice-statement.fact { font-weight: 500; color: var(--muted); }
+.voice-statement strong { color: var(--text); font-weight: 700; }
+.voice-person { display: flex; align-items: center; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border2); }
+.voice-avatar { width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0; position: relative; overflow: hidden; background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: #080B14; }
+.voice-meta { min-width: 0; }
+.voice-name { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.35; }
+.voice-role { font-size: 11px; color: var(--muted); }
+.voice-handle { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; color: var(--gold); }
+@media (max-width: 900px) { .voices-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .voices-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -1287,6 +1310,79 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         Edward Snowden <span class="naval-quote-handle" style="color:var(--note);">@Snowden</span> · 2017年9月
       </div>
     </a>
+    <div class="voices-section">
+      <div class="voices-head">
+        <span class="voices-tag">VOICES</span>
+        <h2 class="voices-title">Zcash を支持する声</h2>
+        <p class="voices-lede">投資家・トレーダー・技術者 ── 立場の異なる著名人や機関が、それぞれの言葉と行動で Zcash を支持しています。</p>
+      </div>
+      <div class="voices-grid">
+        <a class="voice-card" href="https://x.com/BarrySilbert" target="_blank" rel="noopener">
+          <span class="voice-kind say">発言</span>
+          <div class="voice-statement">「Zcash は“自由のためのお金”。見えないものは、禁じようがない。」</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/BarrySilbert?fallback=false" alt="Barry Silbert" loading="lazy" onerror="this.remove()">BS</div>
+            <div class="voice-meta"><div class="voice-name">Barry Silbert</div><div class="voice-role"><span class="voice-handle">@BarrySilbert</span> · DCG 創業者</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/blknoiz06" target="_blank" rel="noopener">
+          <span class="voice-kind say">発言</span>
+          <div class="voice-statement">「Zcash は、ポケットの中のスイス銀行だ。」</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/blknoiz06?fallback=false" alt="Ansem" loading="lazy" onerror="this.remove()">A</div>
+            <div class="voice-meta"><div class="voice-name">Ansem</div><div class="voice-role"><span class="voice-handle">@blknoiz06</span> · 著名トレーダー</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/mert" target="_blank" rel="noopener">
+          <span class="voice-kind say">発言</span>
+          <div class="voice-statement">「価値が目減りせず、かつプライベートなお金を持つべきだ。それが Zcash だ。」</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/mert?fallback=false" alt="Mert Mumtaz" loading="lazy" onerror="this.remove()">M</div>
+            <div class="voice-meta"><div class="voice-name">Mert Mumtaz</div><div class="voice-role"><span class="voice-handle">@mert</span> · Helius CEO</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/wallstreetbets" target="_blank" rel="noopener">
+          <span class="voice-kind say">発言</span>
+          <div class="voice-statement">「まだ Zcash の持ち高が全然足りない。」</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/wallstreetbets?fallback=false" alt="WallStreetBets" loading="lazy" onerror="this.remove()">W</div>
+            <div class="voice-meta"><div class="voice-name">WallStreetBets</div><div class="voice-role"><span class="voice-handle">@wallstreetbets</span> · 投資コミュニティ</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/TusharJain_" target="_blank" rel="noopener">
+          <span class="voice-kind say">発言</span>
+          <div class="voice-statement">「Zcash は、暗号資産が本来掲げたサイファーパンクの理想への回帰だ。」</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/TusharJain_?fallback=false" alt="Tushar Jain" loading="lazy" onerror="this.remove()">TJ</div>
+            <div class="voice-meta"><div class="voice-name">Tushar Jain</div><div class="voice-role"><span class="voice-handle">@TusharJain_</span> · Multicoin Capital</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/tyler" target="_blank" rel="noopener">
+          <span class="voice-kind back">出資</span>
+          <div class="voice-statement fact"><strong>Winklevoss Capital</strong> を通じて ZODL に出資。ZEC を公に支持。</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/tyler?fallback=false" alt="Tyler Winklevoss" loading="lazy" onerror="this.remove()">TW</div>
+            <div class="voice-meta"><div class="voice-name">Tyler Winklevoss</div><div class="voice-role"><span class="voice-handle">@tyler</span> · Gemini 共同創業者</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/VitalikButerin" target="_blank" rel="noopener">
+          <span class="voice-kind back">寄付</span>
+          <div class="voice-statement fact">Zcash の <strong>Crosslink 開発に寄付</strong>し、プライバシー技術を後押し。</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/VitalikButerin?fallback=false" alt="Vitalik Buterin" loading="lazy" onerror="this.remove()">VB</div>
+            <div class="voice-meta"><div class="voice-name">Vitalik Buterin</div><div class="voice-role"><span class="voice-handle">@VitalikButerin</span> · Ethereum 創業者</div></div>
+          </div>
+        </a>
+        <a class="voice-card" href="https://x.com/balajis" target="_blank" rel="noopener">
+          <span class="voice-kind back">出資</span>
+          <div class="voice-statement fact"><strong>ZODL</strong> のシードラウンドに出資。</div>
+          <div class="voice-person">
+            <div class="voice-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/balajis?fallback=false" alt="Balaji Srinivasan" loading="lazy" onerror="this.remove()">B</div>
+            <div class="voice-meta"><div class="voice-name">Balaji Srinivasan</div><div class="voice-role"><span class="voice-handle">@balajis</span> · 元 Coinbase CTO</div></div>
+          </div>
+        </a>
+      </div>
+    </div>
     <div class="founder-story">
       <div style="display:flex;align-items:center;gap:24px;margin-bottom:36px;">
         <img src="/luke.png" alt="ルーク" style="width:88px;height:88px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;">
