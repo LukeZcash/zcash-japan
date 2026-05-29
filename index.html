@@ -541,6 +541,9 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
   .history-impact-text { font-size: 17px; line-height: 1.65; }
   .history-impact::before { display: none; }
 }
+/* ━━━ Avatar profile photos (X) with initial fallback ━━━ */
+.founder-avatar, .founder-featured-avatar, .dev-avatar { position: relative; overflow: hidden; }
+.avatar-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 /* ━━━ Team lead featured (Josh) watermark override ━━━ */
 .founder-featured.team-lead::before { content: 'ZODL'; }
 .dev-role-lead { color: var(--gold) !important; }
@@ -907,7 +910,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="founder-featured-badge">🌟 Cypherpunk Legend — Featured Founder</div>
         <div class="founder-featured-grid">
           <div class="founder-featured-left">
-            <div class="founder-featured-avatar">ZW</div>
+            <div class="founder-featured-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/zooko?fallback=false" alt="Zooko" loading="lazy" onerror="this.remove()">ZW</div>
             <div class="founder-featured-name">Zooko Wilcox-O'Hearn</div>
             <div class="founder-featured-role">Zcash 共同創業者・初代CEO</div>
             <div class="founder-featured-cred">🏛 DigiCash / ZRTP<br>Tahoe-LAFS / ECC 創業</div>
@@ -921,7 +924,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </div>
       <div class="founders-grid">
         <div class="founder-card">
-          <div class="founder-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">EB</div>
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/EliBenSasson?fallback=false" alt="Eli Ben-Sasson" loading="lazy" onerror="this.remove()">EB</div>
           <div class="founder-info">
             <div class="founder-name">Eli Ben-Sasson</div>
             <div class="founder-role">zk-SNARKs 共同発明者</div>
@@ -931,7 +934,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           </div>
         </div>
         <div class="founder-card">
-          <div class="founder-avatar" style="background: linear-gradient(135deg, #36A2EB 0%, #1E6FA3 100%);">MG</div>
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #36A2EB 0%, #1E6FA3 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/matthew_d_green?fallback=false" alt="Matthew Green" loading="lazy" onerror="this.remove()">MG</div>
           <div class="founder-info">
             <div class="founder-name">Matthew Green</div>
             <div class="founder-role">Zcash 共同創業者</div>
@@ -941,7 +944,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           </div>
         </div>
         <div class="founder-card">
-          <div class="founder-avatar" style="background: linear-gradient(135deg, #8A8FA8 0%, #5A5F78 100%);">IM</div>
+          <div class="founder-avatar" style="background: linear-gradient(135deg, #8A8FA8 0%, #5A5F78 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/secparam?fallback=false" alt="Ian Miers" loading="lazy" onerror="this.remove()">IM</div>
           <div class="founder-info">
             <div class="founder-name">Ian Miers</div>
             <div class="founder-role">Zerocoin / Zerocash 共著者</div>
@@ -1075,7 +1078,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="founder-featured-badge">👑 Zodl CEO — このミッションを率いる</div>
         <div class="founder-featured-grid">
           <div class="founder-featured-left">
-            <div class="founder-featured-avatar">JS</div>
+            <div class="founder-featured-avatar"><img class="avatar-img" src="https://unavatar.io/twitter/jswihart?fallback=false" alt="Josh Swihart" loading="lazy" onerror="this.remove()">JS</div>
             <div class="founder-featured-name">Josh Swihart</div>
             <div class="founder-featured-role">Zodl 創業者・CEO（前 ECC CEO）</div>
             <div class="founder-featured-cred">🏛 Zcash Open Development Lab<br>$25M シード（Paradigm・a16z 他）</div>
@@ -1093,7 +1096,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       </div>
       <div class="key-devs-grid">
         <div class="dev-card">
-          <div class="dev-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);">DH</div>
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/feministPLT?fallback=false" alt="Daira-Emma Hopwood" loading="lazy" onerror="this.remove()">DH</div>
           <div class="dev-name">Daira-Emma Hopwood</div>
           <div class="dev-role dev-role-lead">Crosslink をリード</div>
           <div class="dev-desc"><strong>Zcash プロトコル仕様の主筆</strong>。Sapling・Orchard を設計し、<strong>Halo 2</strong> を共同発明した、Zcash 暗号設計の中心人物。ハイブリッド PoS <strong>Crosslink 2</strong> の技術設計を主導。現在は Zodl の <strong>Head of Research &amp; Assurance</strong>。</div>
@@ -1103,7 +1106,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           </a>
         </div>
         <div class="dev-card">
-          <div class="dev-avatar" style="background: linear-gradient(135deg, #8E5BF8 0%, #5A2DAD 100%);">🐉</div>
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #8E5BF8 0%, #5A2DAD 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/zkDragon?fallback=false" alt="zkDragon" loading="lazy" onerror="this.remove()">🐉</div>
           <div class="dev-name">zkDragon</div>
           <div class="dev-role dev-role-lead">Quantum Recoverability をリード</div>
           <div class="dev-desc">量子コンピューター時代への備え <strong>Orchard Quantum Recoverability</strong> の実装を担当。量子計算が現在の暗号を破っても資産を救出できる仕組みを構築中。暗号業界に根強い <strong>匿名開発者カルチャー</strong>を体現し、X 上での技術発信も精力的。</div>
@@ -1113,7 +1116,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           </a>
         </div>
         <div class="dev-card">
-          <div class="dev-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);">SB</div>
+          <div class="dev-avatar" style="background: linear-gradient(135deg, #1DBEAC 0%, #0A8576 100%);"><img class="avatar-img" src="https://unavatar.io/twitter/ebfull?fallback=false" alt="Sean Bowe" loading="lazy" onerror="this.remove()">SB</div>
           <div class="dev-name">Sean Bowe</div>
           <div class="dev-role dev-role-lead">Project Tachyon をリード</div>
           <div class="dev-desc">現代zk証明系の最重要人物の一人。<strong>2019年に Halo を発明</strong>し、トラステッドセットアップ不要のリカーシブzk証明を実現。<strong>Halo 2</strong> 共同発明者。現在は <strong>Project Tachyon</strong>（数千TPS級スケーリング）を率い、Zcash を最先端に保ち続けている。</div>
