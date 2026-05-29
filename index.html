@@ -467,6 +467,60 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .roi-source { font-size: 10px; color: var(--muted); opacity: 0.7; margin-top: 14px; display: flex; align-items: center; gap: 4px; }
 .roi-source svg { width: 10px; height: 10px; }
 @media (max-width: 640px) { .stats-bar, .secondary-stats { grid-template-columns: 1fr; } main { padding: 24px 16px 60px; } .social-links { display: none; } .nav-btn { padding: 8px 10px; font-size: 13px; } .roi-table { font-size: 12px; } }
+/* ━━━ Zcash Origin Story (Zcashページ最上部) ━━━ */
+.origin-story { margin-bottom: 56px; }
+.story-block { position: relative; margin-bottom: 28px; }
+.story-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); background: var(--gold-glow); border: 1px solid var(--border); padding: 5px 14px; border-radius: 20px; margin-bottom: 22px; }
+.story-eyebrow .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+.story-headline { font-size: 40px; font-weight: 700; line-height: 1.45; letter-spacing: 0.01em; color: var(--text); margin-bottom: 28px; }
+.story-headline em { color: var(--gold); font-style: normal; }
+.story-prose { font-size: 15.5px; line-height: 2.05; color: var(--muted); max-width: 760px; letter-spacing: 0.015em; }
+.story-prose p { margin-bottom: 22px; }
+.story-prose p:last-child { margin-bottom: 0; }
+.story-prose strong { color: var(--text); font-weight: 600; }
+.story-prose em { color: var(--gold); font-style: normal; font-weight: 600; }
+/* Satoshi forum post card */
+.satoshi-post { background: linear-gradient(135deg, var(--bg2) 0%, rgba(244,183,40,0.04) 100%); border: 1px solid var(--border); border-radius: 16px; padding: 26px 30px 24px; margin: 32px 0; position: relative; overflow: hidden; }
+.satoshi-post::before { content: 'zk-proofs?'; position: absolute; right: 18px; bottom: -22px; font-family: 'Space Grotesk', sans-serif; font-size: 78px; font-weight: 700; color: rgba(244,183,40,0.04); letter-spacing: -3px; user-select: none; pointer-events: none; }
+.satoshi-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--border2); position: relative; flex-wrap: wrap; }
+.satoshi-avatar { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, #F4B728 0%, #C8931A 100%); display: flex; align-items: center; justify-content: center; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; color: #080B14; flex-shrink: 0; box-shadow: 0 4px 14px rgba(244,183,40,0.3); }
+.satoshi-id { flex: 1; min-width: 160px; }
+.satoshi-name { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.3; }
+.satoshi-role { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; font-weight: 600; color: var(--gold); letter-spacing: 0.2px; }
+.satoshi-meta { font-family: 'Space Grotesk', sans-serif; font-size: 11.5px; color: var(--muted); text-align: right; line-height: 1.5; }
+.satoshi-quote-en { font-size: 15px; line-height: 1.85; color: var(--text); position: relative; margin-bottom: 6px; }
+.satoshi-quote-en .mark { background: linear-gradient(180deg, transparent 55%, rgba(244,183,40,0.28) 55%); color: var(--text); font-weight: 600; padding: 0 2px; }
+.satoshi-quote-en p { margin-bottom: 12px; }
+.satoshi-quote-en p:last-child { margin-bottom: 0; }
+.satoshi-quote-ja { font-size: 13.5px; line-height: 1.85; color: var(--muted); margin-top: 16px; padding: 14px 0 0 16px; border-left: 2px solid var(--gold); border-top: 1px solid var(--border2); padding-top: 16px; }
+.satoshi-quote-ja strong { color: var(--text); font-weight: 600; }
+.satoshi-cite { display: inline-flex; align-items: center; gap: 6px; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; color: var(--gold); text-decoration: none; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border2); width: 100%; }
+.satoshi-cite svg { width: 12px; height: 12px; }
+.satoshi-cite:hover { color: #ffc93d; }
+/* Thesis closing statement */
+.zec-thesis { background: linear-gradient(135deg, rgba(244,183,40,0.08) 0%, rgba(65,201,180,0.05) 100%); border: 1px solid var(--gold); border-radius: 16px; padding: 32px 36px; margin: 36px 0 8px; position: relative; overflow: hidden; }
+.zec-thesis::before { content: '∎'; position: absolute; right: 28px; top: 18px; font-family: 'Space Grotesk', sans-serif; font-size: 60px; color: rgba(244,183,40,0.08); line-height: 1; user-select: none; }
+.zec-thesis-label { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.zec-thesis-text { font-size: 24px; font-weight: 700; line-height: 1.55; color: var(--text); letter-spacing: 0.01em; }
+.zec-thesis-text em { color: var(--gold); font-style: normal; }
+/* Story feature pills (key traits) */
+.story-traits { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 28px 0; }
+.story-trait { background: var(--bg2); border: 1px solid var(--border2); border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0; padding: 16px 18px 14px; transition: border-color 0.2s; }
+.story-trait:hover { border-color: var(--border); border-left-color: var(--gold); }
+.story-trait-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.story-trait-title .ico { font-size: 16px; }
+.story-trait-desc { font-size: 12.5px; line-height: 1.7; color: var(--muted); }
+.story-trait-desc strong { color: var(--text); font-weight: 600; }
+@media (max-width: 640px) {
+  .story-headline { font-size: 26px; line-height: 1.5; margin-bottom: 22px; }
+  .story-prose { font-size: 14.5px; line-height: 1.95; }
+  .satoshi-post { padding: 22px 20px; }
+  .satoshi-post::before { display: none; }
+  .satoshi-meta { text-align: left; }
+  .zec-thesis { padding: 24px 22px; }
+  .zec-thesis-text { font-size: 19px; }
+  .story-traits { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
@@ -746,9 +800,78 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 <div id="page-zec" class="page">
   <main>
     <div class="zec-manifesto">
-      <div class="manifesto-tag"><span class="dot"></span>What is Zcash — zk-SNARKs Pioneer</div>
-      <h1 class="manifesto-headline"><em>Zcash</em> とは、<br>暗号学の頂点が作った通貨。</h1>
-      <p class="manifesto-lede">Zcash は、ビットコインの透明な台帳に <strong>「取引のプライバシー」</strong> を加えた暗号通貨です。<strong>zk-SNARKs（ゼロ知識証明）</strong> を世界で初めてブロックチェーンに実装し、送金額・送信者・受信者を完全に秘匿しつつ、不正のない検証可能な取引を実現しました。創業メンバーには <em>zk-SNARKs の共同発明者</em>、サイファーパンクの伝説、MIT・Berkeley・Johns Hopkins の暗号学者たち ── つまり、<strong>暗号学界の最高峰</strong>が結集した、極めて稀有なプロジェクトです。</p>
+      <div class="manifesto-tag"><span class="dot"></span>What is Zcash — Bitcoin, Evolved</div>
+      <h1 class="manifesto-headline"><em>Satoshi</em> が解けなかった問いに、<br>Zcash が答えた。</h1>
+      <p class="manifesto-lede">Zcash は、<strong>ビットコインから分岐して生まれた暗号資産</strong>です。<strong>ゼロ知識証明</strong>とエンドツーエンド暗号化を使い、ビットコインが本来目指しながら実現しきれなかったこと ── <em>本物の取引プライバシー</em> ── を実現しようとしています。一言でいえば、<strong>ビットコインが進化した、AI と量子コンピューターの時代に耐えるデジタル通貨</strong>です。</p>
+    </div>
+    <div class="origin-story">
+      <div class="story-block">
+        <div class="story-eyebrow"><span class="dot"></span>The Origin — 2008 → 2010 → 2016</div>
+        <h2 class="story-headline">すべては、<em>Satoshi が残した宿題</em><br>から始まった。</h2>
+        <div class="story-prose">
+          <p>2008年、Satoshi Nakamoto はビットコインを世に送り出しました。中央管理者なしで成立する電子現金 ── 革命でした。けれど、その台帳は<strong>すべての取引が誰にでも丸見え</strong>という弱点を抱えていました。誰が、誰に、いくら送ったか。世界中の誰もがそれを追跡できてしまう。</p>
+          <p>2010年8月、あるフォーラムのスレッドで、Satoshi 自身がこの課題に触れています。プライバシーを実現する方法が見つかれば「<strong>もっと優れた、もっと簡単で便利なビットコイン</strong>が可能になる」と。しかし同じ投稿の最後で、彼はこう書き残しました ──</p>
+        </div>
+      </div>
+      <div class="satoshi-post">
+        <div class="satoshi-head">
+          <div class="satoshi-avatar">S</div>
+          <div class="satoshi-id">
+            <div class="satoshi-name">satoshi</div>
+            <div class="satoshi-role">Bitcoin 創始者 / Founder</div>
+          </div>
+          <div class="satoshi-meta">Re: Not a suggestion<br>August 11, 2010</div>
+        </div>
+        <div class="satoshi-quote-en">
+          <p>“<span class="mark">If a solution was found, a much better, easier, more convenient implementation of Bitcoin would be possible.</span>”</p>
+          <p>“<span class="mark">It's hard to think of how to apply zero-knowledge-proofs in this case.</span>”</p>
+        </div>
+        <div class="satoshi-quote-ja">「もし解決策が見つかれば、<strong>はるかに優れた、簡単で便利なビットコイン</strong>が実現できるだろう。」<br>「だが、この問題に<strong>ゼロ知識証明をどう応用すればいいのか、思いつくのは難しい。</strong>」</div>
+        <a class="satoshi-cite" href="https://satoshi.nakamotoinstitute.org/posts/bitcointalk/339/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          原典：&ldquo;Not a suggestion&rdquo; bitcointalk・2010年8月11日（Satoshi Nakamoto Institute アーカイブ）
+        </a>
+      </div>
+      <div class="story-block">
+        <div class="story-prose">
+          <p>Satoshi が「難しい」と書いたまさにその技術 ── <strong>ゼロ知識証明</strong> ── を、ビットコインに応用してみせたのが Zcash です。ビットコイン黎明期に Satoshi 本人とやり取りし（Satoshi は bitcoin.org から <strong>Zooko のブログ記事をリンクで紹介</strong>しています）、サイファーパンクとして30年を歩んできた <em>Zooko Wilcox-O'Hearn</em> が、世界最高峰の暗号学者たちと共に、<strong>2016年にこの宿題を解いた</strong>のです。</p>
+        </div>
+      </div>
+      <div class="story-block">
+        <div class="story-eyebrow"><span class="dot"></span>What Zcash Actually Does</div>
+        <h2 class="story-headline">ビットコインの強さは残したまま、<br><em>本物のプライバシー</em>を手に入れた。</h2>
+        <div class="story-prose">
+          <p>ビットコインと違い、Zcash では「<strong>誰が送ったのか</strong>」「<strong>誰が受け取ったのか</strong>」「<strong>いくら送ったのか</strong>」が暗号化されます。つまり、世界中の誰であっても、その取引内容を知ることはできません。</p>
+          <p>しかも、それによってビットコインの優れた特徴が失われるわけではありません。Zcash にも、ビットコイン支持者がよく評価する<strong>「ハードマネー」としての性質</strong>があります ── 発行上限は <em>2,100万枚</em>、コンセンサスには <em>Proof of Work</em> を採用。希少性も、採掘による裏付けも、そのまま受け継いでいます。</p>
+        </div>
+        <div class="story-traits">
+          <div class="story-trait">
+            <div class="story-trait-title"><span class="ico">🔒</span> 本物のプライバシー</div>
+            <div class="story-trait-desc">送信者・受信者・金額をすべて暗号化。<strong>取引内容は誰にも見えない</strong>。</div>
+          </div>
+          <div class="story-trait">
+            <div class="story-trait-title"><span class="ico">🪙</span> ハードマネー</div>
+            <div class="story-trait-desc">上限 <strong>2,100万枚</strong>・<strong>PoW</strong> 採用。ビットコインの希少性を継承。</div>
+          </div>
+          <div class="story-trait">
+            <div class="story-trait-title"><span class="ico">⚡</span> スケーラビリティ</div>
+            <div class="story-trait-desc">多くの人が実際に使う時代の取引量に対応すべく、<strong>開発を継続中</strong>。</div>
+          </div>
+          <div class="story-trait">
+            <div class="story-trait-title"><span class="ico">🛡</span> 量子耐性ロードマップ</div>
+            <div class="story-trait-desc"><strong>2028年まで</strong>段階的に保護機能を追加。将来の量子計算にも先回り。</div>
+          </div>
+        </div>
+        <div class="story-prose">
+          <p><strong>自由のためのお金</strong>は、一部の人だけが使えるものであってはいけません。広く使えること ── つまり<strong>スケールすること</strong>が必要です。Zcash は、多くの人が実際に使うようになったときの取引量に耐えられるよう、いまも開発が進められています。</p>
+          <p>さらに、<strong>長く使える設計</strong>であることも重要です。将来の量子コンピューターは、ビットコインを含む現在の多くのデジタル通貨を支える暗号を破るほど強力になる可能性があります。Zcash には、それに先回りする具体的なロードマップがあり、<em>2028年まで段階的に保護機能を追加</em>。計算能力の進歩によって取引の安全性やプライバシーが破られないよう設計されています。</p>
+          <p>そして <strong>AI の時代</strong>において、プライバシーはこれまで以上に重要です。かつて大量のデータを調べるには多くの人手が必要でした。しかし今は、AI が休むことも、不満を言うことも、止まることもなく、人間の活動を大規模に監視・分析し、問題のありそうな行動を自動で検出できてしまいます。<strong>見られない権利</strong>の価値は、これから急速に高まっていきます。</p>
+        </div>
+      </div>
+      <div class="zec-thesis">
+        <div class="zec-thesis-label">In one line</div>
+        <div class="zec-thesis-text">Zcash とは、ビットコインの<em>希少性</em>と<em>PoW</em>を受け継ぎ、<em>本物のプライバシー</em>を備えた ── <em>AI × 量子耐性の、進化したビットコイン。</em></div>
+      </div>
     </div>
     <div class="zec-quick-facts">
       <div class="quick-fact">
