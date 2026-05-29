@@ -33,7 +33,7 @@ header { background: var(--bg2); border-bottom: 1px solid var(--border); positio
 .logo-text span { color: var(--gold); }
 .header-right { display: flex; align-items: center; gap: 8px; }
 nav { display: flex; gap: 4px; }
-.nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; }
+.nav-btn { background: none; border: none; cursor: pointer; color: var(--muted); font-size: 14px; font-weight: 500; font-family: 'Noto Sans JP', sans-serif; padding: 8px 16px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
 .nav-btn:hover { color: var(--text); background: var(--bg3); }
 .nav-btn.active { color: var(--gold); background: var(--gold-glow); }
 .social-links { display: flex; gap: 6px; margin-left: 8px; padding-left: 12px; border-left: 1px solid var(--border2); }
@@ -737,7 +737,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <div class="zec-payment-icon">💎</div>
       <div class="zec-payment-content">
         <div class="zec-payment-title">ZEC 支払い歓迎</div>
-        <div class="zec-payment-desc"><strong>Zcash Japan の目的は ZEC を日本に普及させること</strong>。上記の有料商品（解説本・分析レポート）は ZEC での支払いも歓迎します。ZEC払いの場合も同じ <strong style="color:var(--gold);">50 / 50 モデル</strong> ── <strong style="color:var(--note);">50%は子供の貧困支援団体へZECのまま寄付</strong>、<strong style="color:var(--gold);">50%はCrosslinkでステーキング運用</strong>。<strong>ZECで支払うこと自体が、ZECの実用普及への一歩</strong>になります。<a href="/support" onclick="navigateTo('support'); return false;" style="color:var(--gold);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--border);">詳しくは応援ページへ →</a></div>
+        <div class="zec-payment-desc"><strong>Zcash Japan の目的は ZEC を日本に普及させること</strong>。上記の有料商品(解説本・分析レポート)は ZEC での支払いも歓迎します。ZEC払いの場合も同じ <strong style="color:var(--gold);">50 / 50 モデル</strong> ── <strong style="color:var(--note);">50%は子供の貧困支援団体へZECのまま寄付</strong>、<strong style="color:var(--gold);">50%はCrosslinkでステーキング運用</strong>。<strong>ZECで支払うこと自体が、ZECの実用普及への一歩</strong>になります。<a href="/support" onclick="navigateTo('support'); return false;" style="color:var(--gold);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--border);">詳しくは応援ページへ →</a></div>
       </div>
     </div>
   </main>
@@ -750,7 +750,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <h1 class="manifesto-headline"><em>Zcash</em> とは、<br>暗号学の頂点が作った通貨。</h1>
       <p class="manifesto-lede">Zcash は、ビットコインの透明な台帳に <strong>「取引のプライバシー」</strong> を加えた暗号通貨です。<strong>zk-SNARKs（ゼロ知識証明）</strong> を世界で初めてブロックチェーンに実装し、送金額・送信者・受信者を完全に秘匿しつつ、不正のない検証可能な取引を実現しました。創業メンバーには <em>zk-SNARKs の共同発明者</em>、サイファーパンクの伝説、MIT・Berkeley・Johns Hopkins の暗号学者たち ── つまり、<strong>暗号学界の最高峰</strong>が結集した、極めて稀有なプロジェクトです。</p>
     </div>
-
     <div class="zec-quick-facts">
       <div class="quick-fact">
         <div class="quick-fact-label">メインネット稼働</div>
@@ -773,7 +772,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="quick-fact-sub">$25M シード（Paradigm, a16z等）</div>
       </div>
     </div>
-
     <div class="zec-section">
       <div class="zec-section-header">
         <span class="zec-section-tag">FOUNDERS</span>
@@ -843,7 +841,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </div>
     </div>
-
     <div class="zec-section">
       <div class="zec-section-header">
         <span class="zec-section-tag">HISTORY</span>
@@ -909,7 +906,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </div>
     </div>
-
     <div class="zec-section">
       <div class="zec-section-header">
         <span class="zec-section-tag">ROADMAP</span>
@@ -937,7 +933,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </div>
     </div>
-
     <div class="zec-section">
       <div class="zec-section-header">
         <span class="zec-section-tag">CURRENT CORE</span>
@@ -1003,7 +998,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </div>
       </div>
     </div>
-
     <div class="zec-resources">
       <div class="zec-resources-title">📚 公式リソース</div>
       <div class="resources-list">
