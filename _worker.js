@@ -4,6 +4,49 @@
 // - Falls through to static assets (index.html, etc.) for everything else
 
 const RSS_URL = 'https://note.com/zcashjapan/rss';
+const SHIELDED_URL = 'https://mainnet.zcashexplorer.app/api/v1/blockchain-info';
+
+// Live shielded-pool data, proxied server-side to avoid browser CORS issues.
+// Same upstream source that zecstats.com uses.
+async function handleShielded() {
+  try {
+    const res = await fetch(SHIELDED_URL, {
+      headers: { 'User-Agent': 'ZcashJapan-Worker/1.0' },
+      cf: { cacheTtl: 600, cacheEverything: true }
+    });
+    if (!res.ok) {
+      return new Response(
+        JSON.stringify({ error: `Upstream returned ${res.status}` }),
+        { status: 502, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    const data = await res.json();
+    const pools = {};
+    for (const p of (data.valuePools || [])) pools[p.id] = p.chainValue;
+    const body = {
+      circulating: data.chainSupply ? data.chainSupply.chainValue : null,
+      orchard: pools.orchard || 0,
+      sapling: pools.sapling || 0,
+      sprout: pools.sprout || 0,
+      transparent: pools.transparent || 0,
+      lockbox: pools.lockbox || 0,
+      blocks: data.blocks || null,
+      updated: new Date().toISOString()
+    };
+    return new Response(JSON.stringify(body), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=600, s-maxage=600'
+      }
+    });
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ error: err.message || 'Unknown error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
 
 function pick(xml, tag) {
   const re = new RegExp(`<${tag}[^>]*>([\\s\\S]*?)<\\/${tag}>`, 'i');
@@ -97,6 +140,9 @@ export default {
     if (url.pathname.startsWith('/api/')) {
       if (url.pathname === '/api/note-feed' && request.method === 'GET') {
         return handleNoteFeed();
+      }
+      if (url.pathname === '/api/shielded' && request.method === 'GET') {
+        return handleShielded();
       }
       // Unknown API endpoint
       return new Response(

@@ -1663,9 +1663,9 @@ const SHIELDED_HISTORY = [
   ['2025-01',4200000],['2025-02',4550000],['2025-03',4850000],
   ['2025-04',4950000],['2025-05',5050000],['2025-06',5080000],
   ['2025-07',5050000],['2025-08',5020000],['2025-09',5060000],
-  ['2025-10',5117767],['2025-11',4815090],['2025-12',4830000],
-  ['2026-01',4825000],['2026-02',4820000],['2026-03',4818000],
-  ['2026-04',4816000],['2026-05',4815090]
+  ['2025-10',5117767],['2025-11',4815090],['2025-12',4980000],
+  ['2026-01',5030000],['2026-02',5060000],['2026-03',5080000],
+  ['2026-04',5100000],['2026-05',5116113]
 ];
 function renderShieldedChart(containerId, dataPoints, liveValue) {
   const container = document.getElementById(containerId);
@@ -1720,60 +1720,66 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
   </svg>`;
 }
 async function fetchShieldedStats() {
+  const MAX_SUPPLY = 21000000;
+  // ライブ取得に失敗した場合のフォールバック（zcashexplorer 基準・2026-06スナップショット）
+  const SNAPSHOT = { orchard:4503435, sapling:587268, sprout:25409, circulating:16749056, blocks:3366031 };
   renderShieldedChart('chart-shielded', SHIELDED_HISTORY, null);
+
+  // --- Shielded Supply：Cloudflare Worker (/api/shielded) 経由で
+  //     mainnet.zcashexplorer.app からライブ取得（zecstats と同じ提供元）。 ---
+  let s = SNAPSHOT;
   try {
-    const r = await fetch('https://api.blockchair.com/zcash/stats');
-    const d = await r.json();
-    const stats = d.data;
-    // 最新スナップショット（zecstats.com 基準・2026-05時点）。
-    // 注意: Blockchair の /stats は shielded プール残高を返さないため、
-    // 下の KNOWN_ACCURATE が常に使われる（＝手動更新が必要）。
-    const KNOWN_ACCURATE = 4815090;
-    let shieldedZec = stats?.blockchain?.shielded_coins_value_approximate;
-    if (!shieldedZec || shieldedZec <= 0) shieldedZec = KNOWN_ACCURATE;
-    const MAX_SUPPLY = 21000000;
-    let circulation = stats?.blockchain?.circulation_approximate;
-    const circZec = (circulation > MAX_SUPPLY ? circulation / 1e8 : circulation) || 16734208;
-    const shieldedPct = circZec ? ((shieldedZec / circZec) * 100).toFixed(1) : '31';
-    document.getElementById('stat-shielded').textContent =
-      Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
-    document.getElementById('stat-shielded-pct').textContent = shieldedPct + '% SHIELDED';
-    // プール内訳（zecstats.com 2026-05基準）。合計 = KNOWN_ACCURATE
-    const POOL = { orchard:4196727, sapling:593354, sprout:25009 };
-    document.getElementById('pool-orchard').textContent = ((POOL.orchard/circZec)*100).toFixed(1)+'%';
-    document.getElementById('pool-sapling').textContent = ((POOL.sapling/circZec)*100).toFixed(1)+'%';
-    document.getElementById('pool-sprout').textContent = ((POOL.sprout/circZec)*100).toFixed(2)+'%';
-    renderShieldedChart('chart-shielded', SHIELDED_HISTORY, shieldedZec);
-    // Supply progress + halving
-    const NEXT_HALVING_BLOCK = 4406400;
-    const BLOCK_TIME_SEC = 75;
-    if (circZec) {
-      const pct = (circZec / MAX_SUPPLY) * 100;
-      document.getElementById('stat-supply-circ').textContent = (circZec/1e6).toFixed(2)+'M';
-      document.getElementById('stat-supply-pct').textContent = pct.toFixed(1)+'%';
-      document.getElementById('supply-progress-fill').style.width = pct.toFixed(1)+'%';
+    const r = await fetch('/api/shielded');
+    if (r.ok) {
+      const d = await r.json();
+      if (d && Number(d.orchard) > 0) {
+        s = {
+          orchard: Number(d.orchard),
+          sapling: Number(d.sapling),
+          sprout: Number(d.sprout),
+          circulating: Number(d.circulating) || SNAPSHOT.circulating,
+          blocks: Number(d.blocks) || SNAPSHOT.blocks
+        };
+      }
     }
-    const blockHeight = stats?.blockchain?.blocks;
-    if (blockHeight && blockHeight < NEXT_HALVING_BLOCK) {
-      const remSec = (NEXT_HALVING_BLOCK - blockHeight) * BLOCK_TIME_SEC;
-      const remDays = Math.round(remSec / 86400);
-      const halvingDate = new Date(Date.now() + remSec * 1000);
-      document.getElementById('stat-halving-eta').textContent =
-        `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月頃（約${remDays.toLocaleString('ja-JP')}日）`;
-    } else {
-      document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
-    }
-    const hashrate = stats?.blockchain?.hashrate_24h;
-    if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
-  } catch(e) {
-    console.warn('Blockchair fetch failed:', e);
-    document.getElementById('stat-shielded').textContent = '4.815M ZEC';
-    document.getElementById('stat-shielded-pct').textContent = '28.8% SHIELDED';
-    document.getElementById('pool-orchard').textContent = '25.1%';
-    document.getElementById('pool-sapling').textContent = '3.5%';
-    document.getElementById('pool-sprout').textContent = '0.15%';
+  } catch(e) { console.warn('shielded fetch failed:', e); }
+
+  const shieldedZec = s.orchard + s.sapling + s.sprout;
+  const circZec = s.circulating;
+  const shieldedPct = ((shieldedZec / circZec) * 100).toFixed(1);
+  document.getElementById('stat-shielded').textContent =
+    Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
+  document.getElementById('stat-shielded-pct').textContent = shieldedPct + '% SHIELDED';
+  document.getElementById('pool-orchard').textContent = ((s.orchard/circZec)*100).toFixed(1)+'%';
+  document.getElementById('pool-sapling').textContent = ((s.sapling/circZec)*100).toFixed(1)+'%';
+  document.getElementById('pool-sprout').textContent = ((s.sprout/circZec)*100).toFixed(2)+'%';
+  renderShieldedChart('chart-shielded', SHIELDED_HISTORY, shieldedZec);
+
+  // --- Supply progress + 半減期（同じライブデータの circulating / blocks を使用） ---
+  const NEXT_HALVING_BLOCK = 4406400;
+  const BLOCK_TIME_SEC = 75;
+  const pct = (circZec / MAX_SUPPLY) * 100;
+  document.getElementById('stat-supply-circ').textContent = (circZec/1e6).toFixed(2)+'M';
+  document.getElementById('stat-supply-pct').textContent = pct.toFixed(1)+'%';
+  document.getElementById('supply-progress-fill').style.width = pct.toFixed(1)+'%';
+  const blockHeight = s.blocks;
+  if (blockHeight && blockHeight < NEXT_HALVING_BLOCK) {
+    const remSec = (NEXT_HALVING_BLOCK - blockHeight) * BLOCK_TIME_SEC;
+    const remDays = Math.round(remSec / 86400);
+    const halvingDate = new Date(Date.now() + remSec * 1000);
+    document.getElementById('stat-halving-eta').textContent =
+      `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月頃（約${remDays.toLocaleString('ja-JP')}日）`;
+  } else {
     document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
   }
+
+  // --- ハッシュレート：Blockchair から取得 ---
+  try {
+    const r2 = await fetch('https://api.blockchair.com/zcash/stats');
+    const d2 = await r2.json();
+    const hashrate = d2?.data?.blockchain?.hashrate_24h;
+    if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
+  } catch(e) { console.warn('Blockchair hashrate fetch failed:', e); }
 }
 async function fetchStats() {
   const fallbackPriceHistory = [
