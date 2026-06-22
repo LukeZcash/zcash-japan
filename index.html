@@ -721,7 +721,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         </table>
         <div class="roi-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          Source: CryptoCompare（S&P 500は概算値）
+          Source: Yahoo Finance
         </div>
       </div>
     </div>
@@ -1835,7 +1835,7 @@ async function fetchROI() {
     const zec = data.zec ? data.zec[p.days] : null;
     const btc = data.btc ? data.btc[p.days] : null;
     const gold = data.gold ? data.gold[p.days] : null;
-    const sp = sp500Roi[p.days];
+    const sp = (data.sp500 && data.sp500[p.days] != null) ? data.sp500[p.days] : sp500Roi[p.days];
     html += `<tr>
       <td>${p.label}</td>
       <td>${fmt(zec, true)}</td>
