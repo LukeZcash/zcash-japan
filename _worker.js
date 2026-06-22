@@ -188,7 +188,7 @@ async function handleRoi() {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+        'Cache-Control': 'public, max-age=600, s-maxage=600'
       }
     });
   } catch (err) {

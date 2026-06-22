@@ -1819,7 +1819,8 @@ async function fetchROI() {
   //（サーバー側で1回キャッシュ取得 → CORS とレート制限を回避）
   let data = {};
   try {
-    const res = await fetch('/api/roi');
+    // 10分ごとに変わるバケット値でエッジの古いキャッシュをバイパス
+    const res = await fetch('/api/roi?t=' + Math.floor(Date.now() / 600000));
     if (res.ok) data = await res.json();
   } catch(e) { console.warn('ROI fetch failed:', e); }
   const tbody = document.getElementById('roi-tbody');
