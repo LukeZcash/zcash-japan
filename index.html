@@ -1722,6 +1722,11 @@ async function fetchShieldedStats() {
     if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
   } catch(e) { console.warn('Blockchair hashrate fetch failed:', e); }
 }
+// ★★★ CryptoCompare 無料APIキー ★★★
+// ↓ の '' の中に、取得した無料キーを貼り付けてください（例: const CC_API_KEY = 'abcd1234...';）
+// キーが空のままだとレート制限で ROIテーブルが「—」のままになります。
+const CC_API_KEY = '';
+
 async function fetchStats() {
   // 実データに基づくフォールバック（2025/5〜2026/5・概算USD）。2025年11月に約$744のピーク。
   const fallbackPriceHistory = [
@@ -1774,7 +1779,7 @@ async function fetchStats() {
   if (!gotHistory) {
     try {
       // 予備: CryptoCompare 日足の高値（イントラデイのピークを捕捉）
-      const histRes = await fetch('https://min-api.cryptocompare.com/data/v2/histoday?fsym=ZEC&tsym=USD&limit=365');
+      const histRes = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=ZEC&tsym=USD&limit=365${CC_API_KEY ? '&api_key=' + CC_API_KEY : ''}`);
       const histJson = await histRes.json();
       if (histJson.Response === 'Success' && histJson.Data?.Data) {
         priceVals = histJson.Data.Data.map(d => d.high);
@@ -1827,7 +1832,7 @@ async function fetchROI() {
     try {
       // XAU（金）はPAXG（金連動トークン）で代用
       const fsym = sym === 'XAU' ? 'PAXG' : sym;
-      const res = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${fsym}&tsym=USD&limit=1826`);
+      const res = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${fsym}&tsym=USD&limit=1826${CC_API_KEY ? '&api_key=' + CC_API_KEY : ''}`);
       const json = await res.json();
       if (json.Response === 'Success' && json.Data?.Data) {
         roiData[sym] = json.Data.Data;
