@@ -1808,46 +1808,29 @@ async function fetchROI() {
     { label: '3年', days: 1095 },
     { label: '5年', days: 1825 },
   ];
-  // S&P 500 フォールバック値（CryptoCompareに株式データなし）
+  // S&P 500 フォールバック値（株式データは概算）
   const sp500Roi = { 365: 15, 1095: 32, 1825: 85 };
-  // CryptoCompare API — 1回で2000日分の日足データ取得、APIキー不要
-  function calcRoiFromDaily(dailyData, daysAgo) {
-    if (!dailyData || dailyData.length < daysAgo) return null;
-    const endIdx = dailyData.length - 1;
-    const startIdx = endIdx - daysAgo;
-    if (startIdx < 0) return null;
-    const startPrice = dailyData[startIdx].close;
-    const endPrice = dailyData[endIdx].close;
-    if (!startPrice || startPrice <= 0) return null;
-    return ((endPrice - startPrice) / startPrice) * 100;
-  }
-  const symbols = ['ZEC', 'BTC', 'XAU'];
-  const roiData = {};
-  for (const sym of symbols) {
-    try {
-      // XAU（金）はPAXG（金連動トークン）で代用
-      const fsym = sym === 'XAU' ? 'PAXG' : sym;
-      const res = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=${fsym}&tsym=USD&limit=1826`);
-      const json = await res.json();
-      if (json.Response === 'Success' && json.Data?.Data) {
-        roiData[sym] = json.Data.Data;
-      }
-    } catch(e) { console.warn('CryptoCompare fetch failed for', sym, e); }
-  }
+  // ROI は Cloudflare Worker (/api/roi) 経由でライブ取得
+  //（サーバー側で1回キャッシュ取得 → CORS とレート制限を回避）
+  let data = {};
+  try {
+    const res = await fetch('/api/roi');
+    if (res.ok) data = await res.json();
+  } catch(e) { console.warn('ROI fetch failed:', e); }
   const tbody = document.getElementById('roi-tbody');
   if (!tbody) return;
+  const fmt = (v, isZec) => {
+    if (v == null || isNaN(v)) return '<span style="color:var(--muted)">—</span>';
+    const sign = v >= 0 ? '+' : '';
+    const cls = isZec ? 'roi-zec' : (v >= 0 ? 'roi-positive' : 'roi-negative');
+    return `<span class="${cls}">${sign}${Math.round(v)}%</span>`;
+  };
   let html = '';
   for (const p of periods) {
-    const zec = calcRoiFromDaily(roiData['ZEC'], p.days);
-    const btc = calcRoiFromDaily(roiData['BTC'], p.days);
-    const gold = calcRoiFromDaily(roiData['XAU'], p.days);
+    const zec = data.zec ? data.zec[p.days] : null;
+    const btc = data.btc ? data.btc[p.days] : null;
+    const gold = data.gold ? data.gold[p.days] : null;
     const sp = sp500Roi[p.days];
-    const fmt = (v, isZec) => {
-      if (v == null || isNaN(v)) return '<span style="color:var(--muted)">—</span>';
-      const sign = v >= 0 ? '+' : '';
-      const cls = isZec ? 'roi-zec' : (v >= 0 ? 'roi-positive' : 'roi-negative');
-      return `<span class="${cls}">${sign}${v.toFixed(0)}%</span>`;
-    };
     html += `<tr>
       <td>${p.label}</td>
       <td>${fmt(zec, true)}</td>
