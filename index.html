@@ -3,7 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zcash Japan</title>
+<title>Zcash Japan — プライバシーコインZcashの日本語情報・購入ガイド</title>
+<meta name="description" content="ビットコインの夢のつづきを、Zcashで。プライバシーコインZcash（ZEC）の仕組み・最新ライブデータ・買い方を、日本語で分かりやすく発信するZcash Japan。">
+<link rel="canonical" href="https://zcashjapan.com/">
+<!-- Open Graph / SNSシェア用 -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://zcashjapan.com/">
+<meta property="og:site_name" content="Zcash Japan">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="Zcash Japan — プライバシーコインZcashの日本語情報・購入ガイド">
+<meta property="og:description" content="ビットコインの夢のつづきを、Zcashで。プライバシーコインZcash（ZEC）の仕組み・最新ライブデータ・買い方を、日本語で分かりやすく発信するZcash Japan。">
+<meta property="og:image" content="https://zcashjapan.com/logo.png">
+<!-- Twitter / X カード -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@soloenglishjp">
+<meta name="twitter:title" content="Zcash Japan — プライバシーコインZcashの日本語情報・購入ガイド">
+<meta name="twitter:description" content="ビットコインの夢のつづきを、Zcashで。プライバシーコインZcash（ZEC）の仕組み・最新ライブデータ・買い方を、日本語で分かりやすく発信するZcash Japan。">
+<meta name="twitter:image" content="https://zcashjapan.com/logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <style>
@@ -698,18 +714,18 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           Source: zecstats.com
         </div>
       </a>
-      <a class="sec-stat-card linked" href="https://zecstats.com/chart/hashrate" target="_blank" rel="noopener">
+      <a class="sec-stat-card linked" href="https://blockchair.com/zcash" target="_blank" rel="noopener">
         <div class="sec-stat-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
           ネットワーク・ハッシュレート
         </div>
         <div class="sec-stat-value">
-          <span id="stat-hashrate">14.36</span><span style="font-size:14px;color:var(--muted);font-weight:500"> GH/s</span>
+          <span id="stat-hashrate">16.79</span><span style="font-size:14px;color:var(--muted);font-weight:500"> GH/s</span>
         </div>
         <div class="sec-stat-sub">Equihash PoW ／ 24h 平均</div>
         <div class="sec-stat-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-          Source: zecstats.com
+          Source: Blockchair
         </div>
       </a>
     </div>
@@ -1377,7 +1393,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 const PINNED_URL = 'https://note.com/zcashjapan/n/ne7d6822dd472';
 const NOTE_FEED_URL = '/api/note-feed';
 const PAGE_TITLES = {
-  home: 'Zcash Japan — プライバシーコイン Zcash の日本語情報',
+  home: 'Zcash Japan — プライバシーコインZcashの日本語情報・購入ガイド',
   zec: 'Zcashとは — 創業者・技術・ロードマップ | Zcash Japan',
   buy: 'ZECを購入する | Zcash Japan',
   about: 'Zcash Japanについて | Zcash Japan'
@@ -1700,13 +1716,16 @@ async function fetchShieldedStats() {
     document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
   }
 
-  // --- ハッシュレート：Blockchair から取得 ---
+  // --- ハッシュレート：Cloudflare Worker (/api/hashrate) 経由で
+  //     Blockchair からライブ取得（ブラウザ直叩きのCORS失敗を回避） ---
   try {
-    const r2 = await fetch('https://api.blockchair.com/zcash/stats');
-    const d2 = await r2.json();
-    const hashrate = d2?.data?.blockchain?.hashrate_24h;
-    if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
-  } catch(e) { console.warn('Blockchair hashrate fetch failed:', e); }
+    const r2 = await fetch('/api/hashrate');
+    if (r2.ok) {
+      const d2 = await r2.json();
+      const hashrate = d2 && d2.hashrate;
+      if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
+    }
+  } catch(e) { console.warn('hashrate fetch failed:', e); }
 }
 // ★★★ CryptoCompare 無料APIキー ★★★
 // ↓ の '' の中に、取得した無料キーを貼り付けてください（例: const CC_API_KEY = 'abcd1234...';）

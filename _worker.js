@@ -5,6 +5,44 @@
 
 const RSS_URL = 'https://note.com/zcashjapan/rss';
 const SHIELDED_URL = 'https://mainnet.zcashexplorer.app/api/v1/blockchain-info';
+const HASHRATE_URL = 'https://api.blockchair.com/zcash/stats';
+
+// Network hashrate, proxied server-side to avoid browser CORS issues.
+// One cached upstream call (Blockchair) shared by all visitors.
+async function handleHashrate() {
+  try {
+    const res = await fetch(HASHRATE_URL, {
+      headers: { 'User-Agent': 'ZcashJapan-Worker/1.0' },
+      cf: { cacheTtl: 600, cacheEverything: true }
+    });
+    if (!res.ok) {
+      return new Response(
+        JSON.stringify({ error: `Upstream returned ${res.status}` }),
+        { status: 502, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+    const data = await res.json();
+    const hashrate =
+      data && data.data && data.data.blockchain
+        ? data.data.blockchain.hashrate_24h
+        : null;
+    return new Response(
+      JSON.stringify({ hashrate: hashrate ? Number(hashrate) : null, updated: new Date().toISOString() }),
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=600, s-maxage=600'
+        }
+      }
+    );
+  } catch (err) {
+    return new Response(
+      JSON.stringify({ error: err.message || 'Unknown error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
 
 // Live shielded-pool data, proxied server-side to avoid browser CORS issues.
 // Same upstream source that zecstats.com uses.
@@ -213,6 +251,9 @@ export default {
       }
       if (url.pathname === '/api/roi' && request.method === 'GET') {
         return handleRoi();
+      }
+      if (url.pathname === '/api/hashrate' && request.method === 'GET') {
+        return handleHashrate();
       }
       // Unknown API endpoint
       return new Response(
