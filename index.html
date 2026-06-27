@@ -592,7 +592,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <button class="nav-btn" data-page="zec" onclick="navigateTo('zec')">Zcash</button>
         <button class="nav-btn" data-page="about" onclick="navigateTo('about')">About</button>
         <button class="nav-btn" data-page="buy" onclick="navigateTo('buy')">購入</button>
-        <button class="nav-btn" data-page="support" onclick="navigateTo('support')">応援</button>
       </nav>
       <div class="social-links">
         <a class="social-icon tw" href="https://x.com/zcashjp" target="_blank" rel="noopener" title="X (Twitter)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L2.25 2.25h6.846l4.262 5.636L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
@@ -829,7 +828,36 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <div class="zec-payment-icon">💎</div>
       <div class="zec-payment-content">
         <div class="zec-payment-title">ZEC 支払い歓迎</div>
-        <div class="zec-payment-desc"><strong>Zcash Japan の目的は ZEC を日本に普及させること</strong>。上記の解説本は ZEC での支払いも歓迎します。<strong>ZECで支払うこと自体が、ZECの実用普及への一歩</strong>になります。<a href="/support" onclick="navigateTo('support'); return false;" style="color:var(--gold);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--border);">応援ページへ →</a></div>
+        <div class="zec-payment-desc"><strong>Zcash Japan の目的は ZEC を日本に普及させること</strong>。上記の解説本は ZEC での支払いも歓迎します。<strong>ZECで支払うこと自体が、ZECの実用普及への一歩</strong>になります。<a href="#donate" onclick="document.getElementById('donate').scrollIntoView({behavior:'smooth'}); return false;" style="color:var(--gold);text-decoration:none;font-weight:600;border-bottom:1px dashed var(--border);">ZECで応援する →</a></div>
+      </div>
+    </div>
+    <!-- ━━━ 寄付のお願い（簡略版） ━━━ -->
+    <div class="donation-product" id="donate" style="margin-top:8px;">
+      <div class="donation-badge">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        Donate ZEC
+      </div>
+      <h3>Zcash Japan を <span>ZEC で応援する</span></h3>
+      <p class="donation-subtitle">Zcash Japan は、ZEC を日本に広めるための情報発信を日本語で継続しています。この活動を続けていけるよう、ZEC でのご支援を歓迎します。いただいた ZEC は活動の継続に大切に使わせていただきます。</p>
+      <div class="donation-receivers">
+        <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent (t1)</span>
+        <span class="receiver-tag" style="background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.25);color:#4ADE80;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:9px;height:9px;"><polyline points="20 6 9 17 4 12"/></svg> MEXC等 取引所から直接送金OK</span>
+      </div>
+      <div class="donation-address-label">寄付先アドレス（Transparent）</div>
+      <div class="donation-payload">
+        <div class="donation-qr" id="donation-qr" aria-label="ZEC Donation QR Code"></div>
+        <div class="donation-address-side">
+          <div class="donation-address-box">
+            <div class="donation-address-text" id="donation-address">t1ZtgVAT5w7acBEGr4siW4F7VWL4hbdGZWL</div>
+          </div>
+          <button class="copy-btn" type="button" onclick="copyDonationAddress(this)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            アドレスをコピー
+          </button>
+        </div>
+      </div>
+      <div class="donation-tip">
+        <strong>💡 Tip:</strong> ウォレット未所持の方は<strong>Zcash公式アプリ「Zodl」</strong>がおすすめ（iOS / Android）。Transparent アドレス (t1) はあらゆる Zcash 対応ウォレットおよび MEXC 等の取引所から直接送金できます。すべての寄付は公開ブロックチェーン上に透明に記録されます。
       </div>
     </div>
   </main>
@@ -1166,65 +1194,6 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
     </div>
   </main>
 </div>
-<!-- ━━━ Support Page ━━━ -->
-<div id="page-support" class="page">
-  <main>
-    <div class="donation-product">
-      <div class="donation-badge">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        Donate ZEC
-      </div>
-      <h3>Zcash Japan を <span>ZEC で応援する</span></h3>
-      <p class="donation-subtitle"><strong style="color:var(--text);">Zcash Japan の目的は、ZEC を日本に普及させること</strong>です。<strong style="color:var(--text);">Zcash がフルポテンシャルを発揮すれば、法定通貨を凌駕する通貨になりえる</strong> ── そう信じて、Zcash に関する情報発信を日本語で継続的に行っていきます。</p>
-      <p class="donation-subtitle">この活動を続けていけるよう、応援していただけるととても嬉しいです。ZEC でのご支援を歓迎します。いただいた ZEC は、Zcash を日本に広めるための活動を継続するために大切に使わせていただきます。</p>
-      <div class="donation-receivers">
-        <span class="receiver-tag transparent"><span style="color:#8A8FA8;">●</span> Transparent (t1)</span>
-        <span class="receiver-tag" style="background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.25);color:#4ADE80;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width:9px;height:9px;"><polyline points="20 6 9 17 4 12"/></svg> MEXC等 取引所から直接送金OK</span>
-      </div>
-      <div class="donation-address-label">寄付先アドレス（Transparent）</div>
-      <div class="donation-payload">
-        <div class="donation-qr" id="donation-qr" aria-label="ZEC Donation QR Code"></div>
-        <div class="donation-address-side">
-          <div class="donation-address-box">
-            <div class="donation-address-text" id="donation-address">t1ZtgVAT5w7acBEGr4siW4F7VWL4hbdGZWL</div>
-          </div>
-          <button class="copy-btn" type="button" onclick="copyDonationAddress(this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:13px;height:13px;vertical-align:-2px;margin-right:4px;"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            アドレスをコピー
-          </button>
-        </div>
-      </div>
-      <div class="donation-steps">
-        <div class="donation-steps-label">📱 寄付のしかた（4ステップ）</div>
-        <div class="donation-steps-grid">
-          <div class="donation-step">
-            <div class="step-num">1</div>
-            <div class="step-title">ウォレットを準備</div>
-            <div class="step-desc">ウォレット未所持の方は<strong style="color:var(--gold);">Zcash公式アプリ「Zodl」</strong>がおすすめ（iOS / Android 対応）。他のZcash対応ウォレットや MEXC 等の取引所からでもOK</div>
-          </div>
-          <div class="donation-step">
-            <div class="step-num">2</div>
-            <div class="step-title">ZEC を保有</div>
-            <div class="step-desc">取引所で購入した ZEC を Zodl 等のウォレットへ送金、または取引所アカウントで保有</div>
-          </div>
-          <div class="donation-step">
-            <div class="step-num">3</div>
-            <div class="step-title">Send / 出金画面を開く</div>
-            <div class="step-desc">ウォレット・取引所の送金（Send）画面へ</div>
-          </div>
-          <div class="donation-step">
-            <div class="step-num">4</div>
-            <div class="step-title">QR読込 or アドレス貼付</div>
-            <div class="step-desc">上のQRをスキャン、または上のアドレスをコピー＆ペースト</div>
-          </div>
-        </div>
-      </div>
-      <div class="donation-tip">
-        <strong>💡 Tip:</strong> ウォレット未所持の方は<strong>Zcash公式アプリ「Zodl」</strong>がおすすめです（旧称Zashi、2026年1月にZcash Open Development Labへ移行・リブランド）。Transparent アドレス (t1) はあらゆる Zcash 対応ウォレットおよび MEXC 等の取引所から直接送金可能。すべての寄付は公開ブロックチェーン上に透明に記録され、<strong>トレジャリー保有量として誰でも検証可能</strong>です。
-      </div>
-    </div>
-  </main>
-</div>
 <!-- ━━━ About Page ━━━ -->
 <div id="page-about" class="page">
   <main>
@@ -1392,20 +1361,18 @@ const PAGE_TITLES = {
   home: 'Zcash Japan — プライバシーコイン Zcash の日本語情報',
   zec: 'Zcashとは — 創業者・技術・ロードマップ | Zcash Japan',
   buy: 'ZECを購入する | Zcash Japan',
-  support: '応援 | Zcash Japan',
   about: 'Zcash Japanについて | Zcash Japan'
 };
 function pathToPage(path) {
   if (path === '/zec' || path === '/zec/') return 'zec';
   if (path === '/buy' || path === '/buy/') return 'buy';
-  if (path === '/support' || path === '/support/') return 'support';
+  if (path === '/support' || path === '/support/') return 'buy';
   if (path === '/about' || path === '/about/') return 'about';
   return 'home';
 }
 function pageToPath(page) {
   if (page === 'zec') return '/zec';
   if (page === 'buy') return '/buy';
-  if (page === 'support') return '/support';
   if (page === 'about') return '/about';
   return '/';
 }
