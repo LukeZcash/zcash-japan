@@ -174,6 +174,10 @@ main { max-width: 1100px; margin: 0 auto; padding: 40px 24px 80px; }
 .guide-cta-link:hover { background: #5dd4c1; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(65,201,180,0.25); }
 .guide-cta-link svg { width: 14px; height: 14px; }
 @media (max-width: 640px) { .guide-product::before { display: none; } .guide-product { padding: 24px 20px; } }
+/* 価格アンカー＆更新バッジ（共通） */
+.price-was { text-decoration: line-through; text-decoration-color: rgba(255,255,255,0.45); color: var(--muted); font-weight: 600; margin-right: 6px; }
+.price-off { display: inline-flex; align-items: center; font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; color: #fff; background: #E2574C; padding: 5px 10px; border-radius: 8px; letter-spacing: 0.3px; line-height: 1; position: relative; }
+.fresh-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #4ADE80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); padding: 4px 11px; border-radius: 20px; margin-bottom: 12px; position: relative; letter-spacing: 0.3px; }
 .consulting-product { background: linear-gradient(135deg, #0d1426 0%, #141e38 50%, #0f1830 100%); border: 1px solid rgba(244,183,40,0.25); border-radius: 16px; padding: 36px 36px 32px; margin-top: 12px; position: relative; overflow: hidden; transition: all 0.25s; }
 .consulting-product:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(244,183,40,0.1); }
 .consulting-product::before { content: 'ADVISORY'; position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-family: 'Space Grotesk', sans-serif; font-size: 90px; font-weight: 700; color: rgba(244,183,40,0.035); letter-spacing: -3px; user-select: none; }
@@ -812,7 +816,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         ZECを購入する
       </div>
       <h3>海外取引所 <span>MEXC</span> で ZEC（Zcash）を購入</h3>
-      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。海外取引所 <strong>MEXC</strong> がおすすめで、ZEC/USDT の現物取引に対応し、手数料が安く流動性も十分です。</p>
+      <p>日本国内の暗号資産取引所では Zcash（ZEC）を直接購入できません。そこでおすすめなのが海外取引所の <strong>MEXC</strong> です。ZEC/USDT の現物取引に対応。手数料が安く、流動性も十分にあります。</p>
       <div class="zec-ticker-inline">
         <div class="zec-price" id="zec-price">読み込み中…</div>
         <div class="price-label">ZEC / JPY（参考価格）</div>
@@ -832,14 +836,16 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
         購入ガイド
       </div>
+      <div class="fresh-badge">✍️ 今月も最新手順に更新</div>
       <h3>Zcash（ZEC）を日本から<em>最安で買う6ステップ</em></h3>
-      <p>日本から早く・安全に購入したい方へ ── 最短ルートで ZEC を手に入れる手順を、6ステップ・画像つきで丁寧に解説。迷わず最安・最速で買えます。</p>
+      <p>「どの取引所を使う？送金で失敗したら？」── 海外取引所での購入は、最初の一歩でつまずきがち。送金ミスは資産を失うリスクにもなります。この<strong>6ステップを画像どおりになぞるだけ</strong>で、迷わず・最安で・安全に ZEC を手にできます。</p>
       <div class="book-details">
-        <div class="guide-price-tag">¥980<small>税込</small></div>
+        <div class="guide-price-tag">¥980<small><span class="price-was">¥2,980</span>税込</small></div>
+        <span class="price-off">67%OFF</span>
         <div class="book-features">
           <span class="guide-feature-tag">6ステップ</span>
           <span class="guide-feature-tag">画像つき</span>
-          <span class="guide-feature-tag">最安・最速</span>
+          <span class="guide-feature-tag">送金ミス防止</span>
         </div>
       </div>
       <a class="guide-cta-link" href="https://note.com/zcashjapan/n/ne7d6822dd472" target="_blank" rel="noopener">
