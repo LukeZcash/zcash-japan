@@ -17,10 +17,8 @@ export async function onRequestGet() {
       );
     }
     const data = await res.json();
-    const hashrate =
-      data && data.data && data.data.blockchain
-        ? data.data.blockchain.hashrate_24h
-        : null;
+    // Blockchair returns the stats flat under `data` — there is no `blockchain` level.
+    const hashrate = data && data.data ? data.data.hashrate_24h : null;
     return new Response(
       JSON.stringify({ hashrate: hashrate ? Number(hashrate) : null, updated: new Date().toISOString() }),
       {
