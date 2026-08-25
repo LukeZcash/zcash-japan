@@ -1668,17 +1668,22 @@ function renderSparkline(containerId, values, color, fillColor, xLabels, yFormat
 // Shielded Supply — 月次履歴データ（All-time）
 // zecstats.com + ブロックチェーンデータから構成
 // ══════════════════════════════════════════════════════
+// /api/shielded-history が落ちたときだけ使うフォールバック。
+// Blockchair の日次 shielded デルタから再構成した実データ（2026-08 時点）。
+// 以前ここにあった手打ちの配列は最大 126% ずれていた（2025-01 を 4.2M と
+// していたが実際は 1.86M）ので、目分量の数字は二度と置かないこと。
 const SHIELDED_HISTORY = [
-  ['2024-01',560000],['2024-02',580000],['2024-03',600000],
-  ['2024-04',650000],['2024-05',700000],['2024-06',850000],
-  ['2024-07',1050000],['2024-08',1350000],['2024-09',1700000],
-  ['2024-10',2200000],['2024-11',3200000],['2024-12',3800000],
-  ['2025-01',4200000],['2025-02',4550000],['2025-03',4850000],
-  ['2025-04',4950000],['2025-05',5050000],['2025-06',5080000],
-  ['2025-07',5050000],['2025-08',5020000],['2025-09',5060000],
-  ['2025-10',5117767],['2025-11',4815090],['2025-12',4980000],
-  ['2026-01',5030000],['2026-02',5060000],['2026-03',5080000],
-  ['2026-04',5100000],['2026-05',5116113]
+  ['2024-01',1202072],['2024-02',1132557],['2024-03',1262136],
+  ['2024-04',1233186],['2024-05',1382210],['2024-06',1411301],
+  ['2024-07',1545803],['2024-08',1402301],['2024-09',1470225],
+  ['2024-10',1668514],['2024-11',1708320],['2024-12',1894498],
+  ['2025-01',1855199],['2025-02',2043614],['2025-03',2679781],
+  ['2025-04',2752851],['2025-05',3095571],['2025-06',3145124],
+  ['2025-07',3207938],['2025-08',3743907],['2025-09',3821520],
+  ['2025-10',4953437],['2025-11',4758368],['2025-12',5017473],
+  ['2026-01',4998643],['2026-02',5009067],['2026-03',5133425],
+  ['2026-04',5156329],['2026-05',5100578],['2026-06',4407669],
+  ['2026-07',4308461],['2026-08',4796634]
 ];
 function renderShieldedChart(containerId, dataPoints, liveValue) {
   const container = document.getElementById(containerId);
@@ -1714,15 +1719,16 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
     yLines += `<line x1="${padL}" y1="${y}" x2="${W-padR+4}" y2="${y}" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>`;
     yLines += `<text x="${W-padR+8}" y="${y+3}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif">${label}</text>`;
   });
-  const xTargets = ['2024-01','2024-07','2025-01','2025-07','2026-01','2026-05'];
-  const xDisplay = ["24/1","24/7","25/1","25/7","26/1","26/5"];
+  // 系列がライブになった以上、ラベルを固定すると必ずずれる（価格チャートと同じ罠で、
+  // ここは 2026-05 止まりだった）。実データから等間隔に抜いて 'YY/M' で出す。
+  const TICKS = 6;
   let xLines = '';
-  xTargets.forEach((t, li) => {
-    const idx = labels.indexOf(t);
-    if (idx === -1) return;
+  for (let li = 0; li < TICKS && labels.length >= TICKS; li++) {
+    const idx = Math.round(li * (labels.length - 1) / (TICKS - 1));
+    const [yy, mm] = labels[idx].split('-');
     const x = toX(idx);
-    xLines += `<text x="${x}" y="${H-4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="middle">${xDisplay[li]}</text>`;
-  });
+    xLines += `<text x="${x}" y="${H-4}" fill="rgba(255,255,255,0.3)" font-size="9" font-family="Space Grotesk, sans-serif" text-anchor="middle">${yy.slice(2)}/${Number(mm)}</text>`;
+  }
   container.innerHTML = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
     <defs><linearGradient id="shielded-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#F4B728" stop-opacity="0.5"/><stop offset="70%" stop-color="#F4B728" stop-opacity="0.08"/><stop offset="100%" stop-color="#F4B728" stop-opacity="0"/></linearGradient></defs>
     ${yLines}${xLines}
@@ -1736,11 +1742,23 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
 // 出典は cypherpunk.com のダッシュボード。買い増しのたびにこの数字だけ更新すれば、
 // 「供給量の何%」は下で流通量から計算し直される。最終確認 2026-08-25。
 const INST_ZEC = 323394;
+// 月次の shielded 履歴はライブ取得する。固定配列は放置すると必ず古くなるうえ、
+// 実際に中身が大きくずれていた。取れなければ上の実データにフォールバックする。
+async function getShieldedHistory() {
+  try {
+    const r = await fetch('/api/shielded-history');
+    if (!r.ok) return null;
+    const d = await r.json();
+    return Array.isArray(d.series) && d.series.length > 2 ? d.series : null;
+  } catch (e) { console.warn('shielded history fetch failed:', e); return null; }
+}
+
 async function fetchShieldedStats() {
   const MAX_SUPPLY = 21000000;
   // ライブ取得に失敗した場合のフォールバック（zcashexplorer 基準・2026-08スナップショット）
   const SNAPSHOT = { ironwood:3734056, orchard:514519, sapling:525597, sprout:22621, circulating:16895667, blocks:3459862 };
-  renderShieldedChart('chart-shielded', SHIELDED_HISTORY, null);
+  let history = SHIELDED_HISTORY;
+  renderShieldedChart('chart-shielded', history, null);
 
   // --- Shielded Supply：Cloudflare Worker (/api/shielded) 経由で
   //     mainnet.zcashexplorer.app からライブ取得（zecstats と同じ提供元）。 ---
@@ -1774,7 +1792,9 @@ async function fetchShieldedStats() {
   document.getElementById('pool-orchard').textContent = ((s.orchard/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sapling').textContent = ((s.sapling/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sprout').textContent = ((s.sprout/circZec)*100).toFixed(2)+'%';
-  renderShieldedChart('chart-shielded', SHIELDED_HISTORY, shieldedZec);
+  const liveHistory = await getShieldedHistory();
+  if (liveHistory) history = liveHistory;
+  renderShieldedChart('chart-shielded', history, shieldedZec);
 
   // --- 機関投資家の保有：保有量は固定、割合はライブの流通量から ---
   document.getElementById('stat-inst-zec').textContent = INST_ZEC.toLocaleString('en-US');

@@ -17,6 +17,68 @@ const COINBASE_SPOT = 'https://api.coinbase.com/v2/prices';
 const KRAKEN_OHLC = 'https://api.kraken.com/0/public/OHLC';
 const BTC_SUPPLY_URL = 'https://blockchain.info/q/totalbc';
 
+// Shielded-pool history. The page used to draw this from a hand-typed array
+// that was out by as much as 126% (2025-01 claimed 4.2M against a real 1.86M)
+// and stopped at 2026-05. Blockchair publishes the per-block shielded delta,
+// so summing it by day and walking backwards from the live pool total
+// reconstructs the real curve, and keeps reconstructing it.
+const SHIELDED_DELTA_URL = 'https://api.blockchair.com/zcash/blocks'
+  + '?a=date,sum(shielded_value_delta_total)&s=date(desc)&limit=1000';
+const HISTORY_START = '2024-01';
+
+async function handleShieldedHistory() {
+  try {
+    const [deltaRes, poolRes] = await Promise.all([
+      fetchJson(SHIELDED_DELTA_URL, 3600),
+      fetchJson(SHIELDED_URL, 600)
+    ]);
+    const rows = deltaRes && deltaRes.data;
+    if (!Array.isArray(rows) || !rows.length) throw new Error('no delta rows');
+
+    const pools = {};
+    for (const p of (poolRes.valuePools || [])) pools[p.id] = p.chainValue;
+    const current = ['ironwood', 'orchard', 'sapling', 'sprout']
+      .reduce((sum, id) => sum + (pools[id] || 0), 0);
+    if (!(current > 0)) throw new Error('no live pool total');
+
+    // Blockchair returns newest first and reports zatoshi. Today's balance is
+    // the live total; subtracting each day's delta steps back one day.
+    const daily = rows
+      .map(r => [r.date, Number(r['sum(shielded_value_delta_total)']) / 1e8])
+      .filter(([d, v]) => d && Number.isFinite(v))
+      .sort((a, b) => (a[0] < b[0] ? 1 : -1));
+
+    const monthly = new Map();
+    let balance = current;
+    for (const [date, delta] of daily) {
+      // Last write per month wins, and dates descend, so this keeps month-end.
+      const month = date.slice(0, 7);
+      if (!monthly.has(month)) monthly.set(month, Math.round(balance));
+      balance -= delta;
+    }
+
+    const series = [...monthly.entries()]
+      .filter(([m]) => m >= HISTORY_START)
+      .sort((a, b) => (a[0] < b[0] ? -1 : 1));
+    if (series.length < 2) throw new Error('series too short');
+
+    return new Response(JSON.stringify({ series, updated: new Date().toISOString() }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+      }
+    });
+  } catch (err) {
+    // The page keeps a real-but-frozen copy of this series, so failing loudly
+    // here is better than serving a half-built curve.
+    return new Response(
+      JSON.stringify({ error: err.message || 'Unknown error' }),
+      { status: 502, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+}
+
 async function fetchJson(url, ttl) {
   const res = await fetch(url, {
     headers: { 'User-Agent': 'ZcashJapan-Worker/1.0' },
@@ -418,6 +480,9 @@ export default {
       }
       if (url.pathname === '/api/market' && request.method === 'GET') {
         return handleMarket();
+      }
+      if (url.pathname === '/api/shielded-history' && request.method === 'GET') {
+        return handleShieldedHistory();
       }
       // Unknown API endpoint
       return new Response(
