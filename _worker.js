@@ -8,6 +8,100 @@ const SHIELDED_URL = 'https://mainnet.zcashexplorer.app/api/v1/blockchain-info';
 const HASHRATE_URL = 'https://api.blockchair.com/zcash/stats';
 const CG = 'https://api.coingecko.com/api/v3';
 
+// Keyless fallbacks for /api/market. CoinGecko's free tier throttles
+// Cloudflare's egress IPs intermittently — often enough that a real share of
+// visitors were landing on 「取得不可」 and a price chart still ending in 2025.
+// None of these need an API key, and they are only called for the fields
+// CoinGecko actually left null on this request.
+const COINBASE_SPOT = 'https://api.coinbase.com/v2/prices';
+const KRAKEN_OHLC = 'https://api.kraken.com/0/public/OHLC';
+const BTC_SUPPLY_URL = 'https://blockchain.info/q/totalbc';
+
+async function fetchJson(url, ttl) {
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'ZcashJapan-Worker/1.0' },
+    cf: { cacheTtlByStatus: { '200-299': ttl, '400-599': 0 }, cacheEverything: true }
+  });
+  if (!res.ok) throw new Error(`${url} returned ${res.status}`);
+  return res.json();
+}
+
+// Kraken keys its OHLC result by the venue's own pair name (XZECZUSD), so take
+// whichever key is not the `last` cursor instead of hardcoding that spelling.
+function krakenCloses(json) {
+  const result = json && json.result;
+  if (!result) return null;
+  const key = Object.keys(result).find(k => k !== 'last');
+  const rows = key ? result[key] : null;
+  if (!Array.isArray(rows)) return null;
+  const closes = rows.map(r => Number(r[4])).filter(n => Number.isFinite(n));
+  return closes.length ? closes : null;
+}
+
+// `sources` maps each filled field to the upstreams behind it, so the page can
+// say where a number actually came from instead of always crediting CoinGecko.
+async function fillMarketGaps(body, sources) {
+  const spot = async (pair) => {
+    const j = await fetchJson(`${COINBASE_SPOT}/${pair}/spot`, 300);
+    const n = Number(j && j.data && j.data.amount);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  const jobs = [];
+  const assign = (field, names, fn) => { if (body[field] == null) jobs.push([field, names, fn]); };
+
+  assign('price_usd', ['Coinbase'], () => spot('ZEC-USD'));
+  assign('price_jpy', ['Coinbase'], () => spot('ZEC-JPY'));
+  assign('btc_mcap_usd', ['Coinbase', 'blockchain.info'], async () => {
+    const [price, satoshis] = await Promise.all([
+      spot('BTC-USD'),
+      fetch(BTC_SUPPLY_URL, { cf: { cacheTtl: 3600, cacheEverything: true } }).then(r => r.text())
+    ]);
+    const coins = Number(satoshis) / 1e8;
+    return price && Number.isFinite(coins) ? price * coins : null;
+  });
+  assign('history', ['Kraken'], async () => {
+    const closes = krakenCloses(await fetchJson(`${KRAKEN_OHLC}?pair=ZECUSD&interval=1440`, 3600));
+    return closes ? closes.slice(-365) : null;
+  });
+  assign('change_24h', ['Kraken'], async () => {
+    // Hourly candles give a true rolling 24h move. Daily closes would only give
+    // the change since yesterday's close, which is a different number to label
+    // "(24h)" with.
+    const closes = krakenCloses(await fetchJson(`${KRAKEN_OHLC}?pair=ZECUSD&interval=60`, 300));
+    if (!closes || closes.length < 25) return null;
+    const now = closes[closes.length - 1];
+    const dayAgo = closes[closes.length - 25];
+    return dayAgo > 0 ? ((now - dayAgo) / dayAgo) * 100 : null;
+  });
+
+  const settled = await Promise.allSettled(jobs.map(([, , fn]) => fn()));
+  settled.forEach((r, i) => {
+    if (r.status === 'fulfilled' && r.value != null) {
+      const [field, names] = jobs[i];
+      body[field] = r.value;
+      sources[field] = names;
+    }
+  });
+
+  // Market cap is derived last because it needs a price that may itself have
+  // only just been filled in above. Circulating supply comes from the same
+  // explorer /api/shielded already reads, so it costs no new upstream.
+  if (body.zec_mcap_usd == null && body.price_usd != null) {
+    try {
+      const info = await fetchJson(SHIELDED_URL, 600);
+      const supply = info && info.chainSupply ? Number(info.chainSupply.chainValue) : null;
+      if (Number.isFinite(supply) && supply > 0) {
+        body.zec_mcap_usd = body.price_usd * supply;
+        // Credit whatever supplied the price, plus the explorer behind the supply.
+        sources.zec_mcap_usd = [...(sources.price_usd || []), 'zcashexplorer'];
+      }
+    } catch (e) { /* leave null — the page carries its own last-resort value */ }
+  }
+  // `rank` has no keyless source; the page simply omits it when null.
+  return body;
+}
+
 // CoinGecko, proxied server-side. The browser used to call CoinGecko directly,
 // three times per page load, so a visitor behind a busy NAT could burn through
 // the free tier's per-IP limit and land on the stale hardcoded fallbacks.
@@ -44,6 +138,23 @@ async function handleMarket() {
       ? chart.value.prices.map(p => p[1]) : null,
     updated: new Date().toISOString()
   };
+  const sources = {};
+  for (const f of Object.keys(body)) {
+    if (f !== 'updated' && body[f] != null) sources[f] = ['CoinGecko'];
+  }
+  await fillMarketGaps(body, sources);
+
+  // Collapse per-field origins into one list per card, in first-seen order.
+  const providers = (fields) => {
+    const out = [];
+    for (const f of fields) for (const n of (sources[f] || [])) if (!out.includes(n)) out.push(n);
+    return out;
+  };
+  body.sources = {
+    price: providers(['price_usd', 'price_jpy', 'change_24h']),
+    mcap: providers(['zec_mcap_usd', 'btc_mcap_usd', 'rank'])
+  };
+
   // 欠けたレスポンスを10分キャッシュすると、その間ずっと全訪問者に欠けたまま配られる
   const complete = body.price_usd != null && body.btc_mcap_usd != null && body.history != null;
   const cache = complete ? 'public, max-age=600, s-maxage=600' : 'no-store';

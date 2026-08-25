@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+
+# Astro の下書き（node_modules 込みで置かれているため、誤って丸ごとコミットされるのを防ぐ）
+New project/
+
+# wrangler dev のローカルキャッシュ
+.wrangler/

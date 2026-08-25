@@ -661,7 +661,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="stat-change" id="stat-change"><span style="color:var(--muted);background:none">読み込み中…</span></div>
         <div class="stat-chart" id="chart-price"><div class="chart-loading">チャート読み込み中…</div></div>
         <div class="stat-source-link">
-          <a href="https://www.coingecko.com/en/coins/zcash" target="_blank" rel="noopener">Source: CoinGecko</a>
+          <a id="stat-price-source" href="https://www.coingecko.com/en/coins/zcash" target="_blank" rel="noopener">Source: CoinGecko</a>
         </div>
       </div>
       <div class="stat-card">
@@ -694,7 +694,7 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="sec-stat-sub" id="stat-mcap-rank" style="margin-top:2px;">時価総額ランク: <strong>—</strong></div>
         <div class="sec-stat-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          Source: CoinGecko
+          <span id="stat-mcap-source">Source: CoinGecko</span>
         </div>
       </div>
       <a class="sec-stat-card linked" href="https://www.cypherpunk.com/" target="_blank" rel="noopener">
@@ -1809,18 +1809,37 @@ async function fetchShieldedStats() {
     }
   } catch(e) { console.warn('hashrate fetch failed:', e); }
 }
-// ★★★ CryptoCompare 無料APIキー ★★★
-// ↓ の '' の中に、取得した無料キーを貼り付けてください（例: const CC_API_KEY = 'abcd1234...';）
-// キーが空のままだとレート制限で ROIテーブルが「—」のままになります。
-const CC_API_KEY = '';
+// CoinGecko が落ちた回では値が Coinbase / Kraken から来ているので、
+// 「Source: CoinGecko」固定のままだと表示と実際の供給元が食い違う。
+const SOURCE_URLS = {
+  'CoinGecko': 'https://www.coingecko.com/en/coins/zcash',
+  'Coinbase': 'https://www.coinbase.com/price/zcash',
+  'Kraken': 'https://www.kraken.com/prices/zcash',
+  'blockchain.info': 'https://www.blockchain.com/explorer',
+  'zcashexplorer': 'https://mainnet.zcashexplorer.app/'
+};
+function renderSource(elId, names) {
+  const el = document.getElementById(elId);
+  if (!el || !Array.isArray(names) || !names.length) return;
+  el.textContent = 'Source: ' + names.join('・');
+  if (el.tagName === 'A') el.href = SOURCE_URLS[names[0]] || el.href;
+}
 
 async function fetchStats() {
-  // 実データに基づくフォールバック（2025/5〜2026/5・概算USD）。2025年11月に約$744のピーク。
+  // 最終手段のフォールバック。/api/market が CoinGecko・Kraken の両方に振られた
+  // ときだけ描かれる。Kraken の日足終値から 2025/8〜2026/8 を等間隔で抜いた実データ。
   const fallbackPriceHistory = [
-    42,45,40,48,52,58,65,78,95,130,230,400,580,
-    744,600,520,560,688,600,520,470,450,440,420,445,425
+    42.8, 47.9, 58.9, 213, 244, 644, 551, 342, 447, 502, 369, 295, 296,
+    221, 249, 251, 340, 385, 515, 528, 420, 375, 533, 476, 496, 855
   ];
-  const priceXLabels = ['5月','7月','9月','11月','1月','3月','5月'];
+  // 横軸は直近365日の移動窓なので、ラベルを固定文字列で持つと窓がずれた瞬間に嘘になる。
+  // （実際、5月〜5月のまま3か月ぶんずれていた）
+  const priceXLabels = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(1); // 月末日のまま月を引くと繰り上がって1か月ずれる
+    d.setMonth(d.getMonth() - (12 - i * 2));
+    return (d.getMonth() + 1) + '月';
+  });
   const priceYFmt = v => '$' + Math.round(v);
   renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
   let zecMcapUsd = null;
@@ -1855,26 +1874,26 @@ async function fetchStats() {
       if (d.rank) {
         document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${d.rank}</strong>`;
       }
+      if (d.sources) {
+        renderSource('stat-price-source', d.sources.price);
+        renderSource('stat-mcap-source', d.sources.mcap);
+      }
     }
   } catch(e) { console.warn('market render failed:', e); }
   if (!priceUsd) {
     const el = document.getElementById('stat-price');
     if (el) el.textContent = '取得不可';
   }
+  // どの経路で落ちても「読み込み中…」を残さない（残ると永久に読み込み中に見える）
+  const changeEl = document.getElementById('stat-change');
+  if (changeEl && changeEl.textContent.includes('読み込み中')) {
+    changeEl.innerHTML = '<span style="color:var(--muted);background:none">—</span>';
+  }
   if (!zecMcapUsd) document.getElementById('stat-mcap').textContent = '$14.4B';
   // 価格チャートのヒストリカルデータ（取得できなければフォールバックで動かす）
-  let priceVals = history ? history.slice() : fallbackPriceHistory.slice();
-  let gotHistory = !!history;
-  if (!gotHistory) {
-    try {
-      // 予備: CryptoCompare 日足の高値（イントラデイのピークを捕捉）
-      const histRes = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=ZEC&tsym=USD&limit=365${CC_API_KEY ? '&api_key=' + CC_API_KEY : ''}`);
-      const histJson = await histRes.json();
-      if (histJson.Response === 'Success' && histJson.Data?.Data) {
-        priceVals = histJson.Data.Data.map(d => d.high);
-      }
-    } catch(e) { console.warn('CryptoCompare price history fetch failed:', e); }
-  }
+  // CryptoCompare の予備経路は撤去した。キー無しの histoday が 401 を返すように
+  // なって以降ずっと失敗しており、履歴の予備は Worker 側（Kraken）に移した。
+  const priceVals = history ? history.slice() : fallbackPriceHistory.slice();
   // 最新値はライブ価格に合わせる（チャートの縦軸が現在価格を下回らないように）
   if (priceUsd && priceUsd > 0) priceVals[priceVals.length - 1] = priceUsd;
   renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
