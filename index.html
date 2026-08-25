@@ -745,10 +745,10 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           ネットワークの稼働状況
         </div>
         <div class="sec-stat-value">
-          <span id="stat-txs">—</span><span style="font-size:14px;color:var(--muted);font-weight:500"> 件 / 日</span>
+          <span id="stat-txs">—</span><span id="stat-txs-unit" style="font-size:14px;color:var(--muted);font-weight:500"> 件 / 日</span>
         </div>
-        <div class="sec-stat-sub">直近24時間の取引件数 ── チェーンは<strong>実際に使われている</strong></div>
-        <div class="sec-stat-sub" style="margin-top:6px">ハッシュレート <strong><span id="stat-hashrate">—</span> GH/s</strong> がこれを保護（Equihash PoW ／ 24h 平均）</div>
+        <div class="sec-stat-sub" id="net-sub-main">直近24時間の取引件数 ── チェーンは<strong>実際に使われている</strong></div>
+        <div class="sec-stat-sub" id="net-sub-hash" style="margin-top:6px">ハッシュレート <strong><span id="stat-hashrate">—</span> GH/s</strong> がこれを保護（Equihash PoW ／ 24h 平均）</div>
         <div class="sec-stat-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           Source: Blockchair
@@ -1859,7 +1859,18 @@ async function fetchShieldedStats() {
       if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
       // 「誰も使っていない」が日本での一番多い反論なので、利用量を主役にしている
       const txs = d2 && d2.transactions_24h;
-      if (txs) document.getElementById('stat-txs').textContent = Number(txs).toLocaleString('ja-JP');
+      if (txs) {
+        document.getElementById('stat-txs').textContent = Number(txs).toLocaleString('ja-JP');
+      } else if (hashrate) {
+        // 取引数だけ欠けた回にカードの主役が「—」のまま残ると、カード全体が
+        // 死んで見える（下のハッシュレートは出ているので余計に壊れて見える）。
+        // その回はハッシュレートを主役に戻す。
+        document.getElementById('stat-txs').textContent = (hashrate/1e9).toFixed(2);
+        document.getElementById('stat-txs-unit').textContent = ' GH/s';
+        document.getElementById('net-sub-main').innerHTML =
+          'Equihash PoW ／ 24h 平均 ── <strong>マイニングがチェーンを保護</strong>';
+        document.getElementById('net-sub-hash').hidden = true;
+      }
       brief.hashrate = hashrate || null;
       brief.txs = txs ? Number(txs) : null;
     }
