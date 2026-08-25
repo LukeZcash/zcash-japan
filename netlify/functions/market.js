@@ -39,11 +39,14 @@ exports.handler = async () => {
       ? chart.value.prices.map(p => p[1]) : null,
     updated: new Date().toISOString()
   };
+  // 欠けたレスポンスを10分キャッシュすると、その間ずっと全訪問者に欠けたまま配られる
+  const complete = body.price_usd != null && body.btc_mcap_usd != null && body.history != null;
+  const cache = complete ? 'public, max-age=600, s-maxage=600' : 'no-store';
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=600, s-maxage=600'
+      'Cache-Control': cache
     },
     body: JSON.stringify(body)
   };

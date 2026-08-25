@@ -14,7 +14,8 @@ export async function onRequestGet() {
   const get = async (path) => {
     const res = await fetch(CG + path, {
       headers: { 'User-Agent': 'ZcashJapan-Worker/1.0' },
-      cf: { cacheTtl: 600, cacheEverything: true }
+      // 429 をキャッシュすると、絞られた瞬間から10分間ずっと絞られたままになる
+      cf: { cacheTtlByStatus: { '200-299': 600, '400-599': 0 }, cacheEverything: true }
     });
     if (!res.ok) throw new Error(`CoinGecko returned ${res.status}`);
     return res.json();
@@ -40,11 +41,14 @@ export async function onRequestGet() {
       ? chart.value.prices.map(p => p[1]) : null,
     updated: new Date().toISOString()
   };
+  // 欠けたレスポンスを10分キャッシュすると、その間ずっと全訪問者に欠けたまま配られる
+  const complete = body.price_usd != null && body.btc_mcap_usd != null && body.history != null;
+  const cache = complete ? 'public, max-age=600, s-maxage=600' : 'no-store';
   return new Response(JSON.stringify(body), {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=600, s-maxage=600'
+      'Cache-Control': cache
     }
   });
 }
