@@ -63,6 +63,7 @@ async function handleShielded() {
     for (const p of (data.valuePools || [])) pools[p.id] = p.chainValue;
     const body = {
       circulating: data.chainSupply ? data.chainSupply.chainValue : null,
+      ironwood: pools.ironwood || 0,
       orchard: pools.orchard || 0,
       sapling: pools.sapling || 0,
       sprout: pools.sprout || 0,

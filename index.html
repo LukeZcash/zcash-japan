@@ -672,7 +672,8 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
         <div class="stat-value" id="stat-shielded">—</div>
         <div class="stat-sub" id="stat-shielded-pct">読み込み中…</div>
         <div class="shielded-pools">
-          <span class="shielded-pool-tag"><span class="dot" style="background:#F4B728"></span>Orchard <strong id="pool-orchard">—</strong></span>
+          <span class="shielded-pool-tag"><span class="dot" style="background:#F4B728"></span>Ironwood <strong id="pool-ironwood">—</strong></span>
+          <span class="shielded-pool-tag"><span class="dot" style="background:#C8931A"></span>Orchard <strong id="pool-orchard">—</strong></span>
           <span class="shielded-pool-tag"><span class="dot" style="background:#1DBEAC"></span>Sapling <strong id="pool-sapling">—</strong></span>
           <span class="shielded-pool-tag"><span class="dot" style="background:#8A8FA8"></span>Sprout <strong id="pool-sprout">—</strong></span>
         </div>
@@ -1682,8 +1683,8 @@ function renderShieldedChart(containerId, dataPoints, liveValue) {
 }
 async function fetchShieldedStats() {
   const MAX_SUPPLY = 21000000;
-  // ライブ取得に失敗した場合のフォールバック（zcashexplorer 基準・2026-06スナップショット）
-  const SNAPSHOT = { orchard:4503435, sapling:587268, sprout:25409, circulating:16749056, blocks:3366031 };
+  // ライブ取得に失敗した場合のフォールバック（zcashexplorer 基準・2026-08スナップショット）
+  const SNAPSHOT = { ironwood:3734056, orchard:514519, sapling:525597, sprout:22621, circulating:16895667, blocks:3459862 };
   renderShieldedChart('chart-shielded', SHIELDED_HISTORY, null);
 
   // --- Shielded Supply：Cloudflare Worker (/api/shielded) 経由で
@@ -1693,11 +1694,14 @@ async function fetchShieldedStats() {
     const r = await fetch('/api/shielded');
     if (r.ok) {
       const d = await r.json();
-      if (d && Number(d.orchard) > 0) {
+      const liveShielded = d ? Number(d.ironwood||0) + Number(d.orchard||0)
+                             + Number(d.sapling||0) + Number(d.sprout||0) : 0;
+      if (liveShielded > 0) {
         s = {
-          orchard: Number(d.orchard),
-          sapling: Number(d.sapling),
-          sprout: Number(d.sprout),
+          ironwood: Number(d.ironwood) || 0,
+          orchard: Number(d.orchard) || 0,
+          sapling: Number(d.sapling) || 0,
+          sprout: Number(d.sprout) || 0,
           circulating: Number(d.circulating) || SNAPSHOT.circulating,
           blocks: Number(d.blocks) || SNAPSHOT.blocks
         };
@@ -1705,12 +1709,13 @@ async function fetchShieldedStats() {
     }
   } catch(e) { console.warn('shielded fetch failed:', e); }
 
-  const shieldedZec = s.orchard + s.sapling + s.sprout;
+  const shieldedZec = s.ironwood + s.orchard + s.sapling + s.sprout;
   const circZec = s.circulating;
   const shieldedPct = ((shieldedZec / circZec) * 100).toFixed(1);
   document.getElementById('stat-shielded').textContent =
     Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
   document.getElementById('stat-shielded-pct').textContent = shieldedPct + '% SHIELDED';
+  document.getElementById('pool-ironwood').textContent = ((s.ironwood/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-orchard').textContent = ((s.orchard/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sapling').textContent = ((s.sapling/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sprout').textContent = ((s.sprout/circZec)*100).toFixed(2)+'%';
