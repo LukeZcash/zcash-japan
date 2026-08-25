@@ -504,6 +504,15 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
 .roi-section { margin-bottom: 40px; }
 .roi-card { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 22px 24px; }
 .roi-card .sec-stat-label { margin-bottom: 16px; }
+.zec-brief { background: var(--bg2); border: 1px solid var(--border2); border-radius: 14px; padding: 24px 26px; margin-bottom: 40px; }
+.zec-brief-label { font-family: 'Space Grotesk', sans-serif; font-size: 10.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 7px; }
+.zec-brief-label::after { content: ""; flex: 1; height: 1px; background: var(--border2); }
+.zec-brief p { font-size: 14.5px; line-height: 2; color: var(--text); max-width: 720px; }
+.zec-brief p + p { margin-top: 12px; }
+.zec-brief b { color: var(--gold); font-weight: 700; font-family: 'Space Grotesk', sans-serif; font-variant-numeric: tabular-nums; }
+.zec-brief .dim { color: var(--muted); }
+.zec-brief-foot { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border2); font-size: 11px; color: var(--muted); }
+@media (max-width: 640px) { .zec-brief { padding: 20px 18px; } .zec-brief p { font-size: 13.5px; line-height: 1.95; } }
 .roi-table { width: 100%; border-collapse: collapse; font-family: 'Space Grotesk', sans-serif; font-size: 13px; }
 .roi-table thead th { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); text-align: right; padding: 0 0 10px; border-bottom: 1px solid var(--border2); }
 .roi-table thead th:first-child { text-align: left; }
@@ -733,12 +742,13 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
       <a class="sec-stat-card linked" href="https://blockchair.com/zcash" target="_blank" rel="noopener">
         <div class="sec-stat-label">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-          ネットワーク・ハッシュレート
+          ネットワークの稼働状況
         </div>
         <div class="sec-stat-value">
-          <span id="stat-hashrate">25.20</span><span style="font-size:14px;color:var(--muted);font-weight:500"> GH/s</span>
+          <span id="stat-txs">—</span><span style="font-size:14px;color:var(--muted);font-weight:500"> 件 / 日</span>
         </div>
-        <div class="sec-stat-sub">Equihash PoW ／ 24h 平均</div>
+        <div class="sec-stat-sub">直近24時間の取引件数 ── チェーンは<strong>実際に使われている</strong></div>
+        <div class="sec-stat-sub" style="margin-top:6px">ハッシュレート <strong><span id="stat-hashrate">—</span> GH/s</strong> がこれを保護（Equihash PoW ／ 24h 平均）</div>
         <div class="sec-stat-source">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           Source: Blockchair
@@ -770,6 +780,12 @@ footer { border-top: 1px solid var(--border2); margin-top: 40px; }
           Source: Yahoo Finance
         </div>
       </div>
+    </div>
+    <!-- ━━━ 現況サマリー（上のカードと同じ数字を、日本語の地の文で） ━━━ -->
+    <div class="zec-brief" id="zec-brief" hidden>
+      <div class="zec-brief-label">いまの Zcash</div>
+      <div id="zec-brief-body"></div>
+      <div class="zec-brief-foot" id="zec-brief-foot"></div>
     </div>
     <div class="section-header">
       <span class="section-title">記事一覧</span>
@@ -1788,12 +1804,25 @@ async function fetchShieldedStats() {
   document.getElementById('stat-shielded').textContent =
     Number((shieldedZec/1e6).toFixed(3)).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:3}) + 'M ZEC';
   document.getElementById('stat-shielded-pct').textContent = shieldedPct + '% SHIELDED';
+  brief.shieldedZec = shieldedZec;
+  brief.shieldedPct = shieldedPct;
+  brief.circulating = circZec;
   document.getElementById('pool-ironwood').textContent = ((s.ironwood/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-orchard').textContent = ((s.orchard/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sapling').textContent = ((s.sapling/circZec)*100).toFixed(1)+'%';
   document.getElementById('pool-sprout').textContent = ((s.sprout/circZec)*100).toFixed(2)+'%';
   const liveHistory = await getShieldedHistory();
   if (liveHistory) history = liveHistory;
+  // サマリー用の比較点は全系列（2018年〜）から。月次なので添字で遡れる。
+  const back = (months) => {
+    const i = history.length - 1 - months;
+    return i >= 0 ? history[i][1] : null;
+  };
+  brief.shieldedYearAgo = back(12);
+  brief.shieldedFiveYearAgo = back(60);
+  // チャートは直近ウィンドウだけ描く。2018年から全部描くと、直近の動きが潰れる。
+  const CHART_MONTHS = 32;
+  if (history.length > CHART_MONTHS) history = history.slice(-CHART_MONTHS);
   renderShieldedChart('chart-shielded', history, shieldedZec);
 
   // --- 機関投資家の保有：保有量は固定、割合はライブの流通量から ---
@@ -1806,6 +1835,7 @@ async function fetchShieldedStats() {
   const pct = (circZec / MAX_SUPPLY) * 100;
   document.getElementById('stat-supply-circ').textContent = (circZec/1e6).toFixed(2)+'M';
   document.getElementById('stat-supply-pct').textContent = pct.toFixed(1)+'%';
+  brief.issuedPct = pct.toFixed(1);
   document.getElementById('supply-progress-fill').style.width = pct.toFixed(1)+'%';
   const blockHeight = s.blocks;
   if (blockHeight && blockHeight < NEXT_HALVING_BLOCK) {
@@ -1814,6 +1844,7 @@ async function fetchShieldedStats() {
     const halvingDate = new Date(Date.now() + remSec * 1000);
     document.getElementById('stat-halving-eta').textContent =
       `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月頃（約${remDays.toLocaleString('ja-JP')}日）`;
+    brief.halving = `${halvingDate.getFullYear()}年${halvingDate.getMonth()+1}月`;
   } else {
     document.getElementById('stat-halving-eta').textContent = '2028年11月頃';
   }
@@ -1826,6 +1857,11 @@ async function fetchShieldedStats() {
       const d2 = await r2.json();
       const hashrate = d2 && d2.hashrate;
       if (hashrate) document.getElementById('stat-hashrate').textContent = (hashrate/1e9).toFixed(2);
+      // 「誰も使っていない」が日本での一番多い反論なので、利用量を主役にしている
+      const txs = d2 && d2.transactions_24h;
+      if (txs) document.getElementById('stat-txs').textContent = Number(txs).toLocaleString('ja-JP');
+      brief.hashrate = hashrate || null;
+      brief.txs = txs ? Number(txs) : null;
     }
   } catch(e) { console.warn('hashrate fetch failed:', e); }
 }
@@ -1843,6 +1879,54 @@ function renderSource(elId, names) {
   if (!el || !Array.isArray(names) || !names.length) return;
   el.textContent = 'Source: ' + names.join('・');
   if (el.tagName === 'A') el.href = SOURCE_URLS[names[0]] || el.href;
+}
+
+// ── 現況サマリー ───────────────────────────────────────────────
+// カード群は数字を並べるだけなので、初見の読者には「28.4%」が高いのか低いのかが
+// 判断できない。同じ数字を地の文にして、比較対象と意味を添える。
+// 新しい取得は一切していない ── 各 fetch がここに書き込んだ値だけを使う。
+const brief = {};
+function jaMan(zec) {                    // 4796634 -> "479万"
+  return Math.round(zec / 1e4).toLocaleString('ja-JP') + '万';
+}
+function renderBrief() {
+  const b = brief;
+  if (!b.shieldedZec || !b.circulating) return;   // 骨格が揃うまで出さない
+  const n = (v) => '<b>' + v + '</b>';
+  const paras = [];
+
+  let p1 = `現在、発行済み ZEC の ${n(b.shieldedPct + '%')} ── ${n(jaMan(b.shieldedZec) + ' ZEC')}`;
+  const shieldedUsd = b.priceUsd ? b.shieldedZec * b.priceUsd : null;
+  if (shieldedUsd) p1 += `（約 ${n('$' + (shieldedUsd / 1e8).toFixed(0) + '億')}）`;
+  p1 += `${shieldedUsd ? '' : ' '}が<span class="dim">シールドされた状態、つまり送金相手にも金額にも第三者がアクセスできない形</span>で保有されています。`;
+  if (b.shieldedYearAgo) {
+    p1 += `1年前は ${n(jaMan(b.shieldedYearAgo) + ' ZEC')}`;
+    if (b.shieldedFiveYearAgo) p1 += `、5年前は ${n(jaMan(b.shieldedFiveYearAgo) + ' ZEC')}`;
+    p1 += ` でした。<span class="dim">プライバシー機能は「あるだけ」から「実際に使われるもの」へ移っています。</span>`;
+  }
+  paras.push(p1);
+
+  const p2 = [];
+  if (b.txs) p2.push(`チェーン上の取引は1日あたり ${n(b.txs.toLocaleString('ja-JP'))} 件`);
+  if (b.hashrate) p2.push(`ネットワークは ${n((b.hashrate / 1e9).toFixed(2) + ' GH/s')} の計算力で保護されています`);
+  p2.push(`${n(jaMan(b.circulating))} ZEC が発行済みで、上限 2,100万 の ${n(b.issuedPct + '%')}`);
+  if (b.halving) p2.push(`次の半減期は ${n(b.halving)}`);
+  if (p2.length) paras.push(p2.join('。') + '。');
+
+  if (b.priceUsd) {
+    let p3 = `ZEC の価格は ${n('$' + Math.round(b.priceUsd).toLocaleString('en-US'))}`;
+    if (b.priceJpy) p3 += `（約 ${n((b.priceJpy / 1e4).toFixed(1) + '万円')}）`;
+    if (b.mcapUsd) p3 += `、時価総額 ${n('$' + (b.mcapUsd / 1e9).toFixed(1) + 'B')}`;
+    if (b.rank) p3 += ` で全暗号資産中 ${n(b.rank + '位')}`;
+    p3 += `。<span class="dim">日本の取引所では扱われていないため、購入には海外取引所を使う必要があります。</span>`;
+    paras.push(p3);
+  }
+
+  document.getElementById('zec-brief-body').innerHTML = paras.map(t => '<p>' + t + '</p>').join('');
+  const d = new Date();
+  document.getElementById('zec-brief-foot').textContent =
+    `${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日時点 ／ 数値は自動更新`;
+  document.getElementById('zec-brief').hidden = false;
 }
 
 async function fetchStats() {
@@ -1898,6 +1982,10 @@ async function fetchStats() {
         renderSource('stat-price-source', d.sources.price);
         renderSource('stat-mcap-source', d.sources.mcap);
       }
+      brief.priceUsd = priceUsd;
+      brief.priceJpy = d.price_jpy || null;
+      brief.mcapUsd = zecMcapUsd;
+      brief.rank = d.rank || null;
     }
   } catch(e) { console.warn('market render failed:', e); }
   if (!priceUsd) {
@@ -1924,6 +2012,7 @@ async function fetchStats() {
     document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.89%</strong>';
   }
   await fetchShieldedStats();
+  renderBrief();          // 上の各 fetch が brief に書き終えてから一度だけ組む
   await fetchROI();
 }
 async function fetchROI() {

@@ -24,16 +24,21 @@ const BTC_SUPPLY_URL = 'https://blockchain.info/q/totalbc';
 // reconstructs the real curve, and keeps reconstructing it.
 const SHIELDED_DELTA_URL = 'https://api.blockchair.com/zcash/blocks'
   + '?a=date,sum(shielded_value_delta_total)&s=date(desc)&limit=1000';
-const HISTORY_START = '2024-01';
+// Blockchair caps a page at 1000 days. Three pages reach back past 2018, which
+// the page needs for its "five years ago" comparison — the chart itself only
+// draws the recent window.
+const HISTORY_PAGES = 3;
 
 async function handleShieldedHistory() {
   try {
-    const [deltaRes, poolRes] = await Promise.all([
-      fetchJson(SHIELDED_DELTA_URL, 3600),
-      fetchJson(SHIELDED_URL, 600)
+    const pages = Array.from({ length: HISTORY_PAGES }, (_, i) =>
+      fetchJson(`${SHIELDED_DELTA_URL}&offset=${i * 1000}`, 3600));
+    const [poolRes, ...pageResults] = await Promise.all([
+      fetchJson(SHIELDED_URL, 600),
+      ...pages.map(p => p.catch(() => null))   // 古いページが落ちても新しい方は使える
     ]);
-    const rows = deltaRes && deltaRes.data;
-    if (!Array.isArray(rows) || !rows.length) throw new Error('no delta rows');
+    const rows = pageResults.filter(Boolean).flatMap(r => (r && r.data) || []);
+    if (!rows.length) throw new Error('no delta rows');
 
     const pools = {};
     for (const p of (poolRes.valuePools || [])) pools[p.id] = p.chainValue;
@@ -43,23 +48,29 @@ async function handleShieldedHistory() {
 
     // Blockchair returns newest first and reports zatoshi. Today's balance is
     // the live total; subtracting each day's delta steps back one day.
-    const daily = rows
-      .map(r => [r.date, Number(r['sum(shielded_value_delta_total)']) / 1e8])
-      .filter(([d, v]) => d && Number.isFinite(v))
-      .sort((a, b) => (a[0] < b[0] ? 1 : -1));
+    const byDate = new Map();   // pages can overlap; a date must not be counted twice
+    for (const r of rows) {
+      const v = Number(r['sum(shielded_value_delta_total)']) / 1e8;
+      if (r.date && Number.isFinite(v)) byDate.set(r.date, v);
+    }
+    const daily = [...byDate.entries()].sort((a, b) => (a[0] < b[0] ? 1 : -1));
 
     const monthly = new Map();
     let balance = current;
+    let expected = null;
     for (const [date, delta] of daily) {
-      // Last write per month wins, and dates descend, so this keeps month-end.
+      // Walking back over a gap would shift every earlier balance, so stop
+      // there and keep the stretch that is known-contiguous.
+      if (expected && date !== expected) break;
       const month = date.slice(0, 7);
       if (!monthly.has(month)) monthly.set(month, Math.round(balance));
       balance -= delta;
+      const prev = new Date(date + 'T00:00:00Z');
+      prev.setUTCDate(prev.getUTCDate() - 1);
+      expected = prev.toISOString().slice(0, 10);
     }
 
-    const series = [...monthly.entries()]
-      .filter(([m]) => m >= HISTORY_START)
-      .sort((a, b) => (a[0] < b[0] ? -1 : 1));
+    const series = [...monthly.entries()].sort((a, b) => (a[0] < b[0] ? -1 : 1));
     if (series.length < 2) throw new Error('series too short');
 
     return new Response(JSON.stringify({ series, updated: new Date().toISOString() }), {
@@ -229,8 +240,10 @@ async function handleMarket() {
   });
 }
 
-// Network hashrate, proxied server-side to avoid browser CORS issues.
-// One cached upstream call (Blockchair) shared by all visitors.
+// Network hashrate and daily transaction count, proxied server-side to avoid
+// browser CORS issues. One cached upstream call (Blockchair) shared by all
+// visitors — the transaction count rides along in the same response, so
+// reporting how much the chain is used costs no extra upstream.
 async function handleHashrate() {
   try {
     const res = await fetch(HASHRATE_URL, {
@@ -246,9 +259,14 @@ async function handleHashrate() {
     }
     const data = await res.json();
     // Blockchair returns the stats flat under `data` — there is no `blockchain` level.
-    const hashrate = data && data.data ? data.data.hashrate_24h : null;
+    const stats = (data && data.data) || {};
+    const num = (v) => (v == null || v === '' ? null : Number(v));
     return new Response(
-      JSON.stringify({ hashrate: hashrate ? Number(hashrate) : null, updated: new Date().toISOString() }),
+      JSON.stringify({
+        hashrate: num(stats.hashrate_24h),
+        transactions_24h: num(stats.transactions_24h),
+        updated: new Date().toISOString()
+      }),
       {
         status: 200,
         headers: {
@@ -460,7 +478,92 @@ async function handleRoi() {
   }
 }
 
+// ── 日次スナップショット ────────────────────────────────────────
+// 「前年比 +28%」の類は、誰も公開してくれていない履歴がないと言えない。
+// Blockchair は取引数を現在値でしか返さないし、このサイトが抱えていた
+// 固定配列（SHIELDED_HISTORY は最大126%ずれていた）は、まさに人が手で
+// 書いて放置した結果だった。なので自前で1日1行ずつ溜める。
+//
+// D1 バインディング DB が無い間は完全に不活性。先に設定を書くとデプロイ自体が
+// 落ちてサイトが止まるので、リソースを作ってから wrangler.jsonc に足す運用にする。
+const SNAPSHOT_DDL = `CREATE TABLE IF NOT EXISTS snapshots (
+  date TEXT PRIMARY KEY,
+  shielded REAL, circulating REAL,
+  txs INTEGER, hashrate REAL, price_usd REAL,
+  recorded_at TEXT
+)`;
+
+async function recordSnapshot(env) {
+  if (!env || !env.DB) return { skipped: 'no DB binding' };
+  const pick = async (fn) => { try { return await fn(); } catch (e) { return null; } };
+
+  const [pool, chain, market] = await Promise.all([
+    pick(() => fetchJson(SHIELDED_URL, 0)),
+    pick(() => fetchJson(HASHRATE_URL, 0)),
+    pick(async () => (await handleMarket()).json())
+  ]);
+
+  let shielded = null, circulating = null;
+  if (pool) {
+    const pools = {};
+    for (const v of (pool.valuePools || [])) pools[v.id] = v.chainValue;
+    shielded = ['ironwood', 'orchard', 'sapling', 'sprout']
+      .reduce((sum, id) => sum + (pools[id] || 0), 0) || null;
+    circulating = pool.chainSupply ? pool.chainSupply.chainValue : null;
+  }
+  const stats = (chain && chain.data) || {};
+  const now = new Date().toISOString();
+
+  await env.DB.prepare(SNAPSHOT_DDL).run();
+  // Re-running the cron on the same day should correct that day, not duplicate it.
+  await env.DB.prepare(
+    `INSERT INTO snapshots (date, shielded, circulating, txs, hashrate, price_usd, recorded_at)
+     VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)
+     ON CONFLICT(date) DO UPDATE SET
+       shielded=excluded.shielded, circulating=excluded.circulating,
+       txs=excluded.txs, hashrate=excluded.hashrate,
+       price_usd=excluded.price_usd, recorded_at=excluded.recorded_at`
+  ).bind(
+    now.slice(0, 10),
+    shielded,
+    circulating,
+    stats.transactions_24h == null ? null : Number(stats.transactions_24h),
+    stats.hashrate_24h == null ? null : Number(stats.hashrate_24h),
+    market && market.price_usd != null ? Number(market.price_usd) : null,
+    now
+  ).run();
+
+  return { date: now.slice(0, 10), shielded, circulating };
+}
+
+async function handleSnapshots(env, url) {
+  if (!env || !env.DB) {
+    return new Response(
+      JSON.stringify({ rows: [], note: 'snapshot store not enabled yet' }),
+      { status: 200, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } }
+    );
+  }
+  try {
+    const days = Math.min(Math.max(Number(url.searchParams.get('days')) || 400, 1), 4000);
+    await env.DB.prepare(SNAPSHOT_DDL).run();
+    const { results } = await env.DB
+      .prepare('SELECT * FROM snapshots ORDER BY date DESC LIMIT ?1').bind(days).all();
+    return new Response(JSON.stringify({ rows: results || [] }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=1800' }
+    });
+  } catch (err) {
+    return new Response(JSON.stringify({ error: err.message || 'Unknown error' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } });
+  }
+}
+
 export default {
+  // Cron が設定されていれば1日1回ここが呼ばれる。DB が無ければ何もしない。
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(recordSnapshot(env));
+  },
+
   async fetch(request, env) {
     const url = new URL(request.url);
 
@@ -483,6 +586,9 @@ export default {
       }
       if (url.pathname === '/api/shielded-history' && request.method === 'GET') {
         return handleShieldedHistory();
+      }
+      if (url.pathname === '/api/snapshots' && request.method === 'GET') {
+        return handleSnapshots(env, url);
       }
       // Unknown API endpoint
       return new Response(
