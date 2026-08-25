@@ -1556,13 +1556,21 @@ function copyDonationAddress(btn) {
     try { document.execCommand('copy'); done(); } catch (e) {}
   }
 }
+// 相場データは fetchPrice と fetchStats の両方が使うので、リクエストは1本に共有する。
+let marketPromise = null;
+function getMarket() {
+  if (!marketPromise) {
+    marketPromise = fetch('/api/market')
+      .then(r => r.ok ? r.json() : null)
+      .catch(e => { console.warn('market fetch failed:', e); return null; });
+  }
+  return marketPromise;
+}
 async function fetchPrice() {
-  try {
-    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=zcash&vs_currencies=jpy');
-    const d = await r.json();
-    const p = d?.zcash?.jpy;
-    if (p) document.getElementById('zec-price').textContent = '¥' + p.toLocaleString('ja-JP');
-  } catch { document.getElementById('zec-price').textContent = '価格取得不可'; }
+  const d = await getMarket();
+  const p = d && d.price_jpy;
+  document.getElementById('zec-price').textContent =
+    p ? '¥' + Math.round(p).toLocaleString('ja-JP') : '価格取得不可';
 }
 fetchPrice();
 function renderSparkline(containerId, values, color, fillColor, xLabels, yFormatter) {
@@ -1774,44 +1782,46 @@ async function fetchStats() {
   renderSparkline('chart-price', fallbackPriceHistory, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
   let zecMcapUsd = null;
   let priceUsd = null;
+  let btcMcapUsd = null;
+  let history = null;
+  // --- 相場データ：Cloudflare Worker (/api/market) 経由でまとめて取得。
+  //     CoinGecko をブラウザから直に叩くとIP単位のレート制限に当たり、
+  //     混んだ回線の訪問者だけが古いフォールバック値を見ることになる。 ---
   try {
-    const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash?localization=false&tickers=false&community_data=false&developer_data=false');
-    const coin = await coinRes.json();
-    priceUsd = coin.market_data.current_price.usd;
-    const priceJpy = coin.market_data.current_price.jpy;
-    const change = coin.market_data.price_change_percentage_24h;
-    zecMcapUsd = coin.market_data.market_cap.usd;
-    document.getElementById('stat-price').textContent = '$' + priceUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    document.getElementById('stat-price-jpy').textContent = '（¥' + Math.round(priceJpy).toLocaleString('ja-JP') + '）';
-    const changeEl = document.getElementById('stat-change');
-    const sign = change >= 0 ? '+' : '';
-    changeEl.innerHTML = `${sign}${change.toFixed(2)}% (24h)`;
-    changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
-    if (zecMcapUsd) {
-      const mcapBn = (zecMcapUsd / 1e9).toFixed(2);
-      document.getElementById('stat-mcap').textContent = '$' + mcapBn + 'B';
+    const d = await getMarket();
+    if (d) {
+      priceUsd = Number(d.price_usd) || null;
+      zecMcapUsd = Number(d.zec_mcap_usd) || null;
+      btcMcapUsd = Number(d.btc_mcap_usd) || null;
+      if (Array.isArray(d.history) && d.history.length > 30) history = d.history;
+      if (priceUsd) {
+        document.getElementById('stat-price').textContent = '$' + priceUsd.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+      }
+      if (d.price_jpy) {
+        document.getElementById('stat-price-jpy').textContent = '（¥' + Math.round(d.price_jpy).toLocaleString('ja-JP') + '）';
+      }
+      if (d.change_24h !== null && d.change_24h !== undefined) {
+        const change = Number(d.change_24h);
+        const changeEl = document.getElementById('stat-change');
+        changeEl.innerHTML = `${change >= 0 ? '+' : ''}${change.toFixed(2)}% (24h)`;
+        changeEl.className = 'stat-change ' + (change >= 0 ? 'up' : 'down');
+      }
+      if (zecMcapUsd) {
+        document.getElementById('stat-mcap').textContent = '$' + (zecMcapUsd / 1e9).toFixed(2) + 'B';
+      }
+      if (d.rank) {
+        document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${d.rank}</strong>`;
+      }
     }
-    const mcapRank = coin.market_cap_rank;
-    if (mcapRank) {
-      document.getElementById('stat-mcap-rank').innerHTML = `時価総額ランク: <strong>#${mcapRank}</strong>`;
-    }
-  } catch(e) {
+  } catch(e) { console.warn('market render failed:', e); }
+  if (!priceUsd) {
     const el = document.getElementById('stat-price');
     if (el) el.textContent = '取得不可';
-    document.getElementById('stat-mcap').textContent = '$7.0B';
   }
-  // 価格チャートのヒストリカルデータ取得（API失敗時はフォールバックで動かす）
-  let priceVals = fallbackPriceHistory.slice();
-  let gotHistory = false;
-  try {
-    // CoinGecko market_chart — このサイトで既に動いている CoinGecko を優先（CORS対応・APIキー不要）
-    const mcRes = await fetch('https://api.coingecko.com/api/v3/coins/zcash/market_chart?vs_currency=usd&days=365');
-    const mc = await mcRes.json();
-    if (Array.isArray(mc?.prices) && mc.prices.length > 30) {
-      priceVals = mc.prices.map(p => p[1]); // [timestamp, price]
-      gotHistory = true;
-    }
-  } catch(e) { console.warn('CoinGecko history fetch failed:', e); }
+  if (!zecMcapUsd) document.getElementById('stat-mcap').textContent = '$14.4B';
+  // 価格チャートのヒストリカルデータ（取得できなければフォールバックで動かす）
+  let priceVals = history ? history.slice() : fallbackPriceHistory.slice();
+  let gotHistory = !!history;
   if (!gotHistory) {
     try {
       // 予備: CryptoCompare 日足の高値（イントラデイのピークを捕捉）
@@ -1825,20 +1835,11 @@ async function fetchStats() {
   // 最新値はライブ価格に合わせる（チャートの縦軸が現在価格を下回らないように）
   if (priceUsd && priceUsd > 0) priceVals[priceVals.length - 1] = priceUsd;
   renderSparkline('chart-price', priceVals, '#F4B728', 'rgba(244,183,40,0.1)', priceXLabels, priceYFmt);
-  // CoinGeckoレート制限回避のため少し待つ
-  await new Promise(r => setTimeout(r, 1500));
-  try {
-    const btcRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_market_cap=true');
-    const btc = await btcRes.json();
-    const btcMcap = btc?.bitcoin?.usd_market_cap;
-    if (btcMcap && zecMcapUsd) {
-      const ratio = (zecMcapUsd / btcMcap * 100).toFixed(2);
-      document.getElementById('stat-mcap-sub').innerHTML = `BTC時価総額の <strong>${ratio}%</strong>`;
-    } else {
-      document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.62%</strong>';
-    }
-  } catch {
-    document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.62%</strong>';
+  if (btcMcapUsd && zecMcapUsd) {
+    const ratio = (zecMcapUsd / btcMcapUsd * 100).toFixed(2);
+    document.getElementById('stat-mcap-sub').innerHTML = `BTC時価総額の <strong>${ratio}%</strong>`;
+  } else {
+    document.getElementById('stat-mcap-sub').innerHTML = 'BTC時価総額の <strong>0.89%</strong>';
   }
   await fetchShieldedStats();
   await fetchROI();
